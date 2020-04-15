@@ -29,7 +29,7 @@ public class User {
   @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)
   private Set<User> following;
 
-  @JoinColumn(name = "following_id", referencedColumnName = "user_id")
+  @JoinColumn(name = "following_id", referencedColumnName = "id")
   @ManyToOne(fetch = FetchType.LAZY)
   private User followedBy;
 
