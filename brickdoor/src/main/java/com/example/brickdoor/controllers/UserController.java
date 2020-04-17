@@ -10,9 +10,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.web.server.ResponseStatusException;
+
+import javax.servlet.http.HttpSession;
 
 @Controller()
-public class AuthController {
+public class UserController {
 
   @Autowired
   private UserDao userDao;
@@ -28,8 +32,16 @@ public class AuthController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/login")
-  public String loginRoutePost(@ModelAttribute("user") User user) {
+  public String loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
     // System.out.println(user.getUsername() + " " + user.getPassword());
+    String username = user.getUsername();
+    String password = user.getPassword();
+    User authenticatedUser = userDao.authenticate(username, password);
+
+    if (authenticatedUser == null) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    session.setAttribute("user", authenticatedUser.getId());
     return "login";
   }
 
@@ -46,6 +58,12 @@ public class AuthController {
   @PostMapping("/register")
   public String registerRoutePost(@ModelAttribute("user") User user) {
 //     System.out.println(user.getUsername() + " " + user.getPassword());
+    if (user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
+      throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
+    }
+    if (!userDao.registerUser(user)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
+    }
     return "register";
   }
 
