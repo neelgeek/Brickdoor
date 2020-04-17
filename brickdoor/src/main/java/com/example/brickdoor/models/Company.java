@@ -1,5 +1,6 @@
 package com.example.brickdoor.models;
 
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
 
@@ -18,8 +19,8 @@ public class Company extends User {
   }
 
   public Company(String firstName, String lastName, String username, String password,
-      String email, String companyName, String companyAddress) {
-    super(firstName, lastName, username, password, email);
+      String email, String dob, List<String> phoneNumbers, String companyName, String companyAddress) {
+    super(firstName, lastName, username, password, email, dob, phoneNumbers, Role.COMPANY);
     this.companyName = companyName;
     this.companyAddress = companyAddress;
   }

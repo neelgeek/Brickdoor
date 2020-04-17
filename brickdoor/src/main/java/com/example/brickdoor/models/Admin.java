@@ -1,5 +1,6 @@
 package com.example.brickdoor.models;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
@@ -10,12 +11,12 @@ public class Admin extends User {
   public Admin() {super();}
 
   public Admin(String firstName, String lastName, String username, String password,
-      String email) {
-    super(firstName, lastName, username, password, email);
+      String email, String dob, List<String> phoneNumbers) {
+    super(firstName, lastName, username, password, email, dob, phoneNumbers, Role.ADMIN);
   }
 
   public Admin(String firstName, String lastName, String username, String password,
-      String email, Set<User> following, User followedBy) {
-    super(firstName, lastName, username, password, email, following, followedBy);
+      String email, String dob, List<String> phoneNumbers, Set<User> following, User followedBy) {
+    super(firstName, lastName, username, password, email, dob, phoneNumbers, Role.ADMIN, following, followedBy);
   }
 }

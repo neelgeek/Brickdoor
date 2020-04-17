@@ -1,5 +1,6 @@
 package com.example.brickdoor.models;
 
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -27,6 +28,10 @@ public class User {
   private String username;
   private String password;
   private String email;
+  private String dob;
+  private List<String> phoneNumbers;
+  private Role role;
+
   @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)
   private Set<User> following;
 
@@ -38,21 +43,28 @@ public class User {
   }
 
   public User(String firstName, String lastName, String username, String password,
-              String email) {
+              String email, String dob, List<String> phoneNumbers, Role role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
     this.email = email;
+    this.dob = dob;
+    this.phoneNumbers = phoneNumbers;
+    this.role = role;
   }
 
   public User(String firstName, String lastName, String username, String password,
-              String email, Set<User> following, User followedBy) {
+              String email, String dob, List<String> phoneNumbers, Role role, Set<User> following,
+              User followedBy) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
     this.email = email;
+    this.dob = dob;
+    this.phoneNumbers = phoneNumbers;
+    this.role = role;
     this.following = following;
     this.followedBy = followedBy;
   }
@@ -121,4 +133,27 @@ public class User {
     this.followedBy = followedBy;
   }
 
+  public String getDob() {
+    return dob;
+  }
+
+  public void setDob(String dob) {
+    this.dob = dob;
+  }
+
+  public List<String> getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
+  public void setPhoneNumbers(List<String> phoneNumbers) {
+    this.phoneNumbers = phoneNumbers;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
 }

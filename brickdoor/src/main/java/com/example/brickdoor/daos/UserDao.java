@@ -54,10 +54,12 @@ public class UserDao {
     return null;
   }
 
-  private void updateBasicUserCred(User outdatedUser, User updatedUser){
+  private void updateBasicUserCred(User outdatedUser, User updatedUser) {
     outdatedUser.setEmail(updatedUser.getEmail());
     outdatedUser.setFirstName(updatedUser.getFirstName());
     outdatedUser.setLastName(updatedUser.getLastName());
     outdatedUser.setPassword(updatedUser.getPassword());
+    outdatedUser.setDob(updatedUser.getDob());
+    outdatedUser.setPhoneNumbers(updatedUser.getPhoneNumbers());
   }
 }
