@@ -1,6 +1,7 @@
 package com.example.brickdoor.models;
 
 import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -33,10 +34,11 @@ public class User {
   @ManyToOne(fetch = FetchType.LAZY)
   private User followedBy;
 
-  public User() {}
+  public User() {
+  }
 
   public User(String firstName, String lastName, String username, String password,
-      String email) {
+              String email) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
@@ -45,7 +47,7 @@ public class User {
   }
 
   public User(String firstName, String lastName, String username, String password,
-      String email, Set<User> following, User followedBy) {
+              String email, Set<User> following, User followedBy) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
@@ -118,4 +120,5 @@ public class User {
   public void setFollowedBy(User followedBy) {
     this.followedBy = followedBy;
   }
+
 }

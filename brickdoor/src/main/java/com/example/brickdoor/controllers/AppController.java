@@ -11,14 +11,11 @@ public class AppController {
   return "index";
   }
 
-  @GetMapping("/login")
-  public String loginRoute(){
-    return "login";
-  }
 
-  @GetMapping("/register")
-  public String registerRoute()
+  @GetMapping("/company")
+  public String companyRoute()
   {
-   return "register";
+    return "company";
   }
+    
 }
