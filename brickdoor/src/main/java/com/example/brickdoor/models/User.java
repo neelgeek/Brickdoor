@@ -27,6 +27,12 @@ public class User {
   private String username;
   private String password;
   private String email;
+  private String dob;
+  private Role role;
+
+  @OneToMany(mappedBy = "phone")
+  private Set<PhoneNumber> phoneNumbers;
+
   @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)
   private Set<User> following;
 
@@ -38,21 +44,28 @@ public class User {
   }
 
   public User(String firstName, String lastName, String username, String password,
-              String email) {
+              String email, String dob, Set<PhoneNumber> phoneNumbers, Role role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
     this.email = email;
+    this.dob = dob;
+    this.phoneNumbers = phoneNumbers;
+    this.role = role;
   }
 
   public User(String firstName, String lastName, String username, String password,
-              String email, Set<User> following, User followedBy) {
+              String email, String dob, Set<PhoneNumber> phoneNumbers, Role role, Set<User> following,
+              User followedBy) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
     this.email = email;
+    this.dob = dob;
+    this.phoneNumbers = phoneNumbers;
+    this.role = role;
     this.following = following;
     this.followedBy = followedBy;
   }
@@ -121,4 +134,27 @@ public class User {
     this.followedBy = followedBy;
   }
 
+  public String getDob() {
+    return dob;
+  }
+
+  public void setDob(String dob) {
+    this.dob = dob;
+  }
+
+  public Set<PhoneNumber> getPhoneNumbers() {
+    return phoneNumbers;
+  }
+
+  public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
+    this.phoneNumbers = phoneNumbers;
+  }
+
+  public Role getRole() {
+    return role;
+  }
+
+  public void setRole(Role role) {
+    this.role = role;
+  }
 }
