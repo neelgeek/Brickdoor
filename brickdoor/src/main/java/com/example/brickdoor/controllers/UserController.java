@@ -74,14 +74,24 @@ public class UserController {
     return "logout user with id: " + userId;
   }
 
-  @PutMapping("/updateUser")
-  public String updateUser(HttpSession session, @ModelAttribute("user") User user) {
+  @PutMapping("/updateStudent")
+  public String updateStudent(HttpSession session, @ModelAttribute("user") User user) {
     int userId = (int) session.getAttribute("user");
-    User updateUser = userDao.updateUser(userId, user);
+    User updateUser = userDao.updateStudent(userId, user);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return "updated user";
+    return "updated student";
+  }
+
+  @PutMapping("/updateCompany")
+  public String updateCompany(HttpSession session, @ModelAttribute("user") User user) {
+    int userId = (int) session.getAttribute("user");
+    User updateUser = userDao.updateCompany(userId, user);
+    if (updateUser == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return "updated company";
   }
 
 }

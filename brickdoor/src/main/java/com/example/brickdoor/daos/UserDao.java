@@ -1,5 +1,7 @@
 package com.example.brickdoor.daos;
 
+import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 import com.example.brickdoor.repositories.UserRepository;
 
@@ -26,18 +28,36 @@ public class UserDao {
     return false;
   }
 
-  public User updateUser(int userId, User updatedUser) {
+  public User updateStudent(int userId, Student updatedStudent) {
     Optional<User> optionalUser = userRepository.findById(userId);
 
     if (optionalUser.isPresent()) {
-      User outdatedUser = optionalUser.get();
-      outdatedUser.setEmail(updatedUser.getEmail());
-      outdatedUser.setFirstName(updatedUser.getFirstName());
-      outdatedUser.setLastName(updatedUser.getLastName());
-      outdatedUser.setPassword(updatedUser.getPassword());
-      userRepository.save(outdatedUser);
-      return outdatedUser;
+      Student outdatedStudent = (Student) optionalUser.get();
+      updateBasicUserCred(outdatedStudent, updatedStudent);
+      userRepository.save(outdatedStudent);
+      return outdatedStudent;
     }
     return null;
+  }
+
+  public User updateCompany(int userId, Company updatedCompany) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+
+    if (optionalUser.isPresent()) {
+      Company outdatedCompany = (Company) optionalUser.get();
+      updateBasicUserCred(outdatedCompany, updatedCompany);
+      outdatedCompany.setCompanyAddress(updatedCompany.getCompanyAddress());
+      outdatedCompany.setCompanyName(updatedCompany.getCompanyName());
+      userRepository.save(outdatedCompany);
+      return outdatedCompany;
+    }
+    return null;
+  }
+
+  private void updateBasicUserCred(User outdatedUser, User updatedUser){
+    outdatedUser.setEmail(updatedUser.getEmail());
+    outdatedUser.setFirstName(updatedUser.getFirstName());
+    outdatedUser.setLastName(updatedUser.getLastName());
+    outdatedUser.setPassword(updatedUser.getPassword());
   }
 }
