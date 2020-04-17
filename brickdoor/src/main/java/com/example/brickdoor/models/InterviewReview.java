@@ -12,15 +12,12 @@ import javax.persistence.Table;
 public class InterviewReview extends  Review{
 
     @Column(name = "interviewquestion")
-    String interviewQuestion = "";
-
-    @Column(name = "content")
-    String content = "";
+    private String interviewQuestion = "";
 
     public InterviewReview() {}
 
-    public InterviewReview(String reviewerName, Badge badge) {
-        super(reviewerName, badge);
+    public InterviewReview(String reviewerName, Badge badge, String title, String content) {
+        super(reviewerName, badge, title, content);
     }
 
     public String getInterviewQuestion() {
@@ -31,11 +28,4 @@ public class InterviewReview extends  Review{
         this.interviewQuestion = interviewQuestion;
     }
 
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
 }
