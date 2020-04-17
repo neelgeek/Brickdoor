@@ -11,16 +11,6 @@ public class AppController {
   return "index";
   }
 
-  @GetMapping("/login")
-  public String loginRoute(){
-    return "login";
-  }
-
-  @GetMapping("/register")
-  public String registerRoute()
-  {
-    return "register";
-  }
 
   @GetMapping("/company")
   public String companyRoute()
