@@ -12,16 +12,13 @@ import javax.persistence.Table;
 public class WorkReview extends Review{
 
     @Column(name = "jobtitle")
-    String jobTitle = "";
+    private String jobTitle = "";
 
-    String pros = "";
-
-    String cons = "";
 
     public WorkReview(){}
 
-    public WorkReview(String reviewerName, Badge badge) {
-        super(reviewerName, badge);
+    public WorkReview(String reviewerName, Badge badge, String title, String content) {
+        super(reviewerName, badge, title, content);
     }
 
     public String getJobTitle() {
@@ -32,19 +29,4 @@ public class WorkReview extends Review{
         this.jobTitle = jobTitle;
     }
 
-    public String getPros() {
-        return pros;
-    }
-
-    public void setPros(String pros) {
-        this.pros = pros;
-    }
-
-    public String getCons() {
-        return cons;
-    }
-
-    public void setCons(String cons) {
-        this.cons = cons;
-    }
 }
