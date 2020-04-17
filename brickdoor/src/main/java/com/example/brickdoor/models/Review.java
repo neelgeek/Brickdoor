@@ -20,18 +20,42 @@ public abstract class Review {
     private int id;
 
     @Column(name = "reviewername")
-    String reviewerName = "";
+    protected String reviewerName = "";
 
     @Enumerated(EnumType.STRING)
     @Column(length = 30)
-    Badge badge = Badge.NOTAVAILABLE;
+    protected Badge badge = Badge.NOTAVAILABLE;
+
+    @Column(name = "title")
+    protected String title = "";
+
+    @Column(name = "content")
+    protected String content = "";
 
     public Review() {
     }
 
-    public Review(String reviewerName, Badge badge) {
+    public Review(String reviewerName, Badge badge, String title, String content) {
         this.reviewerName = reviewerName;
         this.badge = badge;
+        this.title = title;
+        this.content = content;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
     }
 
     public int getId() {

@@ -30,8 +30,6 @@ public class ReviewController {
     @PostMapping("/createWorkReview")
     public Review createWorkReview() {
         WorkReview review = new WorkReview();
-        review.setCons("Good");
-        review.setPros("asdf");
         review.setJobTitle("asdfee");
         return reviewDao.createReview(review);
     }

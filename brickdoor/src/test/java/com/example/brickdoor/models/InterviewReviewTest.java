@@ -16,9 +16,8 @@ public class InterviewReviewTest {
     @Before
     public void setUp() {
         emptyReview = new InterviewReview();
-        filled = new InterviewReview(reviewer, badge);
+        filled = new InterviewReview(reviewer, badge, "", content);
         filled.setInterviewQuestion(question);
-        filled.setContent(content);
     }
 
     @Test

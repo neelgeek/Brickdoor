@@ -7,7 +7,6 @@ import com.example.brickdoor.repositories.InterviewReviewRepository;
 import com.example.brickdoor.repositories.ReviewRepository;
 import com.example.brickdoor.repositories.WorkReviewRepository;
 
-import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -37,13 +36,6 @@ public class ReviewDao {
         return reviewRepo.findAllReview();
     }
 
-//    public InterviewReview createInterviewReview(InterviewReview review) {
-//        return interviewReviewRepo.save(review);
-//    }
-//
-//    public WorkReview createWorkReview(WorkReview review) {
-//        return workReviewRepo.save(review);
-//    }
 
     public Review createReview(Review review) {
         return reviewRepo.save(review);
