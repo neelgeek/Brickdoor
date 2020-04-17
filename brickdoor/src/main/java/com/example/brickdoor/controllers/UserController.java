@@ -34,7 +34,6 @@ public class UserController {
     return "login";
   }
 
-
   // Post route for login, handle user authentication here
   @PostMapping("/login")
   public String loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
@@ -48,7 +47,6 @@ public class UserController {
     session.setAttribute("user", authenticatedUser.getId());
     return "login";
   }
-
 
   // This the get route, do not edit this.
   @GetMapping("/register")
@@ -115,6 +113,5 @@ public class UserController {
     }
     return "deleted user with username: " + toDelete.getUsername();
   }
-
-
+  
 }

@@ -1,6 +1,5 @@
 package com.example.brickdoor.models;
 
-import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -29,8 +28,10 @@ public class User {
   private String password;
   private String email;
   private String dob;
-  private List<String> phoneNumbers;
   private Role role;
+
+  @OneToMany(mappedBy = "phone")
+  private Set<PhoneNumber> phoneNumbers;
 
   @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)
   private Set<User> following;
@@ -43,7 +44,7 @@ public class User {
   }
 
   public User(String firstName, String lastName, String username, String password,
-              String email, String dob, List<String> phoneNumbers, Role role) {
+              String email, String dob, Set<PhoneNumber> phoneNumbers, Role role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
@@ -55,7 +56,7 @@ public class User {
   }
 
   public User(String firstName, String lastName, String username, String password,
-              String email, String dob, List<String> phoneNumbers, Role role, Set<User> following,
+              String email, String dob, Set<PhoneNumber> phoneNumbers, Role role, Set<User> following,
               User followedBy) {
     this.firstName = firstName;
     this.lastName = lastName;
@@ -141,11 +142,11 @@ public class User {
     this.dob = dob;
   }
 
-  public List<String> getPhoneNumbers() {
+  public Set<PhoneNumber> getPhoneNumbers() {
     return phoneNumbers;
   }
 
-  public void setPhoneNumbers(List<String> phoneNumbers) {
+  public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
     this.phoneNumbers = phoneNumbers;
   }
 
