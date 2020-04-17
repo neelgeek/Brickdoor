@@ -1,6 +1,7 @@
 package com.example.brickdoor.daos;
 
 import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 import com.example.brickdoor.repositories.UserRepository;
@@ -61,5 +62,18 @@ public class UserDao {
     outdatedUser.setPassword(updatedUser.getPassword());
     outdatedUser.setDob(updatedUser.getDob());
     outdatedUser.setPhoneNumbers(updatedUser.getPhoneNumbers());
+  }
+
+  public boolean deleteUser(int userId) {
+    if (!userRepository.existsById((userId))) {
+      return false;
+    }
+    userRepository.deleteById(userId);
+    return true;
+  }
+
+  public Role getRole(int userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    return optionalUser.map(User::getRole).orElse(null);
   }
 }

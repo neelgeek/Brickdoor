@@ -1,10 +1,14 @@
 package com.example.brickdoor.controllers;
 
 import com.example.brickdoor.daos.UserDao;
+import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.Role;
+import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -77,7 +81,10 @@ public class UserController {
   @PutMapping("/updateStudent")
   public String updateStudent(HttpSession session, @ModelAttribute("user") User user) {
     int userId = (int) session.getAttribute("user");
-    User updateUser = userDao.updateStudent(userId, user);
+    if (userDao.getRole(userId) != Role.STUDENT) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    User updateUser = userDao.updateStudent(userId, (Student) user);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -87,11 +94,27 @@ public class UserController {
   @PutMapping("/updateCompany")
   public String updateCompany(HttpSession session, @ModelAttribute("user") User user) {
     int userId = (int) session.getAttribute("user");
-    User updateUser = userDao.updateCompany(userId, user);
+    if (userDao.getRole(userId) != Role.COMPANY) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    User updateUser = userDao.updateCompany(userId, (Company) user);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return "updated company";
   }
+
+  @DeleteMapping("/deleteUser")
+  public String deleteUser(HttpSession session, User toDelete) {
+    int loggedInUserId = (int) session.getAttribute("user");
+    if (userDao.getRole(loggedInUserId) != Role.ADMIN) {
+        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    if (!userDao.deleteUser(toDelete.getId())) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return "deleted user with username: " + toDelete.getUsername();
+  }
+
 
 }
