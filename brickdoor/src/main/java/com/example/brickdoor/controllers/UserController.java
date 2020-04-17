@@ -67,4 +67,11 @@ public class UserController {
     return "register";
   }
 
+  @PostMapping("/logout")
+  public String logout(HttpSession session) {
+    int userId = (int) session.getAttribute("user");
+    session.invalidate();
+    return "logout user with id: " + userId;
+  }
+
 }
