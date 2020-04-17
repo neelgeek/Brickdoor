@@ -1,5 +1,7 @@
 package com.example.brickdoor.repositories;
 
+import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 
 import org.springframework.data.jpa.repository.Query;

@@ -16,6 +16,7 @@ import org.springframework.ui.Model;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
@@ -36,7 +37,7 @@ public class UserController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/login")
-  public String loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
+  public String loginRoutePost(HttpSession session, @RequestBody User user) {
     // System.out.println(user.getUsername() + " " + user.getPassword());
     String username = user.getUsername();
     String password = user.getPassword();
@@ -58,7 +59,7 @@ public class UserController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/register")
-  public String registerRoutePost(@ModelAttribute("user") User user) {
+  public String registerRoutePost(@RequestBody User user) {
 //     System.out.println(user.getUsername() + " " + user.getPassword());
     if (user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
@@ -77,12 +78,12 @@ public class UserController {
   }
 
   @PutMapping("/updateStudent")
-  public String updateStudent(HttpSession session, @ModelAttribute("user") User user) {
+  public String updateStudent(HttpSession session, @RequestBody Student student) {
     int userId = (int) session.getAttribute("user");
-    if (userDao.getRole(userId) != Role.STUDENT) {
+    if (userId != student.getId() || userDao.getRole(userId) != Role.STUDENT) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    User updateUser = userDao.updateStudent(userId, (Student) user);
+    User updateUser = userDao.updateStudent(userId, student);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -90,12 +91,12 @@ public class UserController {
   }
 
   @PutMapping("/updateCompany")
-  public String updateCompany(HttpSession session, @ModelAttribute("user") User user) {
+  public String updateCompany(HttpSession session, @RequestBody Company company) {
     int userId = (int) session.getAttribute("user");
-    if (userDao.getRole(userId) != Role.COMPANY) {
+    if (userId != company.getId() || userDao.getRole(userId) != Role.COMPANY) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    User updateUser = userDao.updateCompany(userId, (Company) user);
+    User updateUser = userDao.updateCompany(userId, company);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -113,5 +114,5 @@ public class UserController {
     }
     return "deleted user with username: " + toDelete.getUsername();
   }
-  
+
 }
