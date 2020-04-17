@@ -19,6 +19,13 @@ public class AppController {
   @GetMapping("/register")
   public String registerRoute()
   {
-   return "register";
+    return "register";
   }
+
+  @GetMapping("/company")
+  public String companyRoute()
+  {
+    return "company";
+  }
+    
 }
