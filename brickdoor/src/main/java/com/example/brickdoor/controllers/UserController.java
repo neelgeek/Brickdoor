@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
 
 import javax.servlet.http.HttpSession;
@@ -37,7 +38,6 @@ public class UserController {
     String username = user.getUsername();
     String password = user.getPassword();
     User authenticatedUser = userDao.authenticate(username, password);
-
     if (authenticatedUser == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
@@ -72,6 +72,16 @@ public class UserController {
     int userId = (int) session.getAttribute("user");
     session.invalidate();
     return "logout user with id: " + userId;
+  }
+
+  @PutMapping("/updateUser")
+  public String updateUser(HttpSession session, @ModelAttribute("user") User user) {
+    int userId = (int) session.getAttribute("user");
+    User updateUser = userDao.updateUser(userId, user);
+    if (updateUser == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return "updated user";
   }
 
 }
