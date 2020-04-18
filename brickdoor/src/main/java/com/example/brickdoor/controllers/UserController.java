@@ -65,16 +65,29 @@ public class UserController {
   }
 
   // Post route for login, handle user authentication here
+
   @PostMapping("/register")
   public String registerRoutePost(@RequestBody User user) {
-//     System.out.println(user.getUsername() + " " + user.getPassword());
+     System.out.println(user.getUsername() + " " + user.getPassword());
     if (user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
     if (!userDao.registerUser(user)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return "register";
+    return "registered student";
+  }
+
+  // Post route for login, handle user authentication here
+  @PostMapping("/registerCompany")
+  public String registerCompanyPost(@RequestBody Company company) {
+    if (company == null || company.getUsername() == null || company.getPassword() == null || company.getEmail() == null) {
+      throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
+    }
+    if (!userDao.registerUser(company)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
+    }
+    return "registered company";
   }
 
   @GetMapping("/logout")

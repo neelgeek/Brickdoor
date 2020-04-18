@@ -1,5 +1,7 @@
 package com.example.brickdoor.models;
 
+import org.hibernate.jdbc.Work;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Inheritance;
@@ -19,6 +21,11 @@ public class WorkReview extends Review{
 
     public WorkReview(String reviewerName, Badge badge, String title, String content) {
         super(reviewerName, badge, title, content);
+    }
+
+    public WorkReview(Company company, Student student, Badge badge, String title, String content, String jobTitle) {
+        super(company, student, badge, title, content);
+        this.jobTitle = jobTitle;
     }
 
     public String getJobTitle() {

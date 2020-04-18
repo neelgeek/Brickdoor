@@ -37,10 +37,30 @@ public class UserDao {
     return false;
   }
 
+  public boolean registerStudent(Student student) {
+    if (userRepository.findUserByUsername(student.getUsername()) == null
+        && userRepository.findUserByEmail(student.getEmail()) == null) {
+      userRepository.save(student);
+      return true;
+    }
+    return false;
+  }
+
+  public boolean registerCompany(Company company) {
+    if (userRepository.findUserByUsername(company.getUsername()) == null
+        && userRepository.findUserByEmail(company.getEmail()) == null) {
+      userRepository.save(company);
+      return true;
+    }
+    return false;
+  }
+
   public User updateStudent(int userId, Student updatedStudent) {
     Student outdatedStudent = studentRepository.findStudentById(userId);
     if (outdatedStudent != null) {
       updateBasicUserCred(outdatedStudent, updatedStudent);
+      outdatedStudent.setFirstName(updatedStudent.getFirstName());
+      outdatedStudent.setLastName(updatedStudent.getLastName());
       userRepository.save(outdatedStudent);
       return outdatedStudent;
     }
@@ -61,8 +81,6 @@ public class UserDao {
 
   private void updateBasicUserCred(User outdatedUser, User updatedUser) {
     outdatedUser.setEmail(updatedUser.getEmail());
-    outdatedUser.setFirstName(updatedUser.getFirstName());
-    outdatedUser.setLastName(updatedUser.getLastName());
     outdatedUser.setPassword(updatedUser.getPassword());
     outdatedUser.setDob(updatedUser.getDob());
     outdatedUser.setPhoneNumbers(updatedUser.getPhoneNumbers());
