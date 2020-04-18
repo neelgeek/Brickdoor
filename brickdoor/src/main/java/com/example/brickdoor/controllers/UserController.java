@@ -2,6 +2,7 @@ package com.example.brickdoor.controllers;
 
 import com.example.brickdoor.daos.UserDao;
 import com.example.brickdoor.models.Company;
+
 import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
@@ -18,6 +19,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -29,15 +31,20 @@ public class UserController {
 
   // This the get route, do not edit this.
   @GetMapping("/login")
-  public String loginRouteGet(Model model) {
-    User user = new User();
-    model.addAttribute("user", user);
-    return "login";
+  public ModelAndView loginRouteGet(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() != 0) {
+      return new ModelAndView("redirect:/");
+    }
+    ModelAndView model = new ModelAndView("login");
+    model.addObject("user", user);
+    return model;
   }
 
   // Post route for login, handle user authentication here
   @PostMapping("/login")
-  public String loginRoutePost(HttpSession session, @RequestBody User user) {
+  public ModelAndView loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
+
     // System.out.println(user.getUsername() + " " + user.getPassword());
     String username = user.getUsername();
     String password = user.getPassword();
@@ -45,8 +52,8 @@ public class UserController {
     if (authenticatedUser == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    session.setAttribute("user", authenticatedUser.getId());
-    return "login";
+    session.setAttribute("user", authenticatedUser);
+    return new ModelAndView("redirect:/");
   }
 
   // This the get route, do not edit this.
@@ -70,20 +77,22 @@ public class UserController {
     return "register";
   }
 
-  @PostMapping("/logout")
-  public String logout(HttpSession session) {
-    int userId = (int) session.getAttribute("user");
+  @GetMapping("/logout")
+  public ModelAndView logout(HttpSession session) {
     session.invalidate();
-    return "logout user with id: " + userId;
+    return new ModelAndView("redirect:/");
   }
 
   @PutMapping("/updateStudent")
   public String updateStudent(HttpSession session, @RequestBody Student student) {
-    int userId = (int) session.getAttribute("user");
+    User user = (User) session.getAttribute("user");
+    int userId = user.getId();
+
     if (userId != student.getId() || userDao.getRole(userId) != Role.STUDENT) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateStudent(userId, student);
+
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -92,11 +101,14 @@ public class UserController {
 
   @PutMapping("/updateCompany")
   public String updateCompany(HttpSession session, @RequestBody Company company) {
-    int userId = (int) session.getAttribute("user");
+    User user = (User) session.getAttribute("user");
+    int userId = user.getId();
+
     if (userId != company.getId() || userDao.getRole(userId) != Role.COMPANY) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateCompany(userId, company);
+
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -105,14 +117,17 @@ public class UserController {
 
   @DeleteMapping("/deleteUser")
   public String deleteUser(HttpSession session, User toDelete) {
-    int loggedInUserId = (int) session.getAttribute("user");
-    if (userDao.getRole(loggedInUserId) != Role.ADMIN) {
-        throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    User user = (User) session.getAttribute("user");
+    int userId = user.getId();
+
+    if (userDao.getRole(userId) != Role.ADMIN) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     if (!userDao.deleteUser(toDelete.getId())) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return "deleted user with username: " + toDelete.getUsername();
   }
+
 
 }
