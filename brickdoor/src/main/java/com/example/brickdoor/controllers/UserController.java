@@ -58,17 +58,21 @@ public class UserController {
 
   // This the get route, do not edit this.
   @GetMapping("/register")
-  public String registerRouteGet(Model model) {
-    User user = new User();
-    model.addAttribute("user", user);
-    return "register";
+  public ModelAndView registerRouteGet(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() != 0) {
+      return new ModelAndView("redirect:/");
+    }
+    ModelAndView model = new ModelAndView("register");
+    model.addObject("user", user);
+    return model;
   }
 
   // Post route for login, handle user authentication here
 
   @PostMapping("/register")
-  public String registerRoutePost(@RequestBody User user) {
-     System.out.println(user.getUsername() + " " + user.getPassword());
+  public String registerRoutePost(@ModelAttribute("user") User user) {
+    System.out.println(user.getUsername() + " " + user.getPassword());
     if (user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }

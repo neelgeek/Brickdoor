@@ -15,7 +15,7 @@ public class AppController {
   public ModelAndView indexRoute(HttpSession session) {
     User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
     ModelAndView modelAndView = new ModelAndView("index");
-    modelAndView.addObject(user);
+    modelAndView.addObject("user",user);
     return modelAndView;
   }
 
