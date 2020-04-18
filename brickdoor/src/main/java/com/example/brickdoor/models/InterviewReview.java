@@ -20,6 +20,11 @@ public class InterviewReview extends  Review{
         super(reviewerName, badge, title, content);
     }
 
+    public InterviewReview(Company company, Student student, Badge badge, String title, String content, String interviewQuestion) {
+        super(company, student, badge, title, content);
+        this.interviewQuestion = interviewQuestion;
+    }
+
     public String getInterviewQuestion() {
         return interviewQuestion;
     }

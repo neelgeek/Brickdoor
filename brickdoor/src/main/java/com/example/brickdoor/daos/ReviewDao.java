@@ -1,7 +1,9 @@
 package com.example.brickdoor.daos;
 
+import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Review;
+import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.WorkReview;
 import com.example.brickdoor.repositories.InterviewReviewRepository;
 import com.example.brickdoor.repositories.ReviewRepository;
@@ -67,4 +69,11 @@ public class ReviewDao {
         return null;
     }
 
+    public List<Review> getReviewByCompanyName(String companyName) {
+        return reviewRepo.findReviewByCompanyName(companyName);
+    }
+
+    public List<Review> getReviewByStudentUsername(String username) {
+        return reviewRepo.findReviewByUsername(username);
+    }
 }
