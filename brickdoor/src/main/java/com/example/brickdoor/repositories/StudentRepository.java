@@ -8,6 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentRepository extends CrudRepository<Student,Integer> {
-  @Query("SELECT student FROM Student student WHERE student.id=:studentId")
+  @Query("SELECT student FROM User student WHERE student.id=:studentId")
   Student findStudentById(@Param("studentId") int studentId);
 }
