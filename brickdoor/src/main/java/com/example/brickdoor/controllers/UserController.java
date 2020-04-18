@@ -1,6 +1,8 @@
 package com.example.brickdoor.controllers;
 
 import com.example.brickdoor.daos.UserDao;
+import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -33,7 +36,7 @@ public class UserController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/login")
-  public String loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
+  public ModelAndView loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
     // System.out.println(user.getUsername() + " " + user.getPassword());
     String username = user.getUsername();
     String password = user.getPassword();
@@ -42,7 +45,7 @@ public class UserController {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     session.setAttribute("user", authenticatedUser.getId());
-    return "login";
+    return new ModelAndView("redirect:/");
   }
 
 
@@ -77,7 +80,7 @@ public class UserController {
   @PutMapping("/updateStudent")
   public String updateStudent(HttpSession session, @ModelAttribute("user") User user) {
     int userId = (int) session.getAttribute("user");
-    User updateUser = userDao.updateStudent(userId, user);
+    User updateUser = userDao.updateStudent(userId, (Student) user);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -87,7 +90,7 @@ public class UserController {
   @PutMapping("/updateCompany")
   public String updateCompany(HttpSession session, @ModelAttribute("user") User user) {
     int userId = (int) session.getAttribute("user");
-    User updateUser = userDao.updateCompany(userId, user);
+    User updateUser = userDao.updateCompany(userId, (Company) user);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
