@@ -116,8 +116,10 @@ public class UserController {
   public String updateStudent(HttpSession session, @RequestBody Student student) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
+    Role userRole = userDao.getRole(userId);
+    boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
 
-    if (userId != student.getId() || userDao.getRole(userId) != Role.STUDENT) {
+    if (userId != student.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateStudent(userId, student);
@@ -132,8 +134,10 @@ public class UserController {
   public String updateCompany(HttpSession session, @RequestBody Company company) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
+    Role userRole = userDao.getRole(userId);
+    boolean permissionRoles = userRole == Role.COMPANY || userRole == Role.ADMIN;
 
-    if (userId != company.getId() || userDao.getRole(userId) != Role.COMPANY) {
+    if (userId != company.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateCompany(userId, company);
@@ -149,8 +153,10 @@ public class UserController {
   public String updateAdmin(HttpSession session, @RequestBody Admin admin) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
+    Role userRole = userDao.getRole(userId);
+    boolean permissionRoles = userRole == Role.ADMIN;
 
-    if (userId != admin.getId() || userDao.getRole(userId) != Role.ADMIN) {
+    if (userId != admin.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateAdmin(userId, admin);
