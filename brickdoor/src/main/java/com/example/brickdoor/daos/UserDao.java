@@ -1,9 +1,11 @@
 package com.example.brickdoor.daos;
 
+import com.example.brickdoor.models.Admin;
 import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
+import com.example.brickdoor.repositories.AdminRepository;
 import com.example.brickdoor.repositories.CompanyRepository;
 import com.example.brickdoor.repositories.StudentRepository;
 import com.example.brickdoor.repositories.UserRepository;
@@ -24,6 +26,12 @@ public class UserDao {
   @Autowired
   private CompanyRepository companyRepository;
 
+  @Autowired
+  private AdminRepository adminRepository;
+
+  public User findById(int userId) {
+    return userRepository.findById(userId).orElse(null);
+  }
   public User authenticate(String username, String password) {
     return userRepository.findUserByUserCredentials(username, password);
   }
@@ -32,24 +40,6 @@ public class UserDao {
     if (userRepository.findUserByUsername(user.getUsername()) == null
         && userRepository.findUserByEmail(user.getEmail()) == null) {
       userRepository.save(user);
-      return true;
-    }
-    return false;
-  }
-
-  public boolean registerStudent(Student student) {
-    if (userRepository.findUserByUsername(student.getUsername()) == null
-        && userRepository.findUserByEmail(student.getEmail()) == null) {
-      userRepository.save(student);
-      return true;
-    }
-    return false;
-  }
-
-  public boolean registerCompany(Company company) {
-    if (userRepository.findUserByUsername(company.getUsername()) == null
-        && userRepository.findUserByEmail(company.getEmail()) == null) {
-      userRepository.save(company);
       return true;
     }
     return false;
@@ -75,6 +65,18 @@ public class UserDao {
       outdatedCompany.setCompanyName(updatedCompany.getCompanyName());
       userRepository.save(outdatedCompany);
       return outdatedCompany;
+    }
+    return null;
+  }
+
+  public User updateAdmin(int userId, Admin updatedAdmin) {
+    Admin outdatedAdmin = adminRepository.findAdminById(userId);
+    if (outdatedAdmin != null) {
+      updateBasicUserCred(outdatedAdmin, updatedAdmin);
+      outdatedAdmin.setFirstName(updatedAdmin.getFirstName());
+      outdatedAdmin.setLastName(updatedAdmin.getLastName());
+      userRepository.save(outdatedAdmin);
+      return outdatedAdmin;
     }
     return null;
   }
