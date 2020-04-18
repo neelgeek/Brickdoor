@@ -3,10 +3,8 @@ package com.example.brickdoor.models;
 import java.util.Set;
 import javax.persistence.Entity;
 import javax.persistence.PrimaryKeyJoinColumn;
-import javax.persistence.Table;
 
 @Entity
-@Table(name = "student")
 @PrimaryKeyJoinColumn(referencedColumnName="id")
 public class Student extends User {
 
