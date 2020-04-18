@@ -7,6 +7,7 @@ import com.example.brickdoor.repositories.InterviewReviewRepository;
 import com.example.brickdoor.repositories.ReviewRepository;
 import com.example.brickdoor.repositories.WorkReviewRepository;
 
+import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -39,6 +40,31 @@ public class ReviewDao {
 
     public Review createReview(Review review) {
         return reviewRepo.save(review);
+    }
+
+
+    public InterviewReview updateInterviewReview(InterviewReview newReview) {
+        InterviewReview oldReview = interviewReviewRepo.findById(newReview.getId()).orElse(null);
+        if (oldReview != null) {
+            oldReview.setContent(newReview.getContent());
+            oldReview.setBadge(newReview.getBadge());
+            oldReview.setTitle(newReview.getTitle());
+            oldReview.setInterviewQuestion(newReview.getInterviewQuestion());
+            return reviewRepo.save(oldReview);
+        }
+        return null;
+    }
+    
+    public WorkReview updateWorkReview(WorkReview newReview) {
+        WorkReview oldReview = workReviewRepo.findById(newReview.getId()).orElse(null);
+        if (oldReview != null) {
+            oldReview.setContent(newReview.getContent());
+            oldReview.setBadge(newReview.getBadge());
+            oldReview.setTitle(newReview.getTitle());
+            oldReview.setJobTitle(newReview.getJobTitle());
+            return reviewRepo.save(oldReview);
+        }
+        return null;
     }
 
 }

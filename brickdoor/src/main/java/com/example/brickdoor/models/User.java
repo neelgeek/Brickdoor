@@ -30,7 +30,7 @@ public class User {
   private String dob;
   private Role role;
 
-  @OneToMany(mappedBy = "phone")
+  @OneToMany(mappedBy = "user")
   private Set<PhoneNumber> phoneNumbers;
 
   @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)

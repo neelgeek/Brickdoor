@@ -60,7 +60,7 @@ public class UserController {
   // Post route for login, handle user authentication here
   @PostMapping("/register")
   public String registerRoutePost(@RequestBody User user) {
-//     System.out.println(user.getUsername() + " " + user.getPassword());
+     System.out.println(user.getUsername() + " " + user.getPassword());
     if (user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
