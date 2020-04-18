@@ -27,7 +27,7 @@ public class User {
   private String dob;
   private Role role;
 
-  @OneToMany(mappedBy = "phone", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<PhoneNumber> phoneNumbers;
 
   @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)
