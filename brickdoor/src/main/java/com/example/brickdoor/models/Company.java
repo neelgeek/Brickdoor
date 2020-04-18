@@ -1,10 +1,11 @@
 package com.example.brickdoor.models;
 
+import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName="id")
+@Table(name = "company")
 public class Company extends User {
 
   private String companyName;
@@ -18,8 +19,8 @@ public class Company extends User {
   }
 
   public Company(String firstName, String lastName, String username, String password,
-      String email, String companyName, String companyAddress) {
-    super(firstName, lastName, username, password, email);
+      String email, String dob, Set<PhoneNumber> phoneNumbers, String companyName, String companyAddress) {
+    super(firstName, lastName, username, password, email, dob, phoneNumbers, Role.COMPANY);
     this.companyName = companyName;
     this.companyAddress = companyAddress;
   }

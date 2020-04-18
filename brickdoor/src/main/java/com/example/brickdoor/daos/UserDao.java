@@ -1,8 +1,11 @@
 package com.example.brickdoor.daos;
 
 import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
+import com.example.brickdoor.repositories.CompanyRepository;
+import com.example.brickdoor.repositories.StudentRepository;
 import com.example.brickdoor.repositories.UserRepository;
 
 import java.util.Optional;
@@ -14,6 +17,12 @@ public class UserDao {
 
   @Autowired
   private UserRepository userRepository;
+
+  @Autowired
+  private StudentRepository studentRepository;
+
+  @Autowired
+  private CompanyRepository companyRepository;
 
   public User authenticate(String username, String password) {
     return userRepository.findUserByUserCredentials(username, password);
@@ -29,10 +38,8 @@ public class UserDao {
   }
 
   public User updateStudent(int userId, Student updatedStudent) {
-    Optional<User> optionalUser = userRepository.findById(userId);
-
-    if (optionalUser.isPresent()) {
-      Student outdatedStudent = (Student) optionalUser.get();
+    Student outdatedStudent = studentRepository.findStudentById(userId);
+    if (outdatedStudent != null) {
       updateBasicUserCred(outdatedStudent, updatedStudent);
       userRepository.save(outdatedStudent);
       return outdatedStudent;
@@ -41,10 +48,8 @@ public class UserDao {
   }
 
   public User updateCompany(int userId, Company updatedCompany) {
-    Optional<User> optionalUser = userRepository.findById(userId);
-
-    if (optionalUser.isPresent()) {
-      Company outdatedCompany = (Company) optionalUser.get();
+    Company outdatedCompany = companyRepository.findCompanyById(userId);
+    if (outdatedCompany != null) {
       updateBasicUserCred(outdatedCompany, updatedCompany);
       outdatedCompany.setCompanyAddress(updatedCompany.getCompanyAddress());
       outdatedCompany.setCompanyName(updatedCompany.getCompanyName());
@@ -54,10 +59,25 @@ public class UserDao {
     return null;
   }
 
-  private void updateBasicUserCred(User outdatedUser, User updatedUser){
+  private void updateBasicUserCred(User outdatedUser, User updatedUser) {
     outdatedUser.setEmail(updatedUser.getEmail());
     outdatedUser.setFirstName(updatedUser.getFirstName());
     outdatedUser.setLastName(updatedUser.getLastName());
     outdatedUser.setPassword(updatedUser.getPassword());
+    outdatedUser.setDob(updatedUser.getDob());
+    outdatedUser.setPhoneNumbers(updatedUser.getPhoneNumbers());
+  }
+
+  public boolean deleteUser(int userId) {
+    if (!userRepository.existsById((userId))) {
+      return false;
+    }
+    userRepository.deleteById(userId);
+    return true;
+  }
+
+  public Role getRole(int userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    return optionalUser.map(User::getRole).orElse(null);
   }
 }

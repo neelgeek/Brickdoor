@@ -56,7 +56,7 @@
         <!-- end navbar-header -->
         <!-- begin #header-navbar -->
         <div class="collapse navbar-collapse" id="header-navbar">
-            <ul class="nav navbar-nav navbar-right">
+            <ul th:switch="${user.id}" class="nav navbar-nav navbar-right">
                 <!--					<li>-->
                 <!--						<form class="navbar-form">-->
                 <!--							<div class="form-group">-->
@@ -65,8 +65,10 @@
                 <!--							</div>-->
                 <!--						</form>-->
                 <!--					</li>-->
-                <li><a th:href="@{~/register}" href="/register">Create Account</a></li>
-                <li><a th:href="@{~/login}" href="/login">Sign In</a></li>
+                <li><a th:if="${user.id==0}" th:href="@{~/register}" href="/register">Create Account</a></li>
+                <li><a th:if="${user.id==0}" th:href="@{~/login}" href="/login">Sign In</a></li>
+                <li><a th:if="${user.id!=0}" th:href="@{~/logout}" href="/login">Logout</a></li>
+
             </ul>
         </div>
         <!-- end #header-navbar -->
@@ -123,7 +125,8 @@
                 <li>
                     <!-- begin media -->
                     <div class="media">
-                        <img src="../static/img/icon/icon-gold-note.png" th:src="@{/img/icon/icon-gold-note.png}" alt=""/>
+                        <img src="../static/img/icon/icon-gold-note.png"
+                             th:src="@{/img/icon/icon-gold-note.png}" alt=""/>
                     </div>
                     <!-- end media -->
                     <!-- begin info-container -->
@@ -164,7 +167,8 @@
                 <li>
                     <!-- begin media -->
                     <div class="media">
-                        <img src="../static/img/icon/icon-chat-bubble.png" th:src="@{/img/icon/icon-chat-bubble.png}" alt=""/>
+                        <img src="../static/img/icon/icon-chat-bubble.png"
+                             th:src="@{/img/icon/icon-chat-bubble.png}" alt=""/>
                     </div>
                     <!-- end media -->
                     <!-- begin info-container -->
@@ -304,6 +308,8 @@
 		$(document).ready(function() {
 			App.init();
 		});
+
+
 
 </script>
 </body>

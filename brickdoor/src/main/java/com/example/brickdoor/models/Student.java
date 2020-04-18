@@ -2,14 +2,10 @@ package com.example.brickdoor.models;
 
 import java.util.Set;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName="id")
+@Table(name = "student")
 public class Student extends User {
 
   public Student() {
@@ -17,7 +13,14 @@ public class Student extends User {
   }
 
   public Student(String firstName, String lastName, String username, String password,
-      String email) {
-    super(firstName, lastName, username, password, email);
+      String email, String dob, Set<PhoneNumber> phoneNumbers) {
+    super(firstName, lastName, username, password, email, dob, phoneNumbers, Role.STUDENT);
   }
+
+  public Student(String firstName, String lastName, String username, String password,
+      String email, String dob, Set<PhoneNumber> phoneNumbers, Set<User> following, User followedBy) {
+    super(firstName, lastName, username, password, email, dob, phoneNumbers, Role.STUDENT,
+        following, followedBy);
+  }
+
 }
