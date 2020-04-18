@@ -1,7 +1,9 @@
 package com.example.brickdoor.models;
 
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
@@ -10,6 +12,9 @@ public class Student extends User {
 
   private String firstName;
   private String lastName;
+
+  @OneToMany(mappedBy = "student")
+  private List<Review> givenReviews;
 
   public Student() {
     super();
@@ -46,4 +51,11 @@ public class Student extends User {
     this.lastName = lastName;
   }
 
+  public List<Review> getGivenReviews() {
+    return givenReviews;
+  }
+
+  public void setGivenReviews(List<Review> givenReviews) {
+    this.givenReviews = givenReviews;
+  }
 }

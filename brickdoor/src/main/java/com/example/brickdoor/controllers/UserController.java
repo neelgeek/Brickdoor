@@ -72,7 +72,7 @@ public class UserController {
     if (user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
-    if (!userDao.registerUser(student)) {
+    if (!userDao.registerUser(user)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
     return "registered student";
