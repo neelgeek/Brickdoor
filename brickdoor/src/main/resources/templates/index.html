@@ -27,6 +27,9 @@
           th:href="@{/css/forum/style-responsive.min.css}" rel="stylesheet"/>
     <link href="../static/css/forum/theme/default.css" th:href="@{/css/forum/theme/default.css}"
           id="theme" rel="stylesheet"/>
+    <link href="../static/css/default/style.min.css" th:href="@{/css/default/style.min.css}"
+          rel="stylesheet"/>
+
     <!-- ================== END BASE CSS STYLE ================== -->
 
     <!-- ================== BEGIN BASE JS ================== -->
@@ -65,9 +68,21 @@
                 <!--							</div>-->
                 <!--						</form>-->
                 <!--					</li>-->
-                <li><a th:if="${user.id==0}" th:href="@{~/register}" href="/register">Create Account</a></li>
-                <li><a th:if="${user.id==0}" th:href="@{~/login}" href="/login">Sign In</a></li>
-                <li><a th:if="${user.id!=0}" th:href="@{~/logout}" href="/login">Logout</a></li>
+                <li th:if="${user.id==0}"><a th:href="@{~/register}" href="/register">Create
+                    Account</a></li>
+                <li th:if="${user.id==0}"><a th:href="@{~/login}" href="/login">Sign In</a></li>
+                <li th:if="${user.id!=0}" class="dropdown navbar-user">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                        <img th:src="@{/img/user/user-3.jpg}" src="../static/img/user/user-3.jpg" alt=""/>
+                        <span th:text="${user.firstName+' '+user.lastName}"
+                              class="d-none d-md-inline"></span> <b class="caret"></b>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right">
+                        <a href="javascript:;" class="dropdown-item">Edit Profile</a>
+                        <div class="dropdown-divider"></div>
+                        <a th:href="@{~/logout}" href="/logout" class="dropdown-item">Log Out</a>
+                    </div>
+                </li>
 
             </ul>
         </div>
@@ -308,6 +323,9 @@
 		$(document).ready(function() {
 			App.init();
 		});
+
+
+
 
 
 
