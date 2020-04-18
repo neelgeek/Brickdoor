@@ -1,275 +1,175 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
+<!--[if IE 8]>
+<html lang="en" class="ie8"> <![endif]-->
 <!--[if !IE]><!-->
 <html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <!--<![endif]-->
 <head>
-	<meta charset="utf-8" />
-	<title>Color Admin | Page without Sidebar</title>
-	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport" />
-	<meta content="" name="description" />
-	<meta content="" name="author" />
-	
-	<!-- ================== BEGIN BASE CSS STYLE ================== -->
-	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" rel="stylesheet" />
-	<link href="../static/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet" />
-	<link href="../static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
-	<link href="../static/plugins/font-awesome/css/all.min.css" rel="stylesheet" />
-	<link href="../static/plugins/animate/animate.min.css" rel="stylesheet" />
-	<link href="../static/css/default/style.min.css" rel="stylesheet" />
-	<link href="../static/css/default/style-responsive.min.css" rel="stylesheet" />
-	<link href="../static/css/default/theme/default.css" rel="stylesheet" id="theme" />
-	<!-- ================== END BASE CSS STYLE ================== -->
-	
-	<!-- ================== BEGIN BASE JS ================== -->
-	<script src="../static/plugins/pace/pace.min.js"></script>
-	<!-- ================== END BASE JS ================== -->
+    <meta charset="utf-8"/>
+    <title>Brickdoor | Add Review</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+          rel="stylesheet"/>
+    <link th:href="@{/plugins/jquery-ui/jquery-ui.min.css}"
+          href="../static/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/bootstrap/css/bootstrap.min.css}"
+          href="../static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/font-awesome/css/all.min.css}"
+          href="../static/plugins/font-awesome/css/all.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/animate/animate.min.css}"
+          href="../static/plugins/animate/animate.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/default/style.min.css}" href="../static/css/default/style.min.css"
+          rel="stylesheet"/>
+    <link th:href="@{/css/default/style-responsive.min.css}"
+          href="../static/css/default/style-responsive.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/default/theme/default.css}" href="../static/css/default/theme/default.css"
+          rel="stylesheet" id="theme"/>
+    <link th:href="@{/plugins/select2/dist/css/select2.min.css}"
+          href="../static/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script src="../static/plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
 </head>
 <body>
-	<!-- begin #page-loader -->
-	<div id="page-loader" class="fade show"><span class="spinner"></span></div>
-	<!-- end #page-loader -->
-	
-	<!-- begin #page-container -->
-	<div id="page-container" class="fade page-without-sidebar page-header-fixed">
-		<!-- begin #header -->
-		<div id="header" class="header navbar-default">
-			<!-- begin navbar-header -->
-			<div class="navbar-header">
-				<a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Color</b> Admin</a>
-			</div>
-			<!-- end navbar-header -->
-			<!-- begin header-nav -->
-			<ul class="navbar-nav navbar-right">
-				<li class="dropdown navbar-user">
-					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
-						<img src="../static/img/user/user-13.jpg" alt="" />
-						<span class="d-none d-md-inline">Adam Schwartz</span> <b class="caret"></b>
-					</a>
-					<div class="dropdown-menu dropdown-menu-right">
-						<a href="javascript:;" class="dropdown-item">Edit Profile</a>
-						<a href="javascript:;" class="dropdown-item"><span class="badge badge-danger pull-right">2</span> Inbox</a>
-						<a href="javascript:;" class="dropdown-item">Calendar</a>
-						<a href="javascript:;" class="dropdown-item">Setting</a>
-						<div class="dropdown-divider"></div>
-						<a href="javascript:;" class="dropdown-item">Log Out</a>
-					</div>
-				</li>
-			</ul>
-			<!-- end header navigation right -->
-		</div>
-		<!-- end #header -->
-		
-		<!-- begin #content -->
-		<div id="content" class="content">
-			<!-- begin breadcrumb -->
-<!--			<ol class="breadcrumb pull-right">-->
-<!--				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>-->
-<!--				<li class="breadcrumb-item"><a href="javascript:;">Page Options</a></li>-->
-<!--				<li class="breadcrumb-item active">Page without Sidebar</li>-->
-<!--			</ol>-->
-			<!-- end breadcrumb -->
-			<!-- begin page-header -->
-			<h1 class="page-header">Submit your review for company <span></span></h1>
-			<!-- end page-header -->
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade show"><span class="spinner"></span></div>
+<!-- end #page-loader -->
 
-			<!-- begin panel -->
-			<div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+<!-- begin #page-container -->
+<div id="page-container" class="fade page-without-sidebar page-header-fixed">
+    <!-- begin #header -->
+    <div id="header" class="header navbar-default">
+        <!-- begin navbar-header -->
+        <div class="navbar-header">
+            <a href="index.html" class="navbar-brand"><span class="navbar-logo"></span> <b>Brickdoor</b></a>
+        </div>
+        <!-- end navbar-header -->
+        <!-- begin header-nav -->
+        <ul class="navbar-nav navbar-right">
+            <li th:if="${user.id!=0}" class="dropdown navbar-user">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    <img th:src="@{/img/user/user-3.jpg}" src="../static/img/user/user-3.jpg"
+                         alt=""/>
+                    <span th:text="${user.firstName+' '+user.lastName}"
+                          class="d-none d-md-inline"></span> <b class="caret"></b>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right">
+                    <a href="javascript:;" class="dropdown-item">Edit Profile</a>
+                    <div class="dropdown-divider"></div>
+                    <a th:href="@{~/logout}" href="/logout" class="dropdown-item">Log Out</a>
+                </div>
+            </li>
+        </ul>
+        <!-- end header navigation right -->
+    </div>
+    <!-- end #header -->
 
-				<!-- begin panel-body -->
-				<div class="panel-body">
-					<form>
-						<div class="form-group row m-b-15">
-							<label class="col-form-label col-md-3">Review Title</label>
-							<div class="col-md-9">
-								<input type="text" class="form-control m-b-5" placeholder="Review Title" />
-							</div>
-						</div>
-						<div class="form-group row m-b-15">
-							<label class="col-form-label col-md-3">Example select</label>
-							<div class="col-md-9">
-								<select class="form-control">
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
-									<option>5</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group row m-b-15">
-							<label class="col-form-label col-md-3">Example multiple select</label>
-							<div class="col-md-9">
-								<select multiple class="form-control">
-									<option>1</option>
-									<option>2</option>
-									<option>3</option>
-									<option>4</option>
-									<option>5</option>
-								</select>
-							</div>
-						</div>
-						<div class="form-group row m-b-15">
-							<label class="col-form-label col-md-3">Example textarea</label>
-							<div class="col-md-9">
-								<textarea class="form-control" rows="3"></textarea>
-							</div>
-						</div>
-					</form>
-				</div>
-				<!-- end panel-body -->
-			</div>
-			<!-- end panel -->
+    <!-- begin #content -->
+    <div id="content" class="content">
+        <!-- begin breadcrumb -->
+        <!--			<ol class="breadcrumb pull-right">-->
+        <!--				<li class="breadcrumb-item"><a href="javascript:;">Home</a></li>-->
+        <!--				<li class="breadcrumb-item"><a href="javascript:;">Page Options</a></li>-->
+        <!--				<li class="breadcrumb-item active">Page without Sidebar</li>-->
+        <!--			</ol>-->
+        <!-- end breadcrumb -->
+        <!-- begin page-header -->
+        <h1 class="page-header">Submit your review for company <span></span></h1>
+        <!-- end page-header -->
 
-			<p>
-				<a href="javascript:history.back(-1);" class="btn btn-success">
-					<i class="fa fa-arrow-circle-left"></i> Back to previous page
-				</a>
-			</p>
-		</div>
-		<!-- end #content -->
-		
-		<!-- begin theme-panel -->
-		<div class="theme-panel theme-panel-lg">
-			<a href="javascript:;" data-click="theme-panel-expand" class="theme-collapse-btn"><i class="fa fa-cog"></i></a>
-			<div class="theme-panel-content">
-				<h5 class="m-t-0">Color Theme</h5>
-				<ul class="theme-list clearfix">
-					<li><a href="javascript:;" class="bg-red" data-theme="red" data-theme-file="../static/css/default/theme/red.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Red">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-pink" data-theme="pink" data-theme-file="../static/css/default/theme/pink.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Pink">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-orange" data-theme="orange" data-theme-file="../static/css/default/theme/orange.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Orange">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-yellow" data-theme="yellow" data-theme-file="../static/css/default/theme/yellow.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Yellow">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-lime" data-theme="lime" data-theme-file="../static/css/default/theme/lime.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Lime">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-green" data-theme="green" data-theme-file="../static/css/default/theme/green.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Green">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-teal" data-theme="default" data-theme-file="../static/css/default/theme/default.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Default">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-aqua" data-theme="aqua" data-theme-file="../static/css/default/theme/aqua.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Aqua">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-blue" data-theme="blue" data-theme-file="../static/css/default/theme/blue.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Blue">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-purple" data-theme="purple" data-theme-file="../static/css/default/theme/purple.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Purple">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-indigo" data-theme="indigo" data-theme-file="../static/css/default/theme/indigo.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Indigo">&nbsp;</a></li>
-					<li><a href="javascript:;" class="bg-black" data-theme="black" data-theme-file="../static/css/default/theme/black.css" data-click="theme-selector" data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Black">&nbsp;</a></li>
-				</ul>
-				<div class="divider"></div>
-				<div class="row m-t-10">
-					<div class="col-md-6 control-label text-inverse f-w-600">Header Styling</div>
-					<div class="col-md-6">
-						<select name="header-styling" class="form-control form-control-sm">
-							<option value="1">default</option>
-							<option value="2">inverse</option>
-						</select>
+        <!-- begin panel -->
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+
+            <!-- begin panel-body -->
+            <div class="panel-body">
+                <form>
+					<div class="form-group row">
+						<label class="col-md-3 col-form-label">Select the Company</label>
+						<div class="col-md-9">
+							<select class="default-select2 form-control">
+								<option value="01">Facebook</option>
+							</select>
+						</div>
 					</div>
-				</div>
-				<div class="row m-t-10">
-					<div class="col-md-6 control-label text-inverse f-w-600">Header</div>
-					<div class="col-md-6">
-						<select name="header-fixed" class="form-control form-control-sm">
-							<option value="1">fixed</option>
-							<option value="2">default</option>
-						</select>
+					<div class="form-group row m-b-15">
+						<label class="col-form-label col-md-3">Job Title</label>
+						<div class="col-md-9">
+							<input type="text" class="form-control m-b-5"
+								   placeholder="Job Title"/>
+						</div>
 					</div>
-				</div>
-				<div class="row m-t-10">
-					<div class="col-md-6 control-label text-inverse f-w-600">Sidebar Styling</div>
-					<div class="col-md-6">
-						<select name="sidebar-styling" class="form-control form-control-sm">
-							<option value="1">default</option>
-							<option value="2">grid</option>
-						</select>
-					</div>
-				</div>
-				<div class="row m-t-10">
-					<div class="col-md-6 control-label text-inverse f-w-600">Sidebar</div>
-					<div class="col-md-6">
-						<select name="sidebar-fixed" class="form-control form-control-sm">
-							<option value="1">fixed</option>
-							<option value="2">default</option>
-						</select>
-					</div>
-				</div>
-				<div class="row m-t-10">
-					<div class="col-md-6 control-label text-inverse f-w-600">Sidebar Gradient</div>
-					<div class="col-md-6">
-						<select name="content-gradient" class="form-control form-control-sm">
-							<option value="1">disabled</option>
-							<option value="2">enabled</option>
-						</select>
-					</div>
-				</div>
-				<div class="row m-t-10">
-					<div class="col-md-6 control-label text-inverse f-w-600">Content Styling</div>
-					<div class="col-md-6">
-						<select name="content-styling" class="form-control form-control-sm">
-							<option value="1">default</option>
-							<option value="2">black</option>
-						</select>
-					</div>
-				</div>
-				<div class="row m-t-10">
-					<div class="col-md-6 control-label text-inverse f-w-600">Direction</div>
-					<div class="col-md-6">
-						<select name="direction" class="form-control form-control-sm">
-							<option value="1">LTR</option>
-							<option value="2">RTL</option>
-						</select>
-					</div>
-				</div>
-				<div class="divider"></div>
-				<h5>THEME VERSION</h5>
-				<div class="theme-version">
-					<a href="../template_html/index_v2.html" class="active">
-						<span style="background-image: url(../static/img/theme/default.jpg);"></span>
-					</a>
-					<a href="../template_transparent/index_v2.html">
-						<span style="background-image: url(../static/img/theme/transparent.jpg);"></span>
-					</a>
-				</div>
-				<div class="theme-version">
-					<a href="../template_apple/index_v2.html">
-						<span style="background-image: url(../static/img/theme/apple.jpg);"></span>
-					</a>
-					<a href="../template_material/index_v2.html">
-						<span style="background-image: url(../static/img/theme/material.jpg);"></span>
-					</a>
-				</div>
-				<div class="theme-version">
-					<a href="../template_facebook/index_v2.html">
-						<span style="background-image: url(../static/img/theme/facebook.jpg);"></span>
-					</a>
-				</div>
-				<div class="divider"></div>
-				<div class="row m-t-10">
-					<div class="col-md-12">
-						<a href="javascript:;" class="btn btn-inverse btn-block btn-rounded" data-click="reset-local-storage"><b>Reset Local Storage</b></a>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- end theme-panel -->
-        
-		<!-- begin scroll to top btn -->
-		<a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade" data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
-		<!-- end scroll to top btn -->
-	</div>
-	<!-- end page container -->
-	
-	<!-- ================== BEGIN BASE JS ================== -->
-	<script src="../static/plugins/jquery/jquery-3.3.1.min.js"></script>
-	<script src="../static/plugins/jquery-ui/jquery-ui.min.js"></script>
-	<script src="../static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
-	<!--[if lt IE 9]>
-		<script src="../static/crossbrowserjs/html5shiv.js"></script>
-		<script src="../static/crossbrowserjs/respond.min.js"></script>
-		<script src="../static/crossbrowserjs/excanvas.min.js"></script>
-	<![endif]-->
-	<script src="../static/plugins/slimscroll/jquery.slimscroll.min.js"></script>
-	<script src="../static/plugins/js-cookie/js.cookie.js"></script>
-	<script src="../static/js/theme/default.min.js"></script>
-	<script src="../static/js/apps.min.js"></script>
-	<!-- ================== END BASE JS ================== -->
-	
-	<script>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">Review Title</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control m-b-5"
+                                   placeholder="Review Title"/>
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">Review Contents</label>
+                        <div class="col-md-9">
+                            <input type="text" class="form-control m-b-5"
+                                   placeholder="Review Contents"/>
+                        </div>
+                    </div>
+					<button type="submit" class="btn btn-sm btn-primary m-r-5">Add Review</button>
+
+                </form>
+            </div>
+            <!-- end panel-body -->
+        </div>
+        <!-- end panel -->
+
+        <p>
+            <a href="javascript:history.back(-1);" class="btn btn-success">
+                <i class="fa fa-arrow-circle-left"></i> Back to previous page
+            </a>
+        </p>
+    </div>
+    <!-- end #content -->
+
+
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+       data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script th:src="@{/plugins/jquery/jquery-3.3.1.min.js}"
+        src="../static/plugins/jquery/jquery-3.3.1.min.js"></script>
+<script th:src="@{/plugins/jquery-ui/jquery-ui.min.js}"
+        src="../static/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"
+        src="../static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/plugins/slimscroll/jquery.slimscroll.min.js}"
+        src="../static/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script th:src="@{/plugins/js-cookie/js.cookie.js}"
+        src="../static/plugins/js-cookie/js.cookie.js"></script>
+<script th:src="@{/js/theme/default.min.js}" src="../static/js/theme/default.min.js"></script>
+<script th:src="@{/js/apps.min.js}" src="../static/js/apps.min.js"></script>
+<script th:src="@{/plugins/jquery-ui/jquery-ui.min.js}"
+        src="../static/plugins/select2/dist/js/select2.min.js"></script>
+
+<!-- ================== END BASE JS ================== -->
+
+<script>
 		$(document).ready(function() {
 			App.init();
+			$(".default-select2").select2();
+			$(".multiple-select2").select2({ placeholder: "Select a state" });
 		});
-	</script>
+
+
+</script>
 </body>
 </html>
