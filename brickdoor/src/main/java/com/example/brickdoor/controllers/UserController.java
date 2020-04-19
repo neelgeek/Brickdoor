@@ -83,7 +83,7 @@ public class UserController {
     if (!userDao.registerUser(student)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return new ModelAndView("redirect:/loginlogin");
+    return new ModelAndView("redirect:/login");
   }
 
   // Post route for login, handle user authentication here
