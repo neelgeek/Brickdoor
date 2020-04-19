@@ -27,10 +27,31 @@ public class ReviewController {
   @Autowired
   ReviewDao reviewDao;
 
+  @GetMapping("/interview_review")
+  public ModelAndView createInterviewReviewGET(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0) {
+      return new ModelAndView("redirect:/");
+    }
+    ModelAndView modelAndView = new ModelAndView("interview_review");
+    modelAndView.addObject("user", user);
+    modelAndView.addObject("review", new interview_review_form());
+    return modelAndView;
+
+
+  }
+
   @PostMapping("/interview_review")
-  public String createInterviewReview(HttpSession session, @RequestBody InterviewReview review) {
-    reviewDao.createReview(review);
-    return "review created";
+  public ModelAndView createInterviewReviewPOST(HttpSession session, @ModelAttribute("review") interview_review_form review) {
+
+    System.out.println(review.getCompanyId());
+    System.out.println(review.getTitle());
+    System.out.println(review.getContent());
+    System.out.println(review.getQuestions());
+
+    // Please use the above info to create a new Review object and save it using the DAO.
+    // reviewDao.createReview(review);
+    return new ModelAndView("redirect:/interview_review");
 
   }
 
@@ -128,6 +149,48 @@ class work_review_form {
 
   public void setJobTitle(String jobTitle) {
     this.jobTitle = jobTitle;
+  }
+
+  public void setContent(String content) {
+    this.content = content;
+  }
+
+  public void setCompanyId(int companyId) {
+    this.companyId = companyId;
+  }
+}
+
+// This object is submitted by the user in post route to create a work review.
+class interview_review_form {
+
+
+  private String title = ""; // Review title
+  private String questions = ""; // Job title
+  private String content = ""; // Review Content
+  private int companyId; // Company Id
+
+  public String getTitle() {
+    return title;
+  }
+
+  public String getQuestions() {
+    return questions;
+  }
+
+  public String getContent() {
+    return content;
+  }
+
+  public int getCompanyId() {
+    return companyId;
+  }
+
+  public void setTitle(String title) {
+    this.title = title;
+  }
+
+  public void setQuestions(String questions) {
+    this.questions = questions;
   }
 
   public void setContent(String content) {

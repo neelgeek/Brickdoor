@@ -2,12 +2,12 @@
 <!--[if IE 8]>
 <html lang="en" class="ie8"> <![endif]-->
 <!--[if !IE]><!-->
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
-    <title>Brickdoor | Add Review</title>
+    <title>Brickdoor | Add Interview Experience</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"/>
     <meta content="" name="description"/>
@@ -83,7 +83,7 @@
         <!--			</ol>-->
         <!-- end breadcrumb -->
         <!-- begin page-header -->
-        <h1 class="page-header">Submit your work experience <span></span></h1>
+        <h1 class="page-header">Submit your Interview experience <span></span></h1>
         <!-- end page-header -->
 
         <!-- begin panel -->
@@ -91,7 +91,8 @@
 
             <!-- begin panel-body -->
             <div class="panel-body">
-                <form action="#" method="POST" th:action="@{/work_review}" th:object="${review}"
+                <form action="#" method="POST" th:action="@{/interview_review}"
+                      th:object="${review}"
                       class="margin-bottom-0">
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Select the Company</label>
@@ -99,13 +100,6 @@
                             <select th:field="*{companyId}" class="default-select2 form-control">
                                 <option value="01">Facebook</option>
                             </select>
-                        </div>
-                    </div>
-                    <div class="form-group row m-b-15">
-                        <label class="col-form-label col-md-3">Job Title</label>
-                        <div class="col-md-9">
-                            <input th:field="*{jobTitle}" type="text" class="form-control m-b-5"
-                                   placeholder="Job Title"/>
                         </div>
                     </div>
                     <div class="form-group row m-b-15">
@@ -118,8 +112,16 @@
                     <div class="form-group row m-b-15">
                         <label class="col-form-label col-md-3">Review Contents</label>
                         <div class="col-md-9">
-                            <textarea rows="3" th:field="*{content}" class="form-control m-b-5"
+                            <textarea th:field="*{content}" type="textarea"
+                                      class="form-control m-b-5"
                                       placeholder="Review Contents"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">Interview Questions</label>
+                        <div class="col-md-9">
+                            <textarea rows="3" th:field="*{questions}" class="form-control m-b-5"
+                                      placeholder="Interview Questions"/></textarea>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-sm btn-primary m-r-5">Add Review</button>
