@@ -7,8 +7,6 @@ import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 
-import java.util.List;
-import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -31,10 +31,9 @@ public class UserController {
   // This the get route, do not edit this.
   @GetMapping("/login")
   public ModelAndView loginRouteGet(HttpSession session) {
-    Object userId = session.getAttribute("user");
-    User user = userId == null ? new User() : userDao.findById((int) userId);
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() != 0) {
-      return new ModelAndView("redirect:/");
+      return new ModelAndView("redirect:/login");
     }
     ModelAndView model = new ModelAndView("login");
     model.addObject("user", user);
@@ -60,19 +59,14 @@ public class UserController {
     return new ModelAndView("redirect:/");
   }
 
-  @PostMapping("/logout")
-  public String logout(HttpSession session) {
-    int userId = (int) session.getAttribute("user");
-    session.invalidate();
-    return "logout user with id: " + userId;
-  }
+
 
   // This the get route, do not edit this.
   @GetMapping("/register")
   public ModelAndView registerRouteGet(HttpSession session) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() != 0) {
-      return new ModelAndView("redirect:/");
+      return new ModelAndView("redirect:/login");
     }
     ModelAndView model = new ModelAndView("register");
     model.addObject("user", user);
@@ -89,12 +83,12 @@ public class UserController {
     if (!userDao.registerUser(student)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return new ModelAndView("redirect:/login");
+    return new ModelAndView("redirect:/loginlogin");
   }
 
   // Post route for login, handle user authentication here
   @PostMapping("/registerCompany")
-  public String registerCompanyPost( Company company) {
+  public String registerCompanyPost(@ModelAttribute("company") Company company) {
     if (company == null || company.getUsername() == null || company.getPassword() == null || company.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
@@ -189,5 +183,30 @@ public class UserController {
     return userDao.getAllCompanies();
   }
 
+  @PostMapping("/search")
+  public ModelAndView searchCompanies(HttpSession session, @ModelAttribute("search") searchObject search){
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
 
+    ModelAndView model = new ModelAndView("search");
+    model.addObject("user", user);
+    model.addObject("query",search.getQuery());
+    return model;
+  }
+
+}
+
+// Used to store the search query from the search bar.
+class searchObject{
+  private String query;
+
+  public String getQuery() {
+    return query;
+  }
+
+  public void setQuery(String query) {
+    this.query = query;
+  }
 }
