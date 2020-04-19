@@ -21,4 +21,7 @@ public interface ReviewRepository extends CrudRepository<Review, Integer> {
 
     @Query(value = "SELECT review FROM Review review JOIN review.student student WHERE student.username=:uName")
     public List<Review> findReviewByUsername(@Param("uName") String username);
+
+    @Query(value = "SELECT review FROM Review review JOIN review.student student WHERE student.id=:sId")
+    public List<Review> findReviewByStudentId(@Param("sId") int studentId);
 }

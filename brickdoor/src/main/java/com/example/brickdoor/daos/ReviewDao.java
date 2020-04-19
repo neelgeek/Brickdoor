@@ -90,4 +90,16 @@ public class ReviewDao {
     public List<Review> findReviewByStudentUsername(String username) {
         return reviewRepo.findReviewByUsername(username);
     }
+
+    public List<Review> findAllReviewsByStudentId(int studentId) {
+        return reviewRepo.findReviewByStudentId(studentId);
+    }
+
+    public List<Review> findInterviewReviewsByStudentId(int studentId) {
+        return interviewReviewRepo.findInterviewReviewsByStudentId(studentId);
+    }
+
+    public List<Review> findWorkReviewsReviewByStudentId(int studentId) {
+        return workReviewRepo.findWorkReviewByStudentId(studentId);
+    }
 }

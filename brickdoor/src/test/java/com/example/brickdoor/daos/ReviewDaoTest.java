@@ -35,14 +35,16 @@ public class ReviewDaoTest {
 
     private Company apple;
     private Company boeing;
+    private Student alice;
+    private Student bob;
 
     @Before
     public void setUp() throws Exception {
         brickDoorDao.truncateDatabase();
 
         // test phone number is null.
-        Student alice = new Student("alice", "alice", "alice", "alice", "alice", "dob", null);
-        Student bob = new Student("bob", "bob", "bob", "bob", "bob", "dob", null);
+        alice = new Student("alice", "alice", "alice", "alice", "alice", "dob", null);
+        bob = new Student("bob", "bob", "bob", "bob", "bob", "dob", null);
 
         apple = new Company("apple", "address");
         boeing = new Company("boeing", "address");
@@ -130,6 +132,35 @@ public class ReviewDaoTest {
         Assert.assertEquals(true, appleInterview.stream().anyMatch(x -> x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
         Assert.assertEquals(1, boeingInterview.size());
         Assert.assertEquals(1, appleInterview.size());
+    }
+
+    @Test
+    public void testFindReviewsByStudentId() {
+        List<Review> reviews = reviewDao.findAllReviewsByStudentId(this.alice.getId());
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("awesome boeing") && x.getReviewerName().equals("alice")));
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("awesome apple") && x.getReviewerName().equals("alice")));
+        Assert.assertEquals(2, reviews.size());
+    }
+
+    @Test
+    public void testFindWorkReviewsByStudentId() {
+        List<Review> aliceReviews = reviewDao.findWorkReviewsReviewByStudentId(this.alice.getId());
+        Assert.assertEquals(true, aliceReviews.stream().anyMatch(x -> x.getTitle().equals("awesome boeing") && x.getReviewerName().equals("alice")));
+        Assert.assertEquals(true, aliceReviews.stream().anyMatch(x -> x.getTitle().equals("awesome apple") && x.getReviewerName().equals("alice")));
+        Assert.assertEquals(2, aliceReviews.size());
+        List<Review> bobReviews = reviewDao.findWorkReviewsReviewByStudentId(this.bob.getId());
+        Assert.assertEquals(0, bobReviews.size());
+    }
+
+    @Test
+    public void testFindInterviewReviewsByStudentId() {
+        List<Review> aliceReviews = reviewDao.findInterviewReviewsByStudentId(this.alice.getId());
+        Assert.assertEquals(0, aliceReviews.size());
+        List<Review> bobReviews = reviewDao.findInterviewReviewsByStudentId(this.bob.getId());
+        Assert.assertEquals(true, bobReviews.stream().anyMatch(x -> x.getTitle().equals("mediocre boeing") && x.getReviewerName().equals("bob")));
+        Assert.assertEquals(true, bobReviews.stream().anyMatch(x -> x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
+
+        Assert.assertEquals(2, bobReviews.size());
     }
 
 
