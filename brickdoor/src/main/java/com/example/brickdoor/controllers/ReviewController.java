@@ -1,6 +1,8 @@
 package com.example.brickdoor.controllers;
 
 import com.example.brickdoor.daos.ReviewDao;
+import com.example.brickdoor.daos.UserDao;
+import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Review;
 import com.example.brickdoor.models.User;
@@ -8,24 +10,27 @@ import com.example.brickdoor.models.WorkReview;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.LinkedList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.servlet.http.HttpSession;
 
-@RestController
+@Controller
 public class ReviewController {
 
   @Autowired
   ReviewDao reviewDao;
+
+  @Autowired
+  UserDao userDao;
 
   @GetMapping("/interview_review")
   public ModelAndView createInterviewReviewGET(HttpSession session) {
@@ -33,9 +38,11 @@ public class ReviewController {
     if (user.getId() == 0) {
       return new ModelAndView("redirect:/");
     }
+    List<Company> companies = userDao.getAllCompanies();
     ModelAndView modelAndView = new ModelAndView("interview_review");
     modelAndView.addObject("user", user);
     modelAndView.addObject("review", new interview_review_form());
+    modelAndView.addObject("companies",companies);
     return modelAndView;
 
 
@@ -62,6 +69,8 @@ public class ReviewController {
       return new ModelAndView("redirect:/");
     }
     ModelAndView modelAndView = new ModelAndView("job_review");
+    List<Company> companies = userDao.getAllCompanies();
+    modelAndView.addObject("companies",companies);
     modelAndView.addObject("user", user);
     modelAndView.addObject("review", new work_review_form());
     return modelAndView;
