@@ -96,9 +96,8 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Select the Company</label>
                         <div class="col-md-9">
-                            <select th:field="*{companyId}" th:each="comp: ${companies}"
-                                    class="default-select2 form-control">
-                                <option th:value="${comp.id}" th:text="${comp.companyName}">
+                            <select th:field="*{companyId}" class="default-select2 form-control">
+                                <option th:each="comp: ${companies}" th:value="${comp.id}" th:text="${comp.companyName}">
                                 </option>
                             </select>
                         </div>
