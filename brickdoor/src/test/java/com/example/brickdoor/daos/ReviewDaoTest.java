@@ -48,10 +48,10 @@ public class ReviewDaoTest {
         Company apple = new Company("apple", "address");
         Company boeing = new Company("boeing", "address");
 
-        userDao.registerStudent(alice);
-        userDao.registerStudent(bob);
-        userDao.registerCompany(apple);
-        userDao.registerCompany(boeing);
+        userDao.registerUser(alice);
+        userDao.registerUser(bob);
+        userDao.registerUser(apple);
+        userDao.registerUser(boeing);
 
         WorkReview aliceApple = new WorkReview(apple, alice, Badge.AWESOME, "awesome apple", "content", "swe");
         InterviewReview bobApple = new InterviewReview(apple, bob, Badge.MEDIOCRE, "mediocre apple", "content", "what is a coding monkey?");

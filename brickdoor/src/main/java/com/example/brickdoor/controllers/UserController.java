@@ -1,6 +1,7 @@
 package com.example.brickdoor.controllers;
 
 import com.example.brickdoor.daos.UserDao;
+import com.example.brickdoor.models.Admin;
 import com.example.brickdoor.models.Company;
 
 import com.example.brickdoor.models.Role;
@@ -32,7 +33,8 @@ public class UserController {
   // This the get route, do not edit this.
   @GetMapping("/login")
   public ModelAndView loginRouteGet(HttpSession session) {
-    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    Object userId = session.getAttribute("user");
+    User user = userId == null ? new User() : userDao.findById((int) userId);
     if (user.getId() != 0) {
       return new ModelAndView("redirect:/");
     }
@@ -44,8 +46,6 @@ public class UserController {
   // Post route for login, handle user authentication here
   @PostMapping("/login")
   public ModelAndView loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
-
-    // System.out.println(user.getUsername() + " " + user.getPassword());
     String username = user.getUsername();
     String password = user.getPassword();
     User authenticatedUser = userDao.authenticate(username, password);
@@ -56,10 +56,23 @@ public class UserController {
     return new ModelAndView("redirect:/");
   }
 
+  @GetMapping("/logout")
+  public ModelAndView logoutRouteGet(HttpSession session) {
+    session.invalidate();
+    return new ModelAndView("redirect:/");
+  }
+
+  @PostMapping("/logout")
+  public String logout(HttpSession session) {
+    int userId = (int) session.getAttribute("user");
+    session.invalidate();
+    return "logout user with id: " + userId;
+  }
+
   // This the get route, do not edit this.
   @GetMapping("/register")
   public ModelAndView registerRouteGet(HttpSession session) {
-    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() != 0) {
       return new ModelAndView("redirect:/");
     }
@@ -70,21 +83,20 @@ public class UserController {
 
   // Post route for login, handle user authentication here
 
-  @PostMapping("/register")
-  public String registerRoutePost(@ModelAttribute("user") User user) {
-    System.out.println(user.getUsername() + " " + user.getPassword());
-    if (user == null || user.getUsername() == null || user.getPassword() == null || user.getEmail() == null) {
+  @PostMapping("/registerStudent")
+  public ModelAndView registerStudentPost(@ModelAttribute("student") Student student) {
+    if (student == null || student.getUsername() == null || student.getPassword() == null || student.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
-    if (!userDao.registerUser(user)) {
+    if (!userDao.registerUser(student)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return "registered student";
+    return new ModelAndView("redirect:/login");
   }
 
   // Post route for login, handle user authentication here
   @PostMapping("/registerCompany")
-  public String registerCompanyPost(@RequestBody Company company) {
+  public String registerCompanyPost( Company company) {
     if (company == null || company.getUsername() == null || company.getPassword() == null || company.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
@@ -94,18 +106,25 @@ public class UserController {
     return "registered company";
   }
 
-  @GetMapping("/logout")
-  public ModelAndView logout(HttpSession session) {
-    session.invalidate();
-    return new ModelAndView("redirect:/");
+  @PostMapping("/registerAdmin")
+  public String registerAdminPost(@RequestBody Admin admin) {
+    if (admin == null || admin.getUsername() == null || admin.getPassword() == null || admin.getEmail() == null) {
+      throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
+    }
+    if (!userDao.registerUser(admin)) {
+      throw new ResponseStatusException(HttpStatus.CONFLICT);
+    }
+    return "registered admin";
   }
 
   @PutMapping("/updateStudent")
   public String updateStudent(HttpSession session, @RequestBody Student student) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
+    Role userRole = userDao.getRole(userId);
+    boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
 
-    if (userId != student.getId() || userDao.getRole(userId) != Role.STUDENT) {
+    if (userId != student.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateStudent(userId, student);
@@ -120,8 +139,10 @@ public class UserController {
   public String updateCompany(HttpSession session, @RequestBody Company company) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
+    Role userRole = userDao.getRole(userId);
+    boolean permissionRoles = userRole == Role.COMPANY || userRole == Role.ADMIN;
 
-    if (userId != company.getId() || userDao.getRole(userId) != Role.COMPANY) {
+    if (userId != company.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateCompany(userId, company);
@@ -132,8 +153,27 @@ public class UserController {
     return "updated company";
   }
 
+
+  @PutMapping("/updateAdmin")
+  public String updateAdmin(HttpSession session, @RequestBody Admin admin) {
+    User user = (User) session.getAttribute("user");
+    int userId = user.getId();
+    Role userRole = userDao.getRole(userId);
+    boolean permissionRoles = userRole == Role.ADMIN;
+
+    if (userId != admin.getId() || !permissionRoles) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    User updateUser = userDao.updateAdmin(userId, admin);
+
+    if (updateUser == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return "updated admin";
+  }
+
   @DeleteMapping("/deleteUser")
-  public String deleteUser(HttpSession session, User toDelete) {
+  public String deleteUser(HttpSession session, @RequestBody User toDelete) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
 
