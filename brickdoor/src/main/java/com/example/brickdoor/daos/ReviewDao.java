@@ -70,11 +70,36 @@ public class ReviewDao {
         return null;
     }
 
-    public List<Review> getReviewByCompanyName(String companyName) {
+    public List<Review> findReviewByCompanyName(String companyName) {
         return reviewRepo.findReviewByCompanyName(companyName);
     }
 
-    public List<Review> getReviewByStudentUsername(String username) {
+    public List<Review> findReviewByCompanyId(int companyId) {
+        return reviewRepo.findReviewByCompanyId(companyId);
+    }
+
+    public List<InterviewReview> findInterviewReviewsByCompanyId(int companyId) {
+        return interviewReviewRepo.findInterviewReviewsByCompanyId(companyId);
+    }
+
+    public List<WorkReview> findWorkReviewsByCompanyId(int companyId) {
+        return workReviewRepo.findWorkReviewsByCompanyId(companyId);
+    }
+
+
+    public List<Review> findReviewByStudentUsername(String username) {
         return reviewRepo.findReviewByUsername(username);
+    }
+
+    public List<Review> findAllReviewsByStudentId(int studentId) {
+        return reviewRepo.findReviewByStudentId(studentId);
+    }
+
+    public List<Review> findInterviewReviewsByStudentId(int studentId) {
+        return interviewReviewRepo.findInterviewReviewsByStudentId(studentId);
+    }
+
+    public List<Review> findWorkReviewsReviewByStudentId(int studentId) {
+        return workReviewRepo.findWorkReviewByStudentId(studentId);
     }
 }

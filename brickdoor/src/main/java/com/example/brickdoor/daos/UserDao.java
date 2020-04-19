@@ -34,13 +34,22 @@ public class UserDao {
   public User findById(int userId) {
     return userRepository.findById(userId).orElse(null);
   }
+
+  public Student findStudentById(int studentId) {
+    return studentRepository.findStudentById(studentId);
+  }
+
+  public Company findCompanyById(int companyId) {
+    return companyRepository.findCompanyById(companyId);
+  }
+
   public User authenticate(String username, String password) {
     return userRepository.findUserByUserCredentials(username, password);
   }
 
   public boolean registerUser(User user) {
     if (userRepository.findUserByUsername(user.getUsername()) == null
-        && userRepository.findUserByEmail(user.getEmail()) == null) {
+            && userRepository.findUserByEmail(user.getEmail()) == null) {
       userRepository.save(user);
       return true;
     }
@@ -107,3 +116,4 @@ public class UserDao {
     return companyRepository.getAllCompanies(Role.COMPANY);
   }
 }
+
