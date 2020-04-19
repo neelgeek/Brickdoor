@@ -2,9 +2,11 @@ package com.example.brickdoor.controllers;
 
 import com.example.brickdoor.daos.ReviewDao;
 import com.example.brickdoor.daos.UserDao;
+import com.example.brickdoor.models.Badge;
 import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Review;
+import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 import com.example.brickdoor.models.WorkReview;
 
@@ -14,7 +16,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -57,7 +58,16 @@ public class ReviewController {
     System.out.println(review.getQuestions());
 
     // Please use the above info to create a new Review object and save it using the DAO.
-    // reviewDao.createReview(review);
+    Company company = userDao.findCompanyById(review.getCompanyId());
+    User user = (User) session.getAttribute("user");
+    Student student = userDao.findStudentById(user.getId());
+    if (company == null || student == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    InterviewReview fromReviewForm = new InterviewReview(company, student,
+            Badge.NOTAVAILABLE, review.getTitle(),
+            review.getContent(), review.getQuestions());
+    reviewDao.createReview(fromReviewForm);
     return new ModelAndView("redirect:/interview_review");
 
   }
@@ -78,12 +88,23 @@ public class ReviewController {
 
   @PostMapping(path = "/work_review")
   public ModelAndView WorkReviewPOST(HttpSession session, @ModelAttribute("review") work_review_form review) {
+
     System.out.println(review.getCompanyId());
     System.out.println(review.getJobTitle());
     System.out.println(review.getTitle());
     System.out.println(review.getContent());
     // Please use the above info to create a new Review object and save it using the DAO.
-//    reviewDao.createReview(review);
+    Company company = userDao.findCompanyById(review.getCompanyId());
+    User user = (User) session.getAttribute("user");
+    Student student = userDao.findStudentById(user.getId());
+    if (company == null || student == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    // TODO: review form include badge, then change following code.
+    WorkReview fromReviewForm = new WorkReview(company, student,
+            Badge.NOTAVAILABLE, review.getTitle(),
+            review.getContent(), review.getJobTitle());
+    reviewDao.createReview(fromReviewForm);
     return new ModelAndView("redirect:/work_review");
 
   }
@@ -174,7 +195,7 @@ class interview_review_form {
 
 
   private String title = ""; // Review title
-  private String questions = ""; // Job title
+  private String questions = ""; // Interview questions
   private String content = ""; // Review Content
   private int companyId; // Company Id
 
