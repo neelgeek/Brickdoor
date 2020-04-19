@@ -9,7 +9,6 @@ import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.WorkReview;
 
 import org.junit.After;
-import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import static org.junit.Assert.*;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -37,16 +32,19 @@ public class ReviewDaoTest {
     @Autowired
     private BrickDoorDao brickDoorDao;
 
+    private Company apple;
+    private Company boeing;
+
     @Before
     public void setUp() throws Exception {
         brickDoorDao.truncateDatabase();
 
         // test phone number is null.
-        Student alice = new Student("alice", "alice", "alice", "alice","alice","dob", null);
-        Student bob = new Student("bob", "bob","bob","bob","bob","dob", null);
+        Student alice = new Student("alice", "alice", "alice", "alice", "alice", "dob", null);
+        Student bob = new Student("bob", "bob", "bob", "bob", "bob", "dob", null);
 
-        Company apple = new Company("apple", "address");
-        Company boeing = new Company("boeing", "address");
+        apple = new Company("apple", "address");
+        boeing = new Company("boeing", "address");
 
         userDao.registerUser(alice);
         userDao.registerUser(bob);
@@ -91,18 +89,25 @@ public class ReviewDaoTest {
 
     @Test
     public void testFindReviewByCompanyName() {
-        List<Review> reviews = reviewDao.getReviewByCompanyName("apple");
-        Assert.assertEquals(true, reviews.stream().anyMatch(x->x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
-        Assert.assertEquals(true, reviews.stream().anyMatch(x->x.getTitle().equals("awesome apple") && x.getReviewerName().equals("alice")));
+        List<Review> reviews = reviewDao.findReviewByCompanyName("apple");
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("awesome apple") && x.getReviewerName().equals("alice")));
         Assert.assertEquals(2, reviews.size());
     }
 
     @Test
     public void testFindReviewByStudentName() {
-        List<Review> reviews = reviewDao.getReviewByStudentUsername("bob");
-        Assert.assertEquals(true, reviews.stream().anyMatch(x->x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
-        Assert.assertEquals(true, reviews.stream().anyMatch(x->x.getTitle().equals("mediocre boeing") && x.getReviewerName().equals("bob")));
+        List<Review> reviews = reviewDao.findReviewByStudentUsername("bob");
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("mediocre boeing") && x.getReviewerName().equals("bob")));
         Assert.assertEquals(2, reviews.size());
     }
+
+    @Test
+    public void testFindReviewByCompanyId() {
+        List<Review> reviews = reviewDao.findReviewByCompanyId(boeing.getId());
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("mediocre boeing") && x.getReviewerName().equals("bob")));
+        Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("awesome boeing") && x.getReviewerName().equals("alice")));
+        Assert.assertEquals(2, reviews.size());    }
 
 }

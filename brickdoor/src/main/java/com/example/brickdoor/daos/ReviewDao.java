@@ -70,11 +70,16 @@ public class ReviewDao {
         return null;
     }
 
-    public List<Review> getReviewByCompanyName(String companyName) {
+    public List<Review> findReviewByCompanyName(String companyName) {
         return reviewRepo.findReviewByCompanyName(companyName);
     }
 
-    public List<Review> getReviewByStudentUsername(String username) {
+    public List<Review> findReviewByCompanyId(int companyId) {
+        return reviewRepo.findReviewByCompanyId(companyId);
+    }
+
+
+    public List<Review> findReviewByStudentUsername(String username) {
         return reviewRepo.findReviewByUsername(username);
     }
 }
