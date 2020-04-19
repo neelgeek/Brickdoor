@@ -80,7 +80,7 @@ public class ReviewController {
   }
 
   @PostMapping("/updateInterviewReview")
-  public String updateInterviewReview(HttpSession session, @RequestBody InterviewReview review) {
+  public String updateInterviewReview(HttpSession session, @ModelAttribute("review") InterviewReview review) {
     InterviewReview updated = reviewDao.updateInterviewReview(review);
     if (updated != null) {
       return "review updated";
@@ -91,7 +91,7 @@ public class ReviewController {
   }
 
   @PostMapping("/updateWorkReview")
-  public String updateWorkReview(HttpSession session, @RequestBody WorkReview review) {
+  public String updateWorkReview(HttpSession session, @ModelAttribute("review") WorkReview review) {
     WorkReview updated = reviewDao.updateWorkReview(review);
     if (updated != null) {
       return "review updated";

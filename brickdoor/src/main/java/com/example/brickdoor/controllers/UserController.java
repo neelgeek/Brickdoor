@@ -107,7 +107,7 @@ public class UserController {
   }
 
   @PostMapping("/registerAdmin")
-  public String registerAdminPost(@RequestBody Admin admin) {
+  public String registerAdminPost(@ModelAttribute("admin") Admin admin) {
     if (admin == null || admin.getUsername() == null || admin.getPassword() == null || admin.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
@@ -118,7 +118,7 @@ public class UserController {
   }
 
   @PutMapping("/updateStudent")
-  public String updateStudent(HttpSession session, @RequestBody Student student) {
+  public String updateStudent(HttpSession session, @ModelAttribute("student") Student student) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
@@ -136,7 +136,7 @@ public class UserController {
   }
 
   @PutMapping("/updateCompany")
-  public String updateCompany(HttpSession session, @RequestBody Company company) {
+  public String updateCompany(HttpSession session, @ModelAttribute("company") Company company) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
@@ -155,7 +155,7 @@ public class UserController {
 
 
   @PutMapping("/updateAdmin")
-  public String updateAdmin(HttpSession session, @RequestBody Admin admin) {
+  public String updateAdmin(HttpSession session, @ModelAttribute("admin") Admin admin) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
@@ -173,7 +173,7 @@ public class UserController {
   }
 
   @DeleteMapping("/deleteUser")
-  public String deleteUser(HttpSession session, @RequestBody User toDelete) {
+  public String deleteUser(HttpSession session, @ModelAttribute("user") User toDelete) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
 
