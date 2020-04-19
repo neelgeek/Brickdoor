@@ -45,7 +45,7 @@ public class UserController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/login")
-  public ModelAndView loginRoutePost(HttpSession session, @RequestBody User user) {
+  public ModelAndView loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
     String username = user.getUsername();
     String password = user.getPassword();
     User authenticatedUser = userDao.authenticate(username, password);
@@ -71,27 +71,32 @@ public class UserController {
 
   // This the get route, do not edit this.
   @GetMapping("/register")
-  public String registerRouteGet(Model model) {
-    User user = new User();
-    model.addAttribute("user", user);
-    return "register";
+  public ModelAndView registerRouteGet(HttpSession session) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() != 0) {
+      return new ModelAndView("redirect:/");
+    }
+    ModelAndView model = new ModelAndView("register");
+    model.addObject("user", user);
+    return model;
   }
 
   // Post route for login, handle user authentication here
+
   @PostMapping("/registerStudent")
-  public String registerStudentPost(@RequestBody Student student) {
+  public ModelAndView registerStudentPost(@ModelAttribute("student") Student student) {
     if (student == null || student.getUsername() == null || student.getPassword() == null || student.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
     if (!userDao.registerUser(student)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return "registered student";
+    return new ModelAndView("redirect:/login");
   }
 
   // Post route for login, handle user authentication here
   @PostMapping("/registerCompany")
-  public String registerCompanyPost(@RequestBody Company company) {
+  public String registerCompanyPost( Company company) {
     if (company == null || company.getUsername() == null || company.getPassword() == null || company.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
