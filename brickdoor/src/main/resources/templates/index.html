@@ -74,7 +74,8 @@
                 <li th:if="${user.id==0}"><a th:href="@{~/login}" href="/login">Sign In</a></li>
                 <li th:if="${user.id!=0}" class="dropdown navbar-user">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        <img th:src="@{/img/user/user-3.jpg}" src="../static/img/user/user-3.jpg" alt=""/>
+                        <img th:src="@{/img/user/user-3.jpg}" src="../static/img/user/user-3.jpg"
+                             alt=""/>
                         <span th:text="${user.firstName+' '+user.lastName}"
                               class="d-none d-md-inline"></span> <b class="caret"></b>
                     </a>
@@ -98,7 +99,9 @@
     <!-- begin bg-cover -->
     <div class="bg-cover" data-paroller="true" data-paroller-factor="0.5"
          data-paroller-factor-xs="0.01"
-         style="background-image: url(../static/img/cover/cover-1.jpg)"></div>
+         style="background-image: url(../static/img/cover/cover-1.jpg)"
+         th:style="'background:url('+ @{/img/cover/cover-1.jpg} +');'"
+    ></div>
     <!-- end bg-cover -->
     <!-- begin container -->
     <div class="container">
@@ -129,6 +132,29 @@
 <div class="content">
     <!-- begin container -->
     <div class="container">
+
+        <!-- begin card-forum -->
+        <div class="card mb-3">
+            <!-- begin forum-list -->
+            <div th:if="${user.id!=0}" class="panel-body">
+                <center>
+                    <a th:href="@{/job_review}" class="btn btn-primary btn-lg m-r-5 m-b-5">Add a Job
+                        Review</a>
+                    <a th:href="@{/interview_review}" class="btn btn-primary btn-lg m-r-5 m-b-5">Add
+                        a Interview Experience</a>
+                </center>
+            </div>
+            <div th:if="${user.id==0}" class="note note-secondary m-b-15">
+                <h4><b>Signup now!</b></h4>
+                <p>
+                    Create your free account and start sharing your Job and Interview experiences
+                    right away!
+                </p>
+            </div>
+            <!-- end forum-list -->
+        </div>
+        <!-- end card-forum -->
+
         <!-- begin card-forum -->
         <div class="card card-forum mb-3">
             <!-- begin card-header -->
@@ -240,6 +266,7 @@
 		$(document).ready(function() {
 			App.init();
 		});
+
 
 
 
