@@ -78,6 +78,14 @@ public class ReviewDao {
         return reviewRepo.findReviewByCompanyId(companyId);
     }
 
+    public List<InterviewReview> findInterviewReviewsByCompanyId(int companyId) {
+        return interviewReviewRepo.findInterviewReviewsByCompanyId(companyId);
+    }
+
+    public List<WorkReview> findWorkReviewsByCompanyId(int companyId) {
+        return workReviewRepo.findWorkReviewsByCompanyId(companyId);
+    }
+
 
     public List<Review> findReviewByStudentUsername(String username) {
         return reviewRepo.findReviewByUsername(username);

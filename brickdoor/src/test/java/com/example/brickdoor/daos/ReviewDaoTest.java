@@ -8,6 +8,7 @@ import com.example.brickdoor.models.Review;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.WorkReview;
 
+import org.hibernate.jdbc.Work;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -108,6 +109,28 @@ public class ReviewDaoTest {
         List<Review> reviews = reviewDao.findReviewByCompanyId(boeing.getId());
         Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("mediocre boeing") && x.getReviewerName().equals("bob")));
         Assert.assertEquals(true, reviews.stream().anyMatch(x -> x.getTitle().equals("awesome boeing") && x.getReviewerName().equals("alice")));
-        Assert.assertEquals(2, reviews.size());    }
+        Assert.assertEquals(2, reviews.size());
+    }
+
+    @Test
+    public void testFindWorkReviewByCompanyId() {
+        List<WorkReview> boeingWork = reviewDao.findWorkReviewsByCompanyId(boeing.getId());
+        Assert.assertEquals(true, boeingWork.stream().anyMatch(x -> x.getTitle().equals("awesome boeing") && x.getReviewerName().equals("alice")));
+        List<WorkReview> appleWork = reviewDao.findWorkReviewsByCompanyId(apple.getId());
+        Assert.assertEquals(true, appleWork.stream().anyMatch(x -> x.getTitle().equals("awesome apple") && x.getReviewerName().equals("alice")));
+        Assert.assertEquals(1, boeingWork.size());
+        Assert.assertEquals(1, appleWork.size());
+    }
+
+    @Test
+    public void testFindInterviewReviewByCompanyId() {
+        List<InterviewReview> boeingInterview = reviewDao.findInterviewReviewsByCompanyId(this.boeing.getId());
+        Assert.assertEquals(true, boeingInterview.stream().anyMatch(x -> x.getTitle().equals("mediocre boeing") && x.getReviewerName().equals("bob")));
+        List<InterviewReview> appleInterview = reviewDao.findInterviewReviewsByCompanyId(this.apple.getId());
+        Assert.assertEquals(true, appleInterview.stream().anyMatch(x -> x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
+        Assert.assertEquals(1, boeingInterview.size());
+        Assert.assertEquals(1, appleInterview.size());
+    }
+
 
 }

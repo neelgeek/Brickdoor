@@ -1,7 +1,6 @@
 package com.example.brickdoor.repositories;
 
 import com.example.brickdoor.models.Review;
-import com.example.brickdoor.models.User;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;

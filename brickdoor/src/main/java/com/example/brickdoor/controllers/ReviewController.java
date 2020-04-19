@@ -44,6 +44,7 @@ public class ReviewController {
     modelAndView.addObject("user", user);
     modelAndView.addObject("review", new interview_review_form());
     modelAndView.addObject("companies",companies);
+    System.out.println("company" + companies.get(0).getCompanyName());
     return modelAndView;
 
 

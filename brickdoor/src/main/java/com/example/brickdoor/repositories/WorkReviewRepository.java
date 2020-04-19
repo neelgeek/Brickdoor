@@ -4,6 +4,7 @@ import com.example.brickdoor.models.WorkReview;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -11,4 +12,8 @@ public interface WorkReviewRepository extends CrudRepository<WorkReview, Integer
 
     @Query(value = "SELECT review FROM WorkReview review")
     public List<WorkReview> findAllWorkReview();
+
+
+    @Query(value = "SELECT review FROM WorkReview review JOIN review.company company WHERE company.id=:cId")
+    public List<WorkReview> findWorkReviewsByCompanyId(@Param("cId") int cId);
 }
