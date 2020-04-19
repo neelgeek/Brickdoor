@@ -8,6 +8,7 @@ import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -184,6 +185,11 @@ public class UserController {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return "deleted user with username: " + toDelete.getUsername();
+  }
+
+  @GetMapping("/getAllCompanies")
+  public Set<Company> getAllCompanies() {
+    return userDao.getAllCompanies();
   }
 
 

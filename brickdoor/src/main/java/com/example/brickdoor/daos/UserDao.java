@@ -11,6 +11,7 @@ import com.example.brickdoor.repositories.StudentRepository;
 import com.example.brickdoor.repositories.UserRepository;
 
 import java.util.Optional;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -99,5 +100,9 @@ public class UserDao {
   public Role getRole(int userId) {
     Optional<User> optionalUser = userRepository.findById(userId);
     return optionalUser.map(User::getRole).orElse(null);
+  }
+
+  public Set<Company> getAllCompanies() {
+    return companyRepository.getAllCompanies(Role.COMPANY);
   }
 }
