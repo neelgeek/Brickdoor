@@ -2,6 +2,8 @@ package com.example.brickdoor.repositories;
 
 import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.Role;
+
+import java.util.List;
 import java.util.Set;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -14,5 +16,5 @@ public interface CompanyRepository extends CrudRepository<Company,Integer> {
   Company findCompanyById(@Param("companyId") int companyId);
 
   @Query("SELECT company FROM User company WHERE company.role=:role")
-  Set<Company> getAllCompanies(@Param("role") Role role);
+  List<Company> getAllCompanies(@Param("role") Role role);
 }

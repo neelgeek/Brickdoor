@@ -10,6 +10,7 @@ import com.example.brickdoor.repositories.CompanyRepository;
 import com.example.brickdoor.repositories.StudentRepository;
 import com.example.brickdoor.repositories.UserRepository;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,7 +103,7 @@ public class UserDao {
     return optionalUser.map(User::getRole).orElse(null);
   }
 
-  public Set<Company> getAllCompanies() {
+  public List<Company> getAllCompanies() {
     return companyRepository.getAllCompanies(Role.COMPANY);
   }
 }

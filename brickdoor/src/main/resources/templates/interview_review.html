@@ -97,8 +97,10 @@
                     <div class="form-group row">
                         <label class="col-md-3 col-form-label">Select the Company</label>
                         <div class="col-md-9">
-                            <select th:field="*{companyId}" class="default-select2 form-control">
-                                <option value="01">Facebook</option>
+                            <select th:field="*{companyId}" th:each="comp: ${companies}"
+                                    class="default-select2 form-control">
+                                <option th:value="${comp.id}" th:text="${comp.companyName}">
+                                </option>
                             </select>
                         </div>
                     </div>
@@ -168,6 +170,7 @@
 			$(".default-select2").select2();
 			$(".multiple-select2").select2({ placeholder: "Select a state" });
 		});
+
 
 
 

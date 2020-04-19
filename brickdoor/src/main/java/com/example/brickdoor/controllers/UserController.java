@@ -7,6 +7,7 @@ import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 
+import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -184,7 +185,7 @@ public class UserController {
   }
 
   @GetMapping("/getAllCompanies")
-  public Set<Company> getAllCompanies() {
+  public List<Company> getAllCompanies() {
     return userDao.getAllCompanies();
   }
 
