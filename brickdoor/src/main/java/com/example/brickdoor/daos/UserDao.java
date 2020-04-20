@@ -112,8 +112,28 @@ public class UserDao {
     return optionalUser.map(User::getRole).orElse(null);
   }
 
+  public List<Student> getAllStudents() {
+    return studentRepository.getAllStudents(Role.STUDENT);
+  }
+
   public List<Company> getAllCompanies() {
     return companyRepository.getAllCompanies(Role.COMPANY);
+  }
+
+  public List<Admin> getAllAdmin() {
+    return adminRepository.getAllAdmin(Role.ADMIN);
+  }
+
+  public Set<Student> searchStudents(String query) {
+    return studentRepository.searchStudents(query, Role.STUDENT);
+  }
+
+  public Set<Company> searchCompanies(String query) {
+    return companyRepository.searchCompanies(query, Role.COMPANY);
+  }
+
+  public Set<Admin> searchAdmin(String query) {
+    return adminRepository.searchAdmin(query, Role.ADMIN);
   }
 }
 

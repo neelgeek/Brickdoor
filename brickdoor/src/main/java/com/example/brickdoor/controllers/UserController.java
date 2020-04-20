@@ -11,6 +11,8 @@ import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 import com.example.brickdoor.models.WorkReview;
 
+import java.util.List;
+import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -22,8 +24,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
-
-import java.util.List;
 
 import javax.servlet.http.HttpSession;
 
@@ -67,8 +67,6 @@ public class UserController {
     return new ModelAndView("redirect:/");
   }
 
-
-
   // This the get route, do not edit this.
   @GetMapping("/register")
   public ModelAndView registerRouteGet(HttpSession session) {
@@ -82,7 +80,6 @@ public class UserController {
   }
 
   // Post route for login, handle user authentication here
-
   @PostMapping("/registerStudent")
   public ModelAndView registerStudentPost(@ModelAttribute("student") Student student) {
     if (student == null || student.getUsername() == null || student.getPassword() == null || student.getEmail() == null) {
@@ -123,12 +120,10 @@ public class UserController {
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
     boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
-
     if (userId != student.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateStudent(userId, student);
-
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -141,18 +136,15 @@ public class UserController {
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
     boolean permissionRoles = userRole == Role.COMPANY || userRole == Role.ADMIN;
-
     if (userId != company.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     User updateUser = userDao.updateCompany(userId, company);
-
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
     return "updated company";
   }
-
 
   @PutMapping("/updateAdmin")
   public String updateAdmin(HttpSession session, @ModelAttribute("admin") Admin admin) {
@@ -160,7 +152,6 @@ public class UserController {
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
     boolean permissionRoles = userRole == Role.ADMIN;
-
     if (userId != admin.getId() || !permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
@@ -176,7 +167,6 @@ public class UserController {
   public String deleteUser(HttpSession session, @ModelAttribute("user") User toDelete) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
-
     if (userDao.getRole(userId) != Role.ADMIN) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
@@ -191,16 +181,58 @@ public class UserController {
     return userDao.getAllCompanies();
   }
 
-  @PostMapping("/search")
-  public ModelAndView searchCompanies(HttpSession session, @ModelAttribute("search") searchObject search){
+  @GetMapping("/getAllStudents")
+  public List<Student> getAllStudents() {
+    return userDao.getAllStudents();
+  }
+
+  @GetMapping("/getAllAdmin")
+  public List<Admin> getAllAdmin() {
+    return userDao.getAllAdmin();
+  }
+
+  @PostMapping("/searchCompanies")
+  public ModelAndView searchCompanies(HttpSession session, @ModelAttribute("search") SearchObject search){
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() == 0) {
       return new ModelAndView("redirect:/login");
     }
+    Set<Company> matchedCompanies = userDao.searchCompanies(search.getQuery());
 
     ModelAndView model = new ModelAndView("search");
     model.addObject("user", user);
-    model.addObject("query",search.getQuery());
+    model.addObject("query", search.getQuery());
+    model.addObject("queryResult", matchedCompanies);
+    return model;
+  }
+
+  @PostMapping("/searchStudents")
+  public ModelAndView searchStudents(HttpSession session, @ModelAttribute("search") SearchObject search){
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
+    Set<Student> matchedStudents = userDao.searchStudents(search.getQuery());
+
+    ModelAndView model = new ModelAndView("search");
+    model.addObject("user", user);
+    model.addObject("query", search.getQuery());
+    model.addObject("queryResult", matchedStudents);
+    return model;
+  }
+
+  @PostMapping("/searchAdmin")
+  public ModelAndView searchAdmin(HttpSession session, @ModelAttribute("search") SearchObject search){
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
+    Set<Admin> matchedAdmin = userDao.searchAdmin(search.getQuery());
+
+    ModelAndView model = new ModelAndView("search");
+    model.addObject("user", user);
+    model.addObject("query", search.getQuery());
+    model.addObject("queryResult", matchedAdmin);
     return model;
   }
 
@@ -228,7 +260,7 @@ public class UserController {
 }
 
 // Used to store the search query from the search bar.
-class searchObject{
+class SearchObject{
   private String query;
 
   public String getQuery() {
