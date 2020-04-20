@@ -269,6 +269,25 @@ public class UserController {
     model.addObject("works", workReviews);
     return model;
   }
+
+
+  @GetMapping("/company/{companyId}")
+  public ModelAndView companyProfileGET(HttpSession session, @PathVariable("companyId") Integer companyId) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    Company company = userDao.findCompanyById(companyId);
+    if (company == null) {
+      return new ModelAndView("redirect:/");
+    }
+    List<InterviewReview> interviews = reviewDao.findInterviewReviewsByCompanyId(companyId);
+    List<WorkReview> workReviews = reviewDao.findWorkReviewsByCompanyId(companyId);
+
+    ModelAndView model = new ModelAndView("company");
+    model.addObject("company",company.getCompanyName());
+    model.addObject("user", user);
+    model.addObject("interviews", interviews);
+    model.addObject("works", workReviews);
+    return model;
+  }
 }
 
 // Used to store the search query from the search bar.

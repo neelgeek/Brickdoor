@@ -143,7 +143,7 @@
                     <!-- begin info-container -->
                     <div class="info-container">
                         <div class="info">
-                            <h4 class="title" ><a href="#" th:text="${res.companyName}"></a></h4>
+                            <h4 class="title" ><a th:href="@{/company/}+${res.id}" th:text="${res.companyName}"></a></h4>
                             <p th:text="${res.companyAddress}" class="desc">
 
                             </p>
