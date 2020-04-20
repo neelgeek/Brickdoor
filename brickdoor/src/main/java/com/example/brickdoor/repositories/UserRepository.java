@@ -18,4 +18,18 @@ public interface UserRepository extends CrudRepository<User,Integer> {
 
   @Query("SELECT user FROM User user WHERE user.email=:email")
   User findUserByEmail(@Param("email") String email);
+//
+//  @Query("SELECT followers FROM User followers WHERE followers.id IN "
+//      + "(SELECT f.follower_id FROM follows f "
+//      + "JOIN User u on "
+//      + "f.following_id = u.id "
+//      + "WHERE u.id=:userId )")
+//  List<User> getFollowers(@Param("userId") int userId);
+
+//  @Query("SELECT following FROM User following WHERE following.id IN "
+//      + "(SELECT f.following_id FROM follows f "
+//      + "JOIN User u on "
+//      + "f.follower_id = u.id "
+//      + "WHERE u.id=:userId)")
+//  List<User> getFollowing(@Param("userId") int userId);
 }

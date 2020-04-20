@@ -10,10 +10,13 @@ import com.example.brickdoor.repositories.CompanyRepository;
 import com.example.brickdoor.repositories.StudentRepository;
 import com.example.brickdoor.repositories.UserRepository;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 
+import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -136,5 +139,62 @@ public class UserDao {
   public Set<Admin> searchAdmin(String query) {
     return adminRepository.searchAdmin(query, Role.ADMIN);
   }
+
+  public void follow(User user, User toFollow) {
+    Set<User> f = user.getFollowing();
+    f.add(toFollow);
+   // user.addFollowing(toFollow);
+    userRepository.save(user);
+  }
+
+
+  public void unfollow(User user, User toUnfollow) {
+    Set<User> following = user.getFollowing();
+    Set<User> filteredFollowing = following.stream().filter(ff -> ff.getId() != toUnfollow.getId()).collect(Collectors.toSet());
+    user.setFollowing(filteredFollowing);
+  //  f.remove(toUnfollow);
+//    user.removeFollowing(toUnfollow);
+    userRepository.save(user);
+  }
+
+  public Set<User> getFollowing(int userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    return optionalUser.map(User::getFollowing).orElse(new HashSet<>());  }
+
+  public Set<User> getFollowers(int userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    return optionalUser.map(User::getFollowers).orElse(new HashSet<>());
+  }
+
+  public Set<Student> getFollowingStudents(int userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    if (optionalUser.isPresent()) {
+      Set<User> followingUsers = optionalUser.get().getFollowing();
+
+      return followingUsers.stream()
+          .filter(f -> f.getRole() == Role.STUDENT)
+          .collect(Collectors.toSet())
+          .stream()
+          .map(fs -> (Student) fs)
+          .collect(Collectors.toSet());
+      }
+      return new HashSet<>();
+  }
+
+  public Set<Company> getFollowingCompanies(int userId) {
+    Optional<User> optionalUser = userRepository.findById(userId);
+    if (optionalUser.isPresent()) {
+      Set<User> followingUsers = optionalUser.get().getFollowing();
+
+      return followingUsers.stream()
+          .filter(f -> f.getRole() == Role.COMPANY)
+          .collect(Collectors.toSet())
+          .stream()
+          .map(fs -> (Company) fs)
+          .collect(Collectors.toSet());
+    }
+    return new HashSet<>();
+  }
+
 }
 

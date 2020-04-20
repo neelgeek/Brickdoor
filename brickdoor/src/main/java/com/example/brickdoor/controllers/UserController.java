@@ -5,7 +5,6 @@ import com.example.brickdoor.daos.UserDao;
 import com.example.brickdoor.models.Admin;
 import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.InterviewReview;
-import com.example.brickdoor.models.Review;
 import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
@@ -17,7 +16,6 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -286,6 +284,74 @@ public class UserController {
     model.addObject("user", user);
     model.addObject("interviews", interviews);
     model.addObject("works", workReviews);
+    return model;
+  }
+
+  @PutMapping("/followUser/{userId}")
+  public ModelAndView followUser(HttpSession session, @PathVariable("userId") Integer userId) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    User toFollow = userDao.findById(userId);
+    if (toFollow == null) {
+      return new ModelAndView("redirect:/");
+    }
+    userDao.follow(user, toFollow);
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("user", user);
+    model.addObject("toFollow", toFollow);
+    return model;
+  }
+
+  @PutMapping("/unfollowUser/{userId}")
+  public ModelAndView unfollowUser(HttpSession session, @PathVariable("userId") Integer userId) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    User toUnfollow = userDao.findById(userId);
+    if (toUnfollow == null) {
+      return new ModelAndView("redirect:/");
+    }
+    userDao.unfollow(user, toUnfollow);
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("user", user);
+    model.addObject("toUnfollow", toUnfollow);
+    return model;
+  }
+
+  @GetMapping("/getFollowers")
+  public ModelAndView getFollowers(HttpSession session) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    Set<User> followers = userDao.getFollowers(user.getId());
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("user", user);
+    model.addObject("followers", followers);
+    return model;
+  }
+
+  @GetMapping("/getFollowing")
+  public ModelAndView getFollowing(HttpSession session) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    Set<User> following = userDao.getFollowing(user.getId());
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("user", user);
+    model.addObject("following", following);
+    return model;
+  }
+
+  @GetMapping("/getFollowingStudents")
+  public ModelAndView getFollowingStudents(HttpSession session) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    Set<Student> followingStudents = userDao.getFollowingStudents(user.getId());
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("user", user);
+    model.addObject("followingStudents", followingStudents);
+    return model;
+  }
+
+  @GetMapping("/getFollowingCompanies")
+  public ModelAndView getFollowingCompanies(HttpSession session) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    Set<Company> followingCompanies = userDao.getFollowingCompanies(user.getId());
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("user", user);
+    model.addObject("followingCompanies", followingCompanies);
     return model;
   }
 }
