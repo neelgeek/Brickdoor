@@ -11,8 +11,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface StudentRepository extends CrudRepository<Student,Integer> {
-  @Query("SELECT student FROM User student WHERE student.id=:studentId")
-  Student findStudentById(@Param("studentId") int studentId);
+  @Query("SELECT student FROM User student WHERE student.id=:studentId AND student.role=:role")
+  Student findStudentById(@Param("studentId") int studentId, @Param("role") Role role);
 
   @Query("SELECT student FROM User student WHERE student.role=:role")
   List<Student> getAllStudents(@Param("role") Role role);

@@ -80,7 +80,7 @@
                               class="d-none d-md-inline"></span> <b class="caret"></b>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right">
-                        <a  th:href="@{~/profile}" class="dropdown-item">My Profile</a>
+                        <a th:href="@{~/profile}" class="dropdown-item">My Profile</a>
                         <div class="dropdown-divider"></div>
                         <a th:href="@{~/logout}" href="/logout" class="dropdown-item">Log Out</a>
                     </div>
@@ -105,7 +105,7 @@
     <!-- end bg-cover -->
     <!-- begin container -->
     <div class="container">
-        <h1>1,293 Job reviews</h1>
+        <h1><span th:text="${reviewCount}"></span> Job and Interview reviews</h1>
         <form action="#" method="POST" th:action="@{/search}" th:object="${search}"
               class="margin-bottom-0">
             <div class="input-group m-b-20">
@@ -270,6 +270,7 @@
 		$(document).ready(function() {
 			App.init();
 		});
+
 
 
 

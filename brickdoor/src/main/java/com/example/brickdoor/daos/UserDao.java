@@ -13,6 +13,7 @@ import com.example.brickdoor.repositories.UserRepository;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,7 +37,7 @@ public class UserDao {
   }
 
   public Student findStudentById(int studentId) {
-    return studentRepository.findStudentById(studentId);
+    return studentRepository.findStudentById(studentId, Role.STUDENT);
   }
 
   public Company findCompanyById(int companyId) {
@@ -57,7 +58,7 @@ public class UserDao {
   }
 
   public User updateStudent(int userId, Student updatedStudent) {
-    Student outdatedStudent = studentRepository.findStudentById(userId);
+    Student outdatedStudent = studentRepository.findStudentById(userId,Role.STUDENT);
     if (outdatedStudent != null) {
       updateBasicUserCred(outdatedStudent, updatedStudent);
       outdatedStudent.setFirstName(updatedStudent.getFirstName());

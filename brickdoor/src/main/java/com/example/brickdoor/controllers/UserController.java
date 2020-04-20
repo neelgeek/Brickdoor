@@ -13,6 +13,7 @@ import com.example.brickdoor.models.WorkReview;
 
 import java.util.List;
 import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
@@ -191,23 +193,20 @@ public class UserController {
     return userDao.getAllAdmin();
   }
 
-  @PostMapping("/searchCompanies")
-  public ModelAndView searchCompanies(HttpSession session, @ModelAttribute("search") SearchObject search){
+  @PostMapping("/search")
+  public ModelAndView searchCompanies(HttpSession session, @ModelAttribute("search") SearchObject search) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
-    if (user.getId() == 0) {
-      return new ModelAndView("redirect:/login");
-    }
     Set<Company> matchedCompanies = userDao.searchCompanies(search.getQuery());
-
+    System.out.println(matchedCompanies.size());
     ModelAndView model = new ModelAndView("search");
     model.addObject("user", user);
     model.addObject("query", search.getQuery());
-    model.addObject("queryResult", matchedCompanies);
+    model.addObject("results", matchedCompanies);
     return model;
   }
 
   @PostMapping("/searchStudents")
-  public ModelAndView searchStudents(HttpSession session, @ModelAttribute("search") SearchObject search){
+  public ModelAndView searchStudents(HttpSession session, @ModelAttribute("search") SearchObject search) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() == 0) {
       return new ModelAndView("redirect:/login");
@@ -222,7 +221,7 @@ public class UserController {
   }
 
   @PostMapping("/searchAdmin")
-  public ModelAndView searchAdmin(HttpSession session, @ModelAttribute("search") SearchObject search){
+  public ModelAndView searchAdmin(HttpSession session, @ModelAttribute("search") SearchObject search) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() == 0) {
       return new ModelAndView("redirect:/login");
@@ -237,7 +236,7 @@ public class UserController {
   }
 
   @GetMapping("/profile")
-  public ModelAndView userProfile(HttpSession session){
+  public ModelAndView userProfile(HttpSession session) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() == 0) {
       return new ModelAndView("redirect:/login");
@@ -246,21 +245,53 @@ public class UserController {
     List<InterviewReview> interviews = reviewDao.findInterviewReviewsByStudentId(user.getId());
     List<WorkReview> workReviews = reviewDao.findWorkReviewsReviewByStudentId(user.getId());
 
-    for(WorkReview work : workReviews){
-      System.out.println(work.getCompany().getCompanyName());
-      System.out.println(work.getJobTitle());
-      System.out.println(work.getContent());
-    }
     ModelAndView model = new ModelAndView("profile");
-    model.addObject("user",user);
-    model.addObject("interviews",interviews);
-    model.addObject("works",workReviews);
+    model.addObject("user", user);
+    model.addObject("interviews", interviews);
+    model.addObject("works", workReviews);
+    return model;
+  }
+
+  @GetMapping("/user/{userId}")
+  public ModelAndView userProfileGET(HttpSession session, @PathVariable("userId") Integer userId) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    Student person = userDao.findStudentById(userId);
+    if (person == null) {
+      return new ModelAndView("redirect:/");
+    }
+    List<InterviewReview> interviews = reviewDao.findInterviewReviewsByStudentId(userId);
+    List<WorkReview> workReviews = reviewDao.findWorkReviewsReviewByStudentId(userId);
+
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("user", user);
+    model.addObject("person", person);
+    model.addObject("interviews", interviews);
+    model.addObject("works", workReviews);
+    return model;
+  }
+
+
+  @GetMapping("/company/{companyId}")
+  public ModelAndView companyProfileGET(HttpSession session, @PathVariable("companyId") Integer companyId) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    Company company = userDao.findCompanyById(companyId);
+    if (company == null) {
+      return new ModelAndView("redirect:/");
+    }
+    List<InterviewReview> interviews = reviewDao.findInterviewReviewsByCompanyId(companyId);
+    List<WorkReview> workReviews = reviewDao.findWorkReviewsByCompanyId(companyId);
+
+    ModelAndView model = new ModelAndView("company");
+    model.addObject("company",company.getCompanyName());
+    model.addObject("user", user);
+    model.addObject("interviews", interviews);
+    model.addObject("works", workReviews);
     return model;
   }
 }
 
 // Used to store the search query from the search bar.
-class SearchObject{
+class SearchObject {
   private String query;
 
   public String getQuery() {
