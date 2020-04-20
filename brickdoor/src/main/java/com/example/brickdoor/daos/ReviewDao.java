@@ -1,15 +1,12 @@
 package com.example.brickdoor.daos;
 
-import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Review;
-import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.WorkReview;
 import com.example.brickdoor.repositories.InterviewReviewRepository;
 import com.example.brickdoor.repositories.ReviewRepository;
 import com.example.brickdoor.repositories.WorkReviewRepository;
 
-import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -50,7 +47,7 @@ public class ReviewDao {
         InterviewReview oldReview = interviewReviewRepo.findById(newReview.getId()).orElse(null);
         if (oldReview != null) {
             oldReview.setContent(newReview.getContent());
-            oldReview.setBadge(newReview.getBadge());
+            oldReview.setBadgeId(newReview.getBadgeId());
             oldReview.setTitle(newReview.getTitle());
             oldReview.setInterviewQuestion(newReview.getInterviewQuestion());
             return reviewRepo.save(oldReview);
@@ -62,7 +59,7 @@ public class ReviewDao {
         WorkReview oldReview = workReviewRepo.findById(newReview.getId()).orElse(null);
         if (oldReview != null) {
             oldReview.setContent(newReview.getContent());
-            oldReview.setBadge(newReview.getBadge());
+            oldReview.setBadgeId(newReview.getBadgeId());
             oldReview.setTitle(newReview.getTitle());
             oldReview.setJobTitle(newReview.getJobTitle());
             return reviewRepo.save(oldReview);
