@@ -173,6 +173,16 @@ public class UserController {
     return userDao.getAllCompanies();
   }
 
+  @GetMapping("/getAllStudents")
+  public List<Student> getAllStudents() {
+    return userDao.getAllStudents();
+  }
+
+  @GetMapping("/getAllAdmin")
+  public List<Admin> getAllAdmin() {
+    return userDao.getAllAdmin();
+  }
+
   @PostMapping("/searchCompanies")
   public ModelAndView searchCompanies(HttpSession session, @ModelAttribute("search") SearchObject search){
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
@@ -185,6 +195,36 @@ public class UserController {
     model.addObject("user", user);
     model.addObject("query", search.getQuery());
     model.addObject("queryResult", matchedCompanies);
+    return model;
+  }
+
+  @PostMapping("/searchStudents")
+  public ModelAndView searchStudents(HttpSession session, @ModelAttribute("search") SearchObject search){
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
+    Set<Student> matchedStudents = userDao.searchStudents(search.getQuery());
+
+    ModelAndView model = new ModelAndView("search");
+    model.addObject("user", user);
+    model.addObject("query", search.getQuery());
+    model.addObject("queryResult", matchedStudents);
+    return model;
+  }
+
+  @PostMapping("/searchAdmin")
+  public ModelAndView searchAdmin(HttpSession session, @ModelAttribute("search") SearchObject search){
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
+    Set<Admin> matchedAdmin = userDao.searchAdmin(search.getQuery());
+
+    ModelAndView model = new ModelAndView("search");
+    model.addObject("user", user);
+    model.addObject("query", search.getQuery());
+    model.addObject("queryResult", matchedAdmin);
     return model;
   }
 
