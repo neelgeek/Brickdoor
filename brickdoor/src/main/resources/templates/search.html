@@ -133,7 +133,7 @@
             <!-- end card-header -->
             <!-- begin forum-list -->
             <ul class="forum-list">
-                <li>
+                <li th:each="res : ${results}">
                     <!-- begin media -->
                     <div class="media">
                         <img src="../static/img/icon/icon-home.png"
@@ -143,17 +143,10 @@
                     <!-- begin info-container -->
                     <div class="info-container">
                         <div class="info">
-                            <h4 class="title"><a href="category_list.html">Company Name</a></h4>
-                            <p class="desc">
-                                Company Description
+                            <h4 class="title" ><a href="#" th:text="${res.companyName}"></a></h4>
+                            <p th:text="${res.companyAddress}" class="desc">
+
                             </p>
-                        </div>
-                        <div class="total-count">
-                            <span class="total-comment">Likes Count</span>
-                        </div>
-                        <div class="latest-post">
-                            <p class="time">Yesterday 10:49pm <a href="category_list.html"
-                                                                 class="user">User</a></p>
                         </div>
                     </div>
                     <!-- end info-container -->
