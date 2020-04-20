@@ -67,9 +67,9 @@ public class ReviewDaoTest {
     }
 
     @After
-//    public void afterEach() {
-//        brickDoorDao.truncateDatabase();
-//    }
+    public void afterEach() {
+        brickDoorDao.truncateDatabase();
+    }
 
     @Test
     public void findAllInterviewReview() {

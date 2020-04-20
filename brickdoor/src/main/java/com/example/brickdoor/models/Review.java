@@ -29,7 +29,7 @@ public abstract class Review {
     @Column(name = "title")
     protected String title = "";
 
-    @Column(name = "content")
+    @Column(name = "content", length = 1500)
     protected String content = "";
 
     @ManyToOne(fetch = FetchType.LAZY)
