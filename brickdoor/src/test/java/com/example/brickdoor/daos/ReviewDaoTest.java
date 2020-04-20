@@ -144,19 +144,19 @@ public class ReviewDaoTest {
 
     @Test
     public void testFindWorkReviewsByStudentId() {
-        List<Review> aliceReviews = reviewDao.findWorkReviewsReviewByStudentId(this.alice.getId());
+        List<WorkReview> aliceReviews = reviewDao.findWorkReviewsReviewByStudentId(this.alice.getId());
         Assert.assertEquals(true, aliceReviews.stream().anyMatch(x -> x.getTitle().equals("awesome boeing") && x.getReviewerName().equals("alice")));
         Assert.assertEquals(true, aliceReviews.stream().anyMatch(x -> x.getTitle().equals("awesome apple") && x.getReviewerName().equals("alice")));
         Assert.assertEquals(2, aliceReviews.size());
-        List<Review> bobReviews = reviewDao.findWorkReviewsReviewByStudentId(this.bob.getId());
+        List<WorkReview> bobReviews = reviewDao.findWorkReviewsReviewByStudentId(this.bob.getId());
         Assert.assertEquals(0, bobReviews.size());
     }
 
     @Test
     public void testFindInterviewReviewsByStudentId() {
-        List<Review> aliceReviews = reviewDao.findInterviewReviewsByStudentId(this.alice.getId());
+        List<InterviewReview> aliceReviews = reviewDao.findInterviewReviewsByStudentId(this.alice.getId());
         Assert.assertEquals(0, aliceReviews.size());
-        List<Review> bobReviews = reviewDao.findInterviewReviewsByStudentId(this.bob.getId());
+        List<InterviewReview> bobReviews = reviewDao.findInterviewReviewsByStudentId(this.bob.getId());
         Assert.assertEquals(true, bobReviews.stream().anyMatch(x -> x.getTitle().equals("mediocre boeing") && x.getReviewerName().equals("bob")));
         Assert.assertEquals(true, bobReviews.stream().anyMatch(x -> x.getTitle().equals("mediocre apple") && x.getReviewerName().equals("bob")));
 

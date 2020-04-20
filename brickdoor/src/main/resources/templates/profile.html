@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<html lang="en">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <title>Brickdoor | Profile Page</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+          rel="stylesheet"/>
+    <link th:href="@{/plugins/jquery-ui/jquery-ui.min.css}"
+          href="../static/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/bootstrap/css/bootstrap.min.css}"
+          href="../static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/font-awesome/css/all.min.css}"
+          href="../static/plugins/font-awesome/css/all.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/animate/animate.min.css}"
+          href="../static/plugins/animate/animate.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/default/style.min.css}" href="../static/css/default/style.min.css"
+          rel="stylesheet"/>
+    <link th:href="@{/css/default/style-responsive.min.css}"
+          href="../static/css/default/style-responsive.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/default/theme/default.css}" href="../static/css/default/theme/default.css"
+          rel="stylesheet" id="theme"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN PAGE LEVEL CSS STYLE ================== -->
+    <link th:href="@{/plugins/superbox/css/superbox.min.css}"
+          href="../static/plugins/superbox/css/superbox.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/lity/dist/lity.min.css}"
+          href="../static/plugins/lity/dist/lity.min.css" rel="stylesheet"/>
+    <!-- ================== END PAGE LEVEL CSS STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script th:src="@{/plugins/pace/pace.min.js}" src="../static/plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade show"><span class="spinner"></span></div>
+<!-- end #page-loader -->
+
+<!-- begin #page-container -->
+<div id="page-container" class="fade page-sidebar-fixed page-header-fixed">
+    <!-- begin #header -->
+    <div id="header" class="header navbar-default">
+		<!-- begin navbar-header -->
+		<div class="navbar-header">
+			<button type="button" class="navbar-toggle collapsed" data-toggle="collapse"
+					data-target="#header-navbar">
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+				<span class="icon-bar"></span>
+			</button>
+			<a th:href="@{~/}" href="index.html" class="navbar-brand">
+				<span class="navbar-logo"></span>
+				<span class="brand-text">
+						Brickdoor
+					</span>
+			</a>
+		</div>
+		<!-- end navbar-header -->
+
+        <!-- begin header-nav -->
+		<div class="collapse navbar-collapse" id="header-navbar">
+			<ul th:switch="${user.id}" class="nav navbar-nav navbar-right">
+				<!--					<li>-->
+				<!--						<form class="navbar-form">-->
+				<!--							<div class="form-group">-->
+				<!--								<input type="text" class="form-control" placeholder="Enter Keywords..." />-->
+				<!--								<button type="submit" class="btn btn-search"><i class="fa fa-search"></i></button>-->
+				<!--							</div>-->
+				<!--						</form>-->
+				<!--					</li>-->
+				<li th:if="${user.id==0}"><a th:href="@{~/register}" href="/register">Create
+					Account</a></li>
+				<li th:if="${user.id==0}"><a th:href="@{~/login}" href="/login">Sign In</a></li>
+				<li th:if="${user.id!=0}" class="dropdown navbar-user">
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<img th:src="@{/img/user/user-3.jpg}" src="../static/img/user/user-3.jpg"
+							 alt=""/>
+						<span th:text="${user.firstName+' '+user.lastName}"
+							  class="d-none d-md-inline"></span> <b class="caret"></b>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right">
+<!--						<a href="javascript:;" class="dropdown-item">Edit Profile</a>-->
+						<div class="dropdown-divider"></div>
+						<a th:href="@{~/logout}" href="/logout" class="dropdown-item">Log Out</a>
+					</div>
+				</li>
+
+			</ul>
+		</div>
+        <!-- end header navigation right -->
+    </div>
+    <!-- end #header -->
+
+
+    <!-- begin #content -->
+    <div id="content" class="content content-full-width">
+        <!-- begin profile -->
+        <div class="profile">
+            <div class="profile-header">
+                <!-- BEGIN profile-header-cover -->
+                <div class="profile-header-cover"></div>
+                <!-- END profile-header-cover -->
+                <!-- BEGIN profile-header-content -->
+                <div class="profile-header-content">
+                    <!-- BEGIN profile-header-img -->
+                    <div class="profile-header-img">
+                        <img th:src="@{/img/user/user-3.jpg}" src="../static/img/user/user-3.jpg" alt="">
+                    </div>
+                    <!-- END profile-header-img -->
+                    <!-- BEGIN profile-header-info -->
+                    <div class="profile-header-info">
+                        <h4 class="m-t-10 m-b-5" th:text="${user.firstName+' '+user.lastName}" >Sean Ngu</h4>
+<!--                        <a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>-->
+                    </div>
+                    <!-- END profile-header-info -->
+                </div>
+                <!-- END profile-header-content -->
+                <!-- BEGIN profile-header-tab -->
+                <ul class="profile-header-tab nav nav-tabs">
+                    <li class="nav-item"><a href="#profile-post" class="nav-link active"
+                                            data-toggle="tab">Job Reviews</a></li>
+                    <li class="nav-item"><a href="#profile-about" class="nav-link"
+                                            data-toggle="tab">Interview Reviews</a></li>
+                </ul>
+                <!-- END profile-header-tab -->
+            </div>
+        </div>
+        <!-- end profile -->
+        <!-- begin profile-content -->
+        <div class="profile-content">
+            <!-- begin tab-content -->
+            <div class="tab-content p-0">
+                <!-- begin #profile-post tab -->
+                <div class="tab-pane fade show active" id="profile-post">
+                    <!-- begin timeline -->
+                    <ul class="timeline">
+                        <li th:each="inter: ${works}">
+                            <div class="timeline-icon">
+                                <a href="javascript:;">&nbsp;</a>
+                            </div>
+                            <!-- end timeline-icon -->
+                            <!-- begin timeline-body -->
+                            <div class="timeline-body">
+                                <div class="timeline-header">
+                                    <span class="userimage"><img
+                                            src="../static/img/user/user-12.jpg" alt=""/></span>
+                                    <span th:text="${inter.student?.firstName + ' ' + inter.student?.lastName    +' Review for '+ inter.company?.companyName}" class="username"></span>
+
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Title</h5>
+                                    <h6 th:text="${inter.title}">
+
+                                    </h6>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Job Title</h5>
+                                    <p th:text="${inter.jobTitle}">
+                                    </p>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Work Experience</h5>
+                                    <p th:text="${inter.content}">
+                                    </p>
+                                </div>
+
+
+                            </div>
+                            <!-- end timeline-body -->
+                        </li>
+                    </ul>
+                    <!-- end timeline -->
+                </div>
+                <!-- end #profile-post tab -->
+                <!-- begin #profile-about tab -->
+                <div class="tab-pane fade" id="profile-about">
+                    <!-- begin timeline -->
+                    <ul class="timeline">
+                        <li th:each="inter: ${interviews}">
+                            <div class="timeline-icon">
+                                <a href="javascript:;">&nbsp;</a>
+                            </div>
+                            <!-- end timeline-icon -->
+                            <!-- begin timeline-body -->
+                            <div class="timeline-body">
+                                <div class="timeline-header">
+                                    <span class="userimage"><img
+                                            src="../static/img/user/user-12.jpg" alt=""/></span>
+                                    <span th:text="${inter.student?.firstName + ' ' + inter.student?.lastName    +' Review for '+ inter.company?.companyName}" class="username"></span>
+
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Title</h5>
+                                    <h6 th:text="${inter.title}">
+
+                                    </h6>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Interview Experience</h5>
+                                    <p th:text="${inter.content}">
+
+                                    </p>
+                                </div>
+                                <div class="timeline-content">
+                                    <h5>Interview Questions</h5>
+                                    <p th:text="${inter.interviewQuestion}">
+                                    </p>
+                                </div>
+
+                            </div>
+                            <!-- end timeline-body -->
+                        </li>
+                    </ul>
+                    <!-- end timeline -->
+                </div>
+                <!-- end #profile-about tab -->
+
+            </div>
+            <!-- end tab-content -->
+        </div>
+        <!-- end profile-content -->
+    </div>
+    <!-- end #content -->
+
+
+    <!-- begin scroll to top btn -->
+    <a href="javascript:;" class="btn btn-icon btn-circle btn-success btn-scroll-to-top fade"
+       data-click="scroll-top"><i class="fa fa-angle-up"></i></a>
+    <!-- end scroll to top btn -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script th:src="@{/plugins/jquery/jquery-3.3.1.min.js}"
+        src="../static/plugins/jquery/jquery-3.3.1.min.js"></script>
+<script th:src="@{/plugins/jquery-ui/jquery-ui.min.js}"
+        src="../static/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"
+        src="../static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/plugins/slimscroll/jquery.slimscroll.min.js}"
+        src="../static/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script th:src="@{/plugins/js-cookie/js.cookie.js}"
+        src="../static/plugins/js-cookie/js.cookie.js"></script>
+<script th:src="@{/js/theme/default.min.js}" src="../static/js/theme/default.min.js"></script>
+<script th:src="@{/js/apps.min.js}" src="../static/js/apps.min.js"></script>
+<!-- ================== END BASE JS ================== -->
+
+<!-- ================== BEGIN PAGE LEVEL JS ================== -->
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&amp;sensor=false"></script>
+<script th:src="@{/plugins/superbox/js/jquery.superbox.min.js}"
+        src="../static/plugins/superbox/js/jquery.superbox.min.js"></script>
+<script th:src="@{/plugins/lity/dist/lity.min.js}"
+        src="../static/plugins/lity/dist/lity.min.js"></script>
+<script th:src="@{/js/demo/profile.demo.min.js}"
+        src="../static/js/demo/profile.demo.min.js"></script>
+<!-- ================== END PAGE LEVEL JS ================== -->
+
+<script>
+		$(document).ready(function() {
+			App.init();
+			Profile.init();
+		});
+
+</script>
+</body>
+</html>
