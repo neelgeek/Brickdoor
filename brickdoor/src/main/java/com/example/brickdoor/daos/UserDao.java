@@ -44,8 +44,8 @@ public class UserDao {
     return companyRepository.findCompanyById(companyId);
   }
 
-  public User authenticate(String username, String password) {
-    return userRepository.findUserByUserCredentials(username, password);
+  public User authenticate(String username, String password, Role role) {
+    return userRepository.findUserByUserCredentials(username, password, role);
   }
 
   public boolean registerUser(User user) {
@@ -58,7 +58,7 @@ public class UserDao {
   }
 
   public User updateStudent(int userId, Student updatedStudent) {
-    Student outdatedStudent = studentRepository.findStudentById(userId,Role.STUDENT);
+    Student outdatedStudent = studentRepository.findStudentById(userId, Role.STUDENT);
     if (outdatedStudent != null) {
       updateBasicUserCred(outdatedStudent, updatedStudent);
       outdatedStudent.setFirstName(updatedStudent.getFirstName());

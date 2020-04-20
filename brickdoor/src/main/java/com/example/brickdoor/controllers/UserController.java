@@ -43,19 +43,43 @@ public class UserController {
   public ModelAndView loginRouteGet(HttpSession session) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     if (user.getId() != 0) {
-      return new ModelAndView("redirect:/login");
+      return new ModelAndView("redirect:/");
     }
     ModelAndView model = new ModelAndView("login");
     model.addObject("user", user);
     return model;
   }
 
+  @GetMapping("/admin/login")
+  public ModelAndView adminLoginRouteGet(HttpSession session) {
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() != 0 && user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/");
+    }
+
+    ModelAndView model = new ModelAndView("admin_login");
+    model.addObject("user", user);
+    return model;
+  }
+
+  @PostMapping("/admin/login")
+  public ModelAndView adminLoginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
+    String username = user.getUsername();
+    String password = user.getPassword();
+    User authenticatedUser = userDao.authenticate(username, password, Role.ADMIN);
+    if (authenticatedUser != null) {
+      session.setAttribute("user", authenticatedUser);
+    }
+    return new ModelAndView("redirect:/admin/");
+  }
+
+
   // Post route for login, handle user authentication here
   @PostMapping("/login")
   public ModelAndView loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
     String username = user.getUsername();
     String password = user.getPassword();
-    User authenticatedUser = userDao.authenticate(username, password);
+    User authenticatedUser = userDao.authenticate(username, password, Role.STUDENT);
     if (authenticatedUser == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
@@ -282,7 +306,7 @@ public class UserController {
     List<WorkReview> workReviews = reviewDao.findWorkReviewsByCompanyId(companyId);
 
     ModelAndView model = new ModelAndView("company");
-    model.addObject("company",company.getCompanyName());
+    model.addObject("company", company.getCompanyName());
     model.addObject("user", user);
     model.addObject("interviews", interviews);
     model.addObject("works", workReviews);
