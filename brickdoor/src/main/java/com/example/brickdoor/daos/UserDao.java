@@ -115,5 +115,9 @@ public class UserDao {
   public List<Company> getAllCompanies() {
     return companyRepository.getAllCompanies(Role.COMPANY);
   }
+
+  public Set<Company> searchCompanies(String query) {
+    return companyRepository.searchCompanies(query);
+  }
 }
 
