@@ -49,7 +49,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a href="index.html" class="navbar-brand">
+            <a th:href="@{~/}" href="index.html" class="navbar-brand">
                 <span class="navbar-logo"></span>
                 <span class="brand-text">
 						Brickdoor
@@ -171,29 +171,7 @@
 <!-- end content -->
 
 <!-- begin #footer -->
-<div id="footer" class="footer">
-    <!-- begin container -->
-    <div class="container">
-        <!-- begin row -->
-        <div class="row">
-            <!-- begin col-4 -->
-            <div class="col-md-4">
-                <!-- begin section-container -->
-                <div class="section-container">
-                    <h4>About Brickdoor</h4>
-                    <p>
-                        Brickdoor is a website, that allows sharing of insightful compant reviews
-                        and job experiences!
-                    </p>
-                </div>
-                <!-- end section-container -->
-            </div>
-            <!-- end col-4 -->
-        </div>
-        <!-- end row -->
-    </div>
-    <!-- end container -->
-</div>
+
 <!-- end #footer -->
 
 <!-- begin #footer-copyright -->
@@ -205,65 +183,6 @@
 </div>
 <!-- end #footer-copyright -->
 
-<!-- begin theme-panel -->
-<div class="theme-panel">
-    <a href="javascript:;" data-click="theme-panel-expand" class="theme-collapse-btn"><i
-            class="fa fa-cog"></i></a>
-    <div class="theme-panel-content">
-        <ul class="theme-list clearfix">
-            <li><a href="javascript:;" class="bg-red" data-theme="red"
-                   data-theme-file="../css/forum/theme/red.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body" data-title="Red"
-                   data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-pink" data-theme="pink"
-                   data-theme-file="../css/forum/theme/pink.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Pink" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-orange" data-theme="orange"
-                   data-theme-file="../css/forum/theme/orange.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Orange" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-yellow" data-theme="yellow"
-                   data-theme-file="../css/forum/theme/yellow.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Yellow" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-lime" data-theme="lime"
-                   data-theme-file="../css/forum/theme/lime.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Lime" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-green" data-theme="green"
-                   data-theme-file="../css/forum/theme/green.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Green" data-original-title="" title="">&nbsp;</a></li>
-            <li class="active"><a href="javascript:;" class="bg-teal" data-theme="default"
-                                  data-theme-file="../css/forum/theme/default.css"
-                                  data-click="theme-selector" data-toggle="tooltip"
-                                  data-trigger="hover" data-container="body" data-title="Default"
-                                  data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-aqua" data-theme="aqua"
-                   data-theme-file="../css/forum/theme/aqua.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Aqua" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-blue" data-theme="blue"
-                   data-theme-file="../css/forum/theme/blue.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Blue" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-purple" data-theme="purple"
-                   data-theme-file="../css/forum/theme/purple.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Purple" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-indigo" data-theme="indigo"
-                   data-theme-file="../css/forum/theme/indigo.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Indigo" data-original-title="" title="">&nbsp;</a></li>
-            <li><a href="javascript:;" class="bg-black" data-theme="black"
-                   data-theme-file="../css/forum/theme/black.css" data-click="theme-selector"
-                   data-toggle="tooltip" data-trigger="hover" data-container="body"
-                   data-title="Black" data-original-title="" title="">&nbsp;</a></li>
-        </ul>
-    </div>
-</div>
-<!-- end theme-panel -->
 
 <!-- ================== BEGIN BASE JS ================== -->
 <script type="text/javascript" src="../static/plugins/jquery/jquery-3.3.1.min.js"

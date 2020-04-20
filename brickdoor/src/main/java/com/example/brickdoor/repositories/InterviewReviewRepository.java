@@ -19,5 +19,5 @@ public interface InterviewReviewRepository extends CrudRepository<InterviewRevie
     public List<InterviewReview> findInterviewReviewsByCompanyId(@Param("cId") int cId);
 
     @Query(value = "SELECT review FROM InterviewReview review JOIN review.student student WHERE student.id=:sId")
-    public List<Review> findInterviewReviewsByStudentId(@Param("sId") int studentId);
+    public List<InterviewReview> findInterviewReviewsByStudentId(@Param("sId") int studentId);
 }

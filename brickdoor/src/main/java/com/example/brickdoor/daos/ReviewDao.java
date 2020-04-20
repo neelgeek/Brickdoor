@@ -1,15 +1,12 @@
 package com.example.brickdoor.daos;
 
-import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Review;
-import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.WorkReview;
 import com.example.brickdoor.repositories.InterviewReviewRepository;
 import com.example.brickdoor.repositories.ReviewRepository;
 import com.example.brickdoor.repositories.WorkReviewRepository;
 
-import org.hibernate.jdbc.Work;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -95,11 +92,11 @@ public class ReviewDao {
         return reviewRepo.findReviewByStudentId(studentId);
     }
 
-    public List<Review> findInterviewReviewsByStudentId(int studentId) {
+    public List<InterviewReview> findInterviewReviewsByStudentId(int studentId) {
         return interviewReviewRepo.findInterviewReviewsByStudentId(studentId);
     }
 
-    public List<Review> findWorkReviewsReviewByStudentId(int studentId) {
+    public List<WorkReview> findWorkReviewsReviewByStudentId(int studentId) {
         return workReviewRepo.findWorkReviewByStudentId(studentId);
     }
 }

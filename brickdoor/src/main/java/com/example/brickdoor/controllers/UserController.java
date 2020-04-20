@@ -1,17 +1,22 @@
 package com.example.brickdoor.controllers;
 
+import com.example.brickdoor.daos.ReviewDao;
 import com.example.brickdoor.daos.UserDao;
 import com.example.brickdoor.models.Admin;
 import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.InterviewReview;
+import com.example.brickdoor.models.Review;
 import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
+import com.example.brickdoor.models.WorkReview;
 
 import java.util.List;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -27,6 +32,9 @@ public class UserController {
 
   @Autowired
   private UserDao userDao;
+
+  @Autowired
+  private ReviewDao reviewDao;
 
   // This the get route, do not edit this.
   @GetMapping("/login")
@@ -228,6 +236,27 @@ public class UserController {
     return model;
   }
 
+  @GetMapping("/profile")
+  public ModelAndView userProfile(HttpSession session){
+    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    if (user.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
+
+    List<InterviewReview> interviews = reviewDao.findInterviewReviewsByStudentId(user.getId());
+    List<WorkReview> workReviews = reviewDao.findWorkReviewsReviewByStudentId(user.getId());
+
+    for(WorkReview work : workReviews){
+      System.out.println(work.getCompany().getCompanyName());
+      System.out.println(work.getJobTitle());
+      System.out.println(work.getContent());
+    }
+    ModelAndView model = new ModelAndView("profile");
+    model.addObject("user",user);
+    model.addObject("interviews",interviews);
+    model.addObject("works",workReviews);
+    return model;
+  }
 }
 
 // Used to store the search query from the search bar.
