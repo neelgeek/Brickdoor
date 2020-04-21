@@ -20,4 +20,5 @@ public interface CompanyRepository extends CrudRepository<Company,Integer> {
 
   @Query("SELECT companies FROM User companies WHERE companies.role=:role AND companies.companyName LIKE :query%")
   Set<Company> searchCompanies(@Param("query") String query, @Param("role") Role role);
+
 }
