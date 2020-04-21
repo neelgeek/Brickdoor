@@ -99,4 +99,18 @@ public class ReviewDao {
     public List<WorkReview> findWorkReviewsReviewByStudentId(int studentId) {
         return workReviewRepo.findWorkReviewByStudentId(studentId);
     }
+
+    public WorkReview findWorkReviewById(int wId) {
+        return workReviewRepo.findWorkReviewById(wId);
+    }
+
+    public boolean deleteReviewById(int wId){
+        if (!reviewRepo.existsById((wId))) {
+            return false;
+        }
+        reviewRepo.deleteById(wId);
+        return true;
+    }
+
+
 }

@@ -6,6 +6,7 @@ import com.example.brickdoor.models.Badge;
 import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Review;
+import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 import com.example.brickdoor.models.WorkReview;
@@ -15,11 +16,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.http.HttpSession;
@@ -111,10 +112,10 @@ public class ReviewController {
   }
 
   @PostMapping("/updateInterviewReview")
-  public String updateInterviewReview(HttpSession session, @ModelAttribute("review") InterviewReview review) {
+  public ModelAndView updateInterviewReview(HttpSession session, @ModelAttribute("review") InterviewReview review) {
     InterviewReview updated = reviewDao.updateInterviewReview(review);
     if (updated != null) {
-      return "review updated";
+      return new ModelAndView("redirect:/admin/manage/reviews/job");
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -122,10 +123,10 @@ public class ReviewController {
   }
 
   @PostMapping("/updateWorkReview")
-  public String updateWorkReview(HttpSession session, @ModelAttribute("review") WorkReview review) {
+  public ModelAndView updateWorkReview(HttpSession session, @ModelAttribute("review") WorkReview review) {
     WorkReview updated = reviewDao.updateWorkReview(review);
     if (updated != null) {
-      return "review updated";
+      return new ModelAndView("redirect:/admin/manage/reviews/work");
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -147,12 +148,24 @@ public class ReviewController {
     return reviewDao.findAllWorkReview();
   }
 
+  @GetMapping("/deleteReview/work/{wId}")
+  public ModelAndView deleteWorkReview(HttpSession session, @PathVariable("wId") Integer wId){
+    User user = (User) session.getAttribute("user");
+    int userId = user.getId();
+    if (userDao.getRole(userId) != Role.ADMIN) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    if (!reviewDao.deleteReviewById(wId)) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return new ModelAndView("redirect:/admin/manage/reviews/work");
+  }
 }
 
 // This object is submitted by the user in post route to create a work review.
 class work_review_form {
 
-
+  private Integer id;
   private String title = ""; // Review title
   private String jobTitle = ""; // Job title
   private String content = ""; // Review Content
@@ -172,6 +185,14 @@ class work_review_form {
 
   public int getCompanyId() {
     return companyId;
+  }
+
+  public Integer getId() {
+    return id;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 
   public void setTitle(String title) {
@@ -194,7 +215,7 @@ class work_review_form {
 // This object is submitted by the user in post route to create a work review.
 class interview_review_form {
 
-
+  private Integer id;
   private String title = ""; // Review title
   private String questions = ""; // Interview questions
   private String content = ""; // Review Content
@@ -216,6 +237,10 @@ class interview_review_form {
     return companyId;
   }
 
+  public Integer getId() {
+    return id;
+  }
+
   public void setTitle(String title) {
     this.title = title;
   }
@@ -230,5 +255,9 @@ class interview_review_form {
 
   public void setCompanyId(int companyId) {
     this.companyId = companyId;
+  }
+
+  public void setId(Integer id) {
+    this.id = id;
   }
 }
