@@ -46,14 +46,14 @@ public class InterviewReviewTest {
 
     @Test
     public void getBadge() {
-        Assert.assertEquals(badge, filled.getBadge());
-        Assert.assertEquals(Badge.NOTAVAILABLE, emptyReview.getBadge());
+        Assert.assertEquals(badge, filled.getBadgeId());
+        Assert.assertEquals(Badge.NOTAVAILABLE, emptyReview.getBadgeId());
     }
 
     @Test
     public void setBadge() {
-        emptyReview.setBadge(Badge.AWESOME);
-        Assert.assertEquals(Badge.AWESOME, emptyReview.getBadge());
+        emptyReview.setBadgeId(Badge.AWESOME);
+        Assert.assertEquals(Badge.AWESOME, emptyReview.getBadgeId());
     }
 
     @Test

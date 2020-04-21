@@ -4,8 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,14 +25,13 @@ public abstract class Review {
     @Column(name = "reviewername")
     protected String reviewerName = "";
 
-    @Enumerated(EnumType.STRING)
-    @Column(length = 30)
-    protected Badge badge = Badge.NOTAVAILABLE;
+    @Column(name = "badge")
+    protected int badgeId = Badge.NOTAVAILABLE.getId();
 
     @Column(name = "title")
     protected String title = "";
 
-    @Column(name = "content")
+    @Column(name = "content", length = 1500)
     protected String content = "";
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -51,13 +48,13 @@ public abstract class Review {
 
     public Review(String reviewerName, Badge badge, String title, String content) {
         this.reviewerName = reviewerName;
-        this.badge = badge;
+        this.badgeId = badge.getId();
         this.title = title;
         this.content = content;
     }
 
     public Review(Company company, Student student, Badge badge, String title, String content) {
-        this.badge = badge;
+        this.badgeId = badge.getId();
         this.title = title;
         this.content = content;
         this.company = company;
@@ -97,12 +94,12 @@ public abstract class Review {
         this.reviewerName = reviewerName;
     }
 
-    public Badge getBadge() {
-        return badge;
+    public Badge getBadgeId() {
+        return Badge.parse(this.badgeId);
     }
 
-    public void setBadge(Badge badge) {
-        this.badge = badge;
+    public void setBadgeId(Badge badge) {
+        this.badgeId = badge.getId();
     }
 
     public Company getCompany() {

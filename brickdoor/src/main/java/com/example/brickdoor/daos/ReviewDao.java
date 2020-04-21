@@ -47,7 +47,7 @@ public class ReviewDao {
         InterviewReview oldReview = interviewReviewRepo.findById(newReview.getId()).orElse(null);
         if (oldReview != null) {
             oldReview.setContent(newReview.getContent());
-            oldReview.setBadge(newReview.getBadge());
+            oldReview.setBadgeId(newReview.getBadgeId());
             oldReview.setTitle(newReview.getTitle());
             oldReview.setInterviewQuestion(newReview.getInterviewQuestion());
             return reviewRepo.save(oldReview);
@@ -59,7 +59,7 @@ public class ReviewDao {
         WorkReview oldReview = workReviewRepo.findById(newReview.getId()).orElse(null);
         if (oldReview != null) {
             oldReview.setContent(newReview.getContent());
-            oldReview.setBadge(newReview.getBadge());
+            oldReview.setBadgeId(newReview.getBadgeId());
             oldReview.setTitle(newReview.getTitle());
             oldReview.setJobTitle(newReview.getJobTitle());
             return reviewRepo.save(oldReview);
