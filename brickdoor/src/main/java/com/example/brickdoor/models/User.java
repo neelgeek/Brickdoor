@@ -1,5 +1,7 @@
 package com.example.brickdoor.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -31,8 +33,10 @@ public class User {
   @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
   private Set<PhoneNumber> phoneNumbers;
 
+
   @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)
   private Set<User> following;
+
 
   @JoinColumn(name = "following_id", referencedColumnName = "id")
   @ManyToOne(fetch = FetchType.LAZY)

@@ -29,6 +29,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
+import ch.qos.logback.core.db.dialect.SybaseSqlAnywhereDialect;
+
 @Controller()
 public class UserController {
 
@@ -50,28 +52,7 @@ public class UserController {
     return model;
   }
 
-  @GetMapping("/admin/login")
-  public ModelAndView adminLoginRouteGet(HttpSession session) {
-    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
-    if (user.getId() != 0 && user.getRole() != Role.ADMIN) {
-      return new ModelAndView("redirect:/");
-    }
 
-    ModelAndView model = new ModelAndView("admin_login");
-    model.addObject("user", user);
-    return model;
-  }
-
-  @PostMapping("/admin/login")
-  public ModelAndView adminLoginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
-    String username = user.getUsername();
-    String password = user.getPassword();
-    User authenticatedUser = userDao.authenticate(username, password, Role.ADMIN);
-    if (authenticatedUser != null) {
-      session.setAttribute("user", authenticatedUser);
-    }
-    return new ModelAndView("redirect:/admin/");
-  }
 
 
   // Post route for login, handle user authentication here
@@ -107,14 +88,20 @@ public class UserController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/registerStudent")
-  public ModelAndView registerStudentPost(@ModelAttribute("student") Student student) {
+  public ModelAndView registerStudentPost(HttpSession session, @ModelAttribute("student") Student student) {
     if (student == null || student.getUsername() == null || student.getPassword() == null || student.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
+    student.setRole(Role.STUDENT);
     if (!userDao.registerUser(student)) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return new ModelAndView("redirect:/login");
+
+    Admin admin = session.getAttribute("user") == null ? new Admin() : (Admin) session.getAttribute("user");
+    if(admin.getId()==0) {
+      return new ModelAndView("redirect:/login");
+    }
+    return new ModelAndView("redirect:/admin/manage/users");
   }
 
   // Post route for login, handle user authentication here
@@ -140,20 +127,21 @@ public class UserController {
     return "registered admin";
   }
 
-  @PutMapping("/updateStudent")
-  public String updateStudent(HttpSession session, @ModelAttribute("student") Student student) {
+  @PostMapping("/updateStudent")
+  public ModelAndView updateStudent(HttpSession session, @ModelAttribute("student") Student student) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
     boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
-    if (userId != student.getId() || !permissionRoles) {
+    if (!permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    User updateUser = userDao.updateStudent(userId, student);
+    System.out.println(student.getId());
+    User updateUser = userDao.updateStudent(student.getId(), student);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return "updated student";
+    return new ModelAndView("redirect:/admin/manage/users");
   }
 
   @PutMapping("/updateCompany")
@@ -189,17 +177,17 @@ public class UserController {
     return "updated admin";
   }
 
-  @DeleteMapping("/deleteUser")
-  public String deleteUser(HttpSession session, @ModelAttribute("user") User toDelete) {
+  @GetMapping("/deleteUser/{uid}")
+  public ModelAndView deleteUser(HttpSession session,@PathVariable("uid") Integer uid) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     if (userDao.getRole(userId) != Role.ADMIN) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    if (!userDao.deleteUser(toDelete.getId())) {
+    if (!userDao.deleteUser(uid)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return "deleted user with username: " + toDelete.getUsername();
+    return new ModelAndView("redirect:/admin/manage/users");
   }
 
   @GetMapping("/getAllCompanies")

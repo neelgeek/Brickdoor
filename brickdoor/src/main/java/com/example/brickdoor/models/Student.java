@@ -1,5 +1,7 @@
 package com.example.brickdoor.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.List;
 import java.util.Set;
 import javax.persistence.Entity;
@@ -13,6 +15,7 @@ public class Student extends User {
   private String firstName;
   private String lastName;
 
+  @JsonIgnore
   @OneToMany(mappedBy = "student")
   private List<Review> givenReviews;
 

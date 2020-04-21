@@ -23,6 +23,9 @@ public class AppController {
   @GetMapping("/")
   public ModelAndView indexRoute(HttpSession session) {
     User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId()!=0 && user.getRole()==Role.ADMIN){
+      return new ModelAndView("redirect:/admin/");
+    }
     List<Review> reviewList = reviewDao.findAllReview();
     ModelAndView modelAndView = new ModelAndView("index");
     modelAndView.addObject("search", new SearchObject());
@@ -43,10 +46,6 @@ public class AppController {
     return modelAndView;
   }
 
-
-  @GetMapping("/company")
-  public String companyRoute() {
-    return "company";
-  }
+  
 
 }
