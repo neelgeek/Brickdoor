@@ -2,6 +2,7 @@ package com.example.brickdoor.controllers;
 
 import com.example.brickdoor.daos.UserDao;
 import com.example.brickdoor.models.Admin;
+import com.example.brickdoor.models.Company;
 import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
@@ -83,6 +84,24 @@ public class AdminController {
     ModelAndView model = new ModelAndView("create_student");
     model.addObject("user", user);
     model.addObject("person", new Student());
+    return model;
+  }
+
+  @GetMapping("/admin/update/role/{sid}")
+  public ModelAndView adminSwitch(HttpSession session, @PathVariable("sid") Integer sid) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+
+    User user2Update = userDao.findById(sid);
+    ModelAndView model = new ModelAndView("switch_role");
+    model.addObject("targetUser",user2Update);
+    model.addObject("user", user);
+    model.addObject("person", new Student());
+    model.addObject("company", new Company());
+    model.addObject("admin", new Admin());
+    model.addObject("currentRole",user2Update.getRole().toString());
     return model;
   }
 
