@@ -4,12 +4,13 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName="id")
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
 public class Student extends User {
 
   private String firstName;
@@ -20,21 +21,20 @@ public class Student extends User {
   private List<Review> givenReviews;
 
   public Student() {
-    super();
-    this.setRole(Role.STUDENT);
+    super(Role.STUDENT);
   }
 
   public Student(String firstName, String lastName, String username, String password,
-      String email, String dob, Set<PhoneNumber> phoneNumbers) {
+                 String email, String dob, Set<PhoneNumber> phoneNumbers) {
     super(username, password, email, dob, phoneNumbers, Role.STUDENT);
     this.firstName = firstName;
     this.lastName = lastName;
   }
 
   public Student(String firstName, String lastName, String username, String password,
-      String email, String dob, Set<PhoneNumber> phoneNumbers, Set<User> following, Set<User> followers) {
+                 String email, String dob, Set<PhoneNumber> phoneNumbers, Set<User> following, Set<User> followers) {
     super(username, password, email, dob, phoneNumbers, Role.STUDENT,
-        following, followers);
+            following, followers);
     this.firstName = firstName;
     this.lastName = lastName;
   }
