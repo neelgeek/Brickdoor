@@ -16,7 +16,7 @@ public class Company extends User {
   @OneToMany(mappedBy = "company")
   private List<Review> receivedReviews;
 
-  public Company() {super();}
+  public Company() {super(Role.COMPANY);}
 
   public Company(String companyName, String companyAddress) {
     super(Role.COMPANY);

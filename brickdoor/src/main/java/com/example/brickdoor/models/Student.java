@@ -20,7 +20,7 @@ public class Student extends User {
   private List<Review> givenReviews;
 
   public Student() {
-    super();
+    super(Role.STUDENT);
   }
 
   public Student(String firstName, String lastName, String username, String password,

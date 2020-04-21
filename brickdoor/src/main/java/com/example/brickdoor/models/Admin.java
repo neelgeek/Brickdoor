@@ -11,7 +11,7 @@ public class Admin extends User {
   private String firstName;
   private String lastName;
 
-  public Admin() {super();}
+  public Admin() {super(Role.ADMIN);}
 
   public Admin(String firstName, String lastName, String username, String password,
       String email, String dob, Set<PhoneNumber> phoneNumbers) {
