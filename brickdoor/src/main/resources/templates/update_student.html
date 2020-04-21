@@ -93,6 +93,7 @@
             <div class="panel-body">
                 <form action="#" method="POST" th:action="@{/updateStudent}" th:object="${person}"
                       class="margin-bottom-0">
+                    <input type="hidden" class="form-control" th:field="*{id}"/>
                     <label class="control-label">Name <span class="text-danger">*</span></label>
                     <div class="row row-space-10">
                         <div class="col-md-6 m-b-15">
@@ -119,14 +120,7 @@
                                    required/>
                         </div>
                     </div>
-                    <label class="control-label">Re-enter Email <span
-                            class="text-danger">*</span></label>
-                    <div class="row m-b-15">
-                        <div class="col-md-12">
-                            <input type="text" class="form-control"
-                                   placeholder="Re-enter email address" required/>
-                        </div>
-                    </div>
+                    
                     <label class="control-label">Password <span class="text-danger">*</span></label>
                     <div class="row m-b-15">
                         <div class="col-md-12">

@@ -77,6 +77,20 @@ public class AdminController {
     return model;
   }
 
+  @GetMapping("/admin/update/company/{cid}")
+  public ModelAndView adminUpdateCompanyGet(HttpSession session, @PathVariable("cid") Integer cid) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+    User company2update = userDao.findCompanyById(cid);
+    ModelAndView model = new ModelAndView("update_company");
+    model.addObject("user", user);
+    model.addObject("company", company2update);
+    return model;
+  }
+
+
   @GetMapping("/admin/create/user")
   public ModelAndView adminCreateUserGet(HttpSession session) {
     User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
