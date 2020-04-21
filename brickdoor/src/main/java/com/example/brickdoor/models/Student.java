@@ -31,9 +31,9 @@ public class Student extends User {
   }
 
   public Student(String firstName, String lastName, String username, String password,
-      String email, String dob, Set<PhoneNumber> phoneNumbers, Set<User> following, User followedBy) {
+      String email, String dob, Set<PhoneNumber> phoneNumbers, Set<User> following, Set<User> followers) {
     super(username, password, email, dob, phoneNumbers, Role.STUDENT,
-        following, followedBy);
+        following, followers);
     this.firstName = firstName;
     this.lastName = lastName;
   }

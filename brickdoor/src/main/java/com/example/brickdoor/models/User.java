@@ -2,6 +2,8 @@ package com.example.brickdoor.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import java.util.HashSet;
+
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -12,9 +14,11 @@ import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
 @Table(name = "user")
@@ -30,17 +34,29 @@ public class User {
   private String dob;
   private Role role;
 
-  @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
+  @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
   private Set<PhoneNumber> phoneNumbers;
 
 
-  @OneToMany(mappedBy = "followedBy", fetch = FetchType.LAZY)
+  @ManyToMany (fetch = FetchType.EAGER)
+  @JoinTable(
+      name = "follows",
+      joinColumns = @JoinColumn(
+          name="follower_id",
+          referencedColumnName = "id"
+      ),
+      inverseJoinColumns = @JoinColumn(
+          name="following_id",
+          referencedColumnName = "id"
+      ),
+      uniqueConstraints = @UniqueConstraint(columnNames = {"follower_id", "following_id"})
+  )
   private Set<User> following;
 
+  @ManyToMany(mappedBy = "following", fetch = FetchType.EAGER)
+  @JsonIgnore
+  private Set<User> followers;
 
-  @JoinColumn(name = "following_id", referencedColumnName = "id")
-  @ManyToOne(fetch = FetchType.LAZY)
-  private User followedBy;
 
   public User() {
   }
@@ -56,10 +72,12 @@ public class User {
     this.dob = dob;
     this.phoneNumbers = phoneNumbers;
     this.role = role;
+    this.following = new HashSet<>();
+    this.followers = new HashSet<>();
   }
 
   public User(String username, String password, String email, String dob, Set<PhoneNumber> phoneNumbers, Role role,
-      Set<User> following, User followedBy) {
+      Set<User> following, Set<User> followers) {
     this.username = username;
     this.password = password;
     this.email = email;
@@ -67,7 +85,7 @@ public class User {
     this.phoneNumbers = phoneNumbers;
     this.role = role;
     this.following = following;
-    this.followedBy = followedBy;
+    this.followers = followers;
   }
 
   public int getId() {
@@ -102,22 +120,6 @@ public class User {
     this.email = email;
   }
 
-  public Set<User> getFollowing() {
-    return following;
-  }
-
-  public void setFollowing(Set<User> following) {
-    this.following = following;
-  }
-
-  public User getFollowedBy() {
-    return followedBy;
-  }
-
-  public void setFollowedBy(User followedBy) {
-    this.followedBy = followedBy;
-  }
-
   public String getDob() {
     return dob;
   }
@@ -131,7 +133,8 @@ public class User {
   }
 
   public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
-    this.phoneNumbers = phoneNumbers;
+    this.phoneNumbers.clear();
+    this.phoneNumbers.addAll(phoneNumbers);
   }
 
   public Role getRole() {
@@ -140,5 +143,38 @@ public class User {
 
   public void setRole(Role role) {
     this.role = role;
+  }
+  public Set<User> getFollowing() {
+    return following;
+  }
+
+  public void setFollowing(Set<User> following) {
+    this.following.clear();
+    this.following.addAll(following);
+  }
+
+  public Set<User> getFollowers() {
+    return followers;
+  }
+
+  public void setFollowers(Set<User> followers) {
+    this.followers.clear();
+    this.followers.addAll(followers);
+  }
+
+  public void addFollowing(User toFollow) {
+    this.following.add(toFollow);
+  }
+
+  public void addFollower(User toFollow) {
+    this.followers.add(toFollow);
+  }
+
+  public void removeFollowing(User toUnfollow) {
+    this.following.remove(toUnfollow);
+  }
+
+  public void removeFollower(User toUnfollow) {
+    this.followers.remove(toUnfollow);
   }
 }
