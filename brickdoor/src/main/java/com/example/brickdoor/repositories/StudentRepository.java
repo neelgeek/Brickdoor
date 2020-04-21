@@ -24,11 +24,4 @@ public interface StudentRepository extends CrudRepository<Student,Integer> {
           + "OR students.lastName LIKE :query%)"
   )
   Set<Student> searchStudents(@Param("query") String query, @Param("role") Role role);
-//
-//  @Query("SELECT following FROM User following WHERE following.role=:role AND following.id IN "
-//      + "(SELECT f.following_id FROM follows f "
-//      + "JOIN User u on "
-//      + "f.follower_id = u.id "
-//      + "WHERE u.id=:userId)")
-//  List<Student> getFollowingStudents(@Param("userId") int userId, @Param("role") Role role);
 }

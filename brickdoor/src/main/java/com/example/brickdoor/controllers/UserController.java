@@ -85,7 +85,7 @@ public class UserController {
     if (student == null || student.getUsername() == null || student.getPassword() == null || student.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
-    if (!userDao.registerUser(student)) {
+    if (userDao.registerUser(student) == null) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
     return new ModelAndView("redirect:/login");
@@ -97,7 +97,7 @@ public class UserController {
     if (company == null || company.getUsername() == null || company.getPassword() == null || company.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
-    if (!userDao.registerUser(company)) {
+    if (userDao.registerUser(company) == null) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
     return "registered company";
@@ -108,7 +108,7 @@ public class UserController {
     if (admin == null || admin.getUsername() == null || admin.getPassword() == null || admin.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
-    if (!userDao.registerUser(admin)) {
+    if (userDao.registerUser(admin) == null) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
     return "registered admin";
@@ -119,14 +119,15 @@ public class UserController {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
-    boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
-    if (userId != student.getId() || !permissionRoles) {
+    if (userId == student.getId() || userRole == Role.ADMIN) {
+      User updateUser = userDao.updateStudent(userId, student);
+      if (updateUser == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+      }
+    } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    User updateUser = userDao.updateStudent(userId, student);
-    if (updateUser == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
+
     return "updated student";
   }
 
@@ -135,14 +136,15 @@ public class UserController {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
-    boolean permissionRoles = userRole == Role.COMPANY || userRole == Role.ADMIN;
-    if (userId != company.getId() || !permissionRoles) {
+    if (userId == company.getId() || userRole == Role.ADMIN) {
+      User updateUser = userDao.updateCompany(userId, company);
+      if (updateUser == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+      }
+    } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    User updateUser = userDao.updateCompany(userId, company);
-    if (updateUser == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-    }
+
     return "updated company";
   }
 
@@ -151,14 +153,14 @@ public class UserController {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
-    boolean permissionRoles = userRole == Role.ADMIN;
-    if (userId != admin.getId() || !permissionRoles) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    if (userId == admin.getId() || userRole == Role.ADMIN) {
+      User updateUser = userDao.updateAdmin(userId, admin);
+      if (updateUser == null) {
+        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+      }
     }
-    User updateUser = userDao.updateAdmin(userId, admin);
-
-    if (updateUser == null) {
-      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    else {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     return "updated admin";
   }
@@ -268,7 +270,6 @@ public class UserController {
     return model;
   }
 
-
   @GetMapping("/company/{companyId}")
   public ModelAndView companyProfileGET(HttpSession session, @PathVariable("companyId") Integer companyId) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
@@ -354,6 +355,57 @@ public class UserController {
     model.addObject("followingCompanies", followingCompanies);
     return model;
   }
+
+  @PutMapping("/updateUserRole/student")
+  public ModelAndView updateUserRole(HttpSession session, @ModelAttribute("student") Student student) {
+    User currUser = (User) session.getAttribute("user");
+    int userId = currUser.getId();
+    Role userRole = userDao.getRole(userId);
+    if (userRole != Role.ADMIN) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    User updatedUser = userDao.updateUserRole(student, Role.STUDENT);
+    if (updatedUser == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("updatedUser", updatedUser);
+    return model;
+  }
+  @PutMapping("/updateUserRole/company")
+  public ModelAndView updateUserRole(HttpSession session, @ModelAttribute("company") Company company) {
+    User currUser = (User) session.getAttribute("user");
+    int userId = currUser.getId();
+    Role userRole = userDao.getRole(userId);
+    if (userRole != Role.ADMIN) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    User updatedUser = userDao.updateUserRole(company, Role.COMPANY);
+    if (updatedUser == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("updatedUser", updatedUser);
+    return model;
+  }
+
+  @PutMapping("/updateUserRole/admin")
+  public ModelAndView updateUserRole(HttpSession session, @ModelAttribute("admin") Admin admin) {
+    User currUser = (User) session.getAttribute("user");
+    int userId = currUser.getId();
+    Role userRole = userDao.getRole(userId);
+    if (userRole != Role.ADMIN) {
+      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+    }
+    User updatedUser = userDao.updateUserRole(admin, Role.ADMIN);
+    if (updatedUser == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    ModelAndView model = new ModelAndView("user");
+    model.addObject("updatedUser", updatedUser);
+    return model;
+  }
+
 }
 
 // Used to store the search query from the search bar.

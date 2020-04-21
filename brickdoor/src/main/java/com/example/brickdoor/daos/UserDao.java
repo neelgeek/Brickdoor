@@ -10,7 +10,6 @@ import com.example.brickdoor.repositories.CompanyRepository;
 import com.example.brickdoor.repositories.StudentRepository;
 import com.example.brickdoor.repositories.UserRepository;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -51,13 +50,13 @@ public class UserDao {
     return userRepository.findUserByUserCredentials(username, password);
   }
 
-  public boolean registerUser(User user) {
+  public User registerUser(User user) {
     if (userRepository.findUserByUsername(user.getUsername()) == null
             && userRepository.findUserByEmail(user.getEmail()) == null) {
       userRepository.save(user);
-      return true;
+      return user;
     }
-    return false;
+    return null;
   }
 
   public User updateStudent(int userId, Student updatedStudent) {
@@ -94,6 +93,12 @@ public class UserDao {
       return outdatedAdmin;
     }
     return null;
+  }
+
+  public User updateUserRole(User user, Role role) {
+    user.setRole(role);
+    userRepository.save(user);
+    return user;
   }
 
   private void updateBasicUserCred(User outdatedUser, User updatedUser) {
@@ -141,19 +146,14 @@ public class UserDao {
   }
 
   public void follow(User user, User toFollow) {
-    Set<User> f = user.getFollowing();
-    f.add(toFollow);
-   // user.addFollowing(toFollow);
+    user.addFollowing(toFollow);
     userRepository.save(user);
   }
-
 
   public void unfollow(User user, User toUnfollow) {
     Set<User> following = user.getFollowing();
     Set<User> filteredFollowing = following.stream().filter(ff -> ff.getId() != toUnfollow.getId()).collect(Collectors.toSet());
     user.setFollowing(filteredFollowing);
-  //  f.remove(toUnfollow);
-//    user.removeFollowing(toUnfollow);
     userRepository.save(user);
   }
 
