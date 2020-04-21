@@ -7,7 +7,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
-    <title>Brickdoor Admin | Update Student</title>
+    <title>Brickdoor Admin | Manage Companies</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"/>
     <meta content="" name="description"/>
@@ -49,7 +49,8 @@
     <div id="header" class="header navbar-default">
         <!-- begin navbar-header -->
         <div class="navbar-header">
-            <a th:href="@{~/}" href="index.html" class="navbar-brand"><span class="navbar-logo"></span>
+            <a th:href="@{~/}" href="index.html" class="navbar-brand"><span
+                    class="navbar-logo"></span>
                 <b>Brickdoor</b></a>
         </div>
         <!-- end navbar-header -->
@@ -83,62 +84,72 @@
         <!--			</ol>-->
         <!-- end breadcrumb -->
         <!-- begin page-header -->
-        <h1 class="page-header">Update Student <span></span></h1>
+        <h1 class="page-header">Manage Users <span></span></h1>
         <!-- end page-header -->
-
-        <!-- begin panel -->
-        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-
-            <!-- begin panel-body -->
-            <div class="panel-body">
-                <form action="#" method="POST" th:action="@{/updateStudent}" th:object="${person}"
-                      class="margin-bottom-0">
-                    <input type="hidden" class="form-control" th:field="*{id}"/>
-                    <label class="control-label">Name <span class="text-danger">*</span></label>
-                    <div class="row row-space-10">
-                        <div class="col-md-6 m-b-15">
-                            <input type="text" class="form-control" th:field="*{firstName}"
-                                    placeholder="First name" required/>
-                        </div>
-                        <div class="col-md-6 m-b-15">
-                            <input type="text" class="form-control" th:field="*{lastName}"
-                                   placeholder="Last name" required/>
-                        </div>
-                    </div>
-                    <label class="control-label">Username<span class="text-danger">*</span></label>
-                    <div class="row m-b-15">
-                        <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{username}"
-                                   placeholder="Username"
-                                   required/>
-                        </div>
-                    </div>
-                    <label class="control-label">Email <span class="text-danger">*</span></label>
-                    <div class="row m-b-15">
-                        <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{email}" placeholder="Email address"
-                                   required/>
-                        </div>
-                    </div>
-                    
-                    <label class="control-label">Password <span class="text-danger">*</span></label>
-                    <div class="row m-b-15">
-                        <div class="col-md-12">
-                            <input type="password" th:field="*{password}" class="form-control" placeholder="Password"
-                                   required/>
-                        </div>
-                    </div>
-                    <div class="register-buttons">
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">Update
-                        </button>
-                    </div>
-
-                </form>
+        <div class="row">
+            <div class="col-lg-12">
+                <a th:href="@{/admin/create/company}" href="#" class="btn btn-primary">Create New Company</a>
             </div>
-            <!-- end panel-body -->
         </div>
-        <!-- end panel -->
+        <p></p>
+        <div class="row">
+            <!-- begin panel -->
+            <div class="col-lg-12">
+                <!-- begin panel -->
+                <div class="panel panel-inverse" data-sortable-id="table-basic-7">
+                    <!-- begin panel-heading -->
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Users</h4>
+                    </div>
+                    <!-- end panel-heading -->
+                    <!-- begin panel-body -->
+                    <div class="panel-body">
+                        <!-- begin table-responsive -->
+                        <div class="table-responsive">
+                            <table
+                                    class="table table-striped m-b-0 table-bordered">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Company Name</th>
+                                    <th>Username</th>
+                                    <th>Email Address</th>
+                                    <th>Reviews Receieved</th>
+                                    <th width="5%"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="stu :${companies}">
+                                    <td class="with-img">
+                                        <img th:src="@{/img/user/user-3.jpg}"
+                                             src="../static/img/user/user-3.jpg"
+                                             class="img-rounded height-30"/>
+                                    </td>
+                                    <td th:text="${stu.companyName}"></td>
+                                    <td th:text="${stu.username}"></td>
+                                    <td th:text="${stu.email}"></td>
+                                    <td><span th:if="${stu.receivedReviews} != null"
+                                              th:text="${#lists.size(stu.receivedReviews)}"></span></td>
+                                    <td>
+                                        <a th:href="@{/admin/update/company/}+${stu.id}" href="#"
+                                           class="btn btn-sm btn-primary width-60 m-r-2">Edit</a>
+                                        <a th:href="@{/admin/update/role/}+${stu.id}" href="#" class="btn btn-sm btn-white width-60">Switch
+                                            Role</a>
+                                        <a th:href="@{/deleteUser/}+${stu.id}" href="#" class="btn btn-sm btn-white width-60">Delete</a>
 
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <!-- end table-responsive -->
+                    </div>
+                    <!-- end panel-body -->
+                </div>
+                <!-- end panel -->
+            </div>
+            <!-- end panel -->
+        </div>
         <p>
             <a href="javascript:history.back(-1);" class="btn btn-success">
                 <i class="fa fa-arrow-circle-left"></i> Back to previous page
@@ -167,14 +178,32 @@
 <script th:src="@{/plugins/select2/dist/js/select2.min.js}"
         src="../static/plugins/select2/dist/js/select2.min.js"></script>
 
+<script th:src="@{/plugins/DataTables/media/js/jquery.dataTables.js}"
+        src="../static/plugins/DataTables/media/js/jquery.dataTables.js"></script>
+<script th:src="@{/plugins/DataTables/media/js/dataTables.bootstrap.min.js}"
+        src="../static/plugins/DataTables/media/js/dataTables.bootstrap.min.js"></script>
+<script th:src="@{/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js}"
+        src="../static/plugins/DataTables/extensions/Responsive/js/dataTables.responsive.min.js"></script>
+<script th:src="@{/js/demo/table-manage-default.demo.min.js }"
+        src="../static/js/demo/table-manage-default.demo.min.js"></script>
+
 <!-- ================== END BASE JS ================== -->
 
 <script>
 		$(document).ready(function() {
 			App.init();
-			$(".default-select2").select2();
-			$(".multiple-select2").select2({ placeholder: "Select a state" });
+			TableManageDefault.init();
 		});
+
+
+
+
+
+
+
+
+
+
 
 
 

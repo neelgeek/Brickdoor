@@ -10,13 +10,9 @@ import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
 import com.example.brickdoor.models.WorkReview;
 
-import java.util.List;
-import java.util.Set;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,9 +21,10 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
+import java.util.List;
+import java.util.Set;
 
-import ch.qos.logback.core.db.dialect.SybaseSqlAnywhereDialect;
+import javax.servlet.http.HttpSession;
 
 @Controller()
 public class UserController {
@@ -49,8 +46,6 @@ public class UserController {
     model.addObject("user", user);
     return model;
   }
-
-
 
 
   // Post route for login, handle user authentication here
@@ -97,7 +92,7 @@ public class UserController {
     }
 
     Admin admin = session.getAttribute("user") == null ? new Admin() : (Admin) session.getAttribute("user");
-    if(admin.getId()==0) {
+    if (admin.getId() == 0) {
       return new ModelAndView("redirect:/login");
     }
     return new ModelAndView("redirect:/admin/manage/users");
@@ -105,14 +100,19 @@ public class UserController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/registerCompany")
-  public String registerCompanyPost(@ModelAttribute("company") Company company) {
+  public ModelAndView registerCompanyPost(HttpSession session, @ModelAttribute("company") Company company) {
     if (company == null || company.getUsername() == null || company.getPassword() == null || company.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
     if (userDao.registerUser(company) == null) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return "registered company";
+    Admin admin = session.getAttribute("user") == null ? new Admin() : (Admin) session.getAttribute("user");
+    if (admin.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
+    return new ModelAndView("redirect:/admin/manage/companies");
+
   }
 
   @PostMapping("/registerAdmin")
@@ -145,21 +145,24 @@ public class UserController {
 
   }
 
-  @PutMapping("/updateCompany")
-  public String updateCompany(HttpSession session, @ModelAttribute("company") Company company) {
+  @PostMapping("/updateCompany")
+  public ModelAndView updateCompany(HttpSession session, @ModelAttribute("company") Company company) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
-    if (userId == company.getId() || userRole == Role.ADMIN) {
-      User updateUser = userDao.updateCompany(userId, company);
-      if (updateUser == null) {
-        throw new ResponseStatusException(HttpStatus.NOT_FOUND);
-      }
-    } else {
+
+    boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
+    if (!permissionRoles) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
+    System.out.println("Company Id is " +company.getId());
+    User updateUser = userDao.updateCompany(company.getId(), company);
+    if (updateUser == null) {
+      throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    return new ModelAndView("redirect:/admin/manage/companies");
 
-    return "updated company";
+
   }
 
   @PutMapping("/updateAdmin")
@@ -172,15 +175,14 @@ public class UserController {
       if (updateUser == null) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
       }
-    }
-    else {
+    } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     return "updated admin";
   }
 
   @GetMapping("/deleteUser/{uid}")
-  public ModelAndView deleteUser(HttpSession session,@PathVariable("uid") Integer uid) {
+  public ModelAndView deleteUser(HttpSession session, @PathVariable("uid") Integer uid) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     if (userDao.getRole(userId) != Role.ADMIN) {
@@ -189,7 +191,7 @@ public class UserController {
     if (!userDao.deleteUser(uid)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return new ModelAndView("redirect:/admin/manage/users");
+    return new ModelAndView("redirect:/admin/");
   }
 
   @GetMapping("/getAllCompanies")
@@ -387,6 +389,7 @@ public class UserController {
     return new ModelAndView("redirect:/admin/manage/users");
 
   }
+
   @PostMapping("/updateUserRole/company")
   public ModelAndView updateUserRole(HttpSession session, @ModelAttribute("company") Company company) {
     User currUser = (User) session.getAttribute("user");

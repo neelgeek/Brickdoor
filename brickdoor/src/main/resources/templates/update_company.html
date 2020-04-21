@@ -7,7 +7,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
-    <title>Brickdoor Admin | Update Student</title>
+    <title>Brickdoor Admin | Update Company</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"/>
     <meta content="" name="description"/>
@@ -83,7 +83,7 @@
         <!--			</ol>-->
         <!-- end breadcrumb -->
         <!-- begin page-header -->
-        <h1 class="page-header">Update Student <span></span></h1>
+        <h1 class="page-header">Update Company<span></span></h1>
         <!-- end page-header -->
 
         <!-- begin panel -->
@@ -91,18 +91,18 @@
 
             <!-- begin panel-body -->
             <div class="panel-body">
-                <form action="#" method="POST" th:action="@{/updateStudent}" th:object="${person}"
+                <form action="#" method="POST" th:action="@{/updateCompany}" th:object="${company}"
                       class="margin-bottom-0">
                     <input type="hidden" class="form-control" th:field="*{id}"/>
-                    <label class="control-label">Name <span class="text-danger">*</span></label>
+                    <label class="control-label">Company Name <span class="text-danger">*</span></label>
                     <div class="row row-space-10">
                         <div class="col-md-6 m-b-15">
-                            <input type="text" class="form-control" th:field="*{firstName}"
-                                    placeholder="First name" required/>
+                            <input type="text" class="form-control" th:field="*{companyName}"
+                                    placeholder="Company name" required/>
                         </div>
                         <div class="col-md-6 m-b-15">
-                            <input type="text" class="form-control" th:field="*{lastName}"
-                                   placeholder="Last name" required/>
+                            <input type="text" class="form-control" th:field="*{companyAddress}"
+                                   placeholder="Company address" required/>
                         </div>
                     </div>
                     <label class="control-label">Username<span class="text-danger">*</span></label>
@@ -120,7 +120,6 @@
                                    required/>
                         </div>
                     </div>
-                    
                     <label class="control-label">Password <span class="text-danger">*</span></label>
                     <div class="row m-b-15">
                         <div class="col-md-12">

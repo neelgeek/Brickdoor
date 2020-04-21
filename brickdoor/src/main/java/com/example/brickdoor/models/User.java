@@ -134,7 +134,9 @@ public class User {
 
   public void setPhoneNumbers(Set<PhoneNumber> phoneNumbers) {
     this.phoneNumbers.clear();
-    this.phoneNumbers.addAll(phoneNumbers);
+    if(phoneNumbers!=null) {
+      this.phoneNumbers.addAll(phoneNumbers);
+    }
   }
 
   public Role getRole() {

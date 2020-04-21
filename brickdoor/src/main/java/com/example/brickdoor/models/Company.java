@@ -2,12 +2,13 @@ package com.example.brickdoor.models;
 
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.Entity;
 import javax.persistence.OneToMany;
 import javax.persistence.PrimaryKeyJoinColumn;
 
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName="id")
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
 public class Company extends User {
 
   private String companyName;
@@ -16,7 +17,11 @@ public class Company extends User {
   @OneToMany(mappedBy = "company")
   private List<Review> receivedReviews;
 
-  public Company() {super(Role.COMPANY);}
+
+  public Company() {
+    super(Role.COMPANY);
+  }
+
 
   public Company(String companyName, String companyAddress) {
     super(Role.COMPANY);
