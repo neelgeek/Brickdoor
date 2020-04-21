@@ -10,10 +10,10 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UserRepository extends CrudRepository<User,Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
-  @Query("SELECT user FROM User user WHERE user.username=:username AND user.password=:password")
-  User findUserByUserCredentials(@Param("username") String username, @Param("password") String password);
+  @Query("SELECT user FROM User user WHERE user.username=:username AND user.password=:password AND user.role=:role")
+  User findUserByUserCredentials(@Param("username") String username, @Param("password") String password, @Param("role") Role role);
 
   @Query("SELECT user FROM User user WHERE user.username=:username")
   User findUserByUsername(@Param("username") String username);

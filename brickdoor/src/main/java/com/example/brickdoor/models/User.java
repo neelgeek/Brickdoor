@@ -1,7 +1,9 @@
 package com.example.brickdoor.models;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.HashSet;
+
 import java.util.Set;
 
 import javax.persistence.Entity;
@@ -35,6 +37,7 @@ public class User {
   @OneToMany(mappedBy = "user", fetch = FetchType.EAGER)
   private Set<PhoneNumber> phoneNumbers;
 
+
   @ManyToMany (fetch = FetchType.EAGER)
   @JoinTable(
       name = "follows",
@@ -53,6 +56,7 @@ public class User {
   @ManyToMany(mappedBy = "following", fetch = FetchType.EAGER)
   @JsonIgnore
   private Set<User> followers;
+
 
   public User() {
   }

@@ -1,5 +1,7 @@
 package com.example.brickdoor.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -40,6 +42,7 @@ public abstract class Review {
     protected Company company;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "studentId")
     protected Student student;
 
