@@ -21,6 +21,7 @@ public class Student extends User {
 
   public Student() {
     super();
+    this.setRole(Role.STUDENT);
   }
 
   public Student(String firstName, String lastName, String username, String password,

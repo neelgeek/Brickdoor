@@ -48,6 +48,8 @@ public class AdminController {
     return new ModelAndView("redirect:/admin/");
   }
 
+  // Manage Student Routes
+
   @GetMapping("/admin/manage/users")
   public ModelAndView adminManageUsersRouteGet(HttpSession session) {
     User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
@@ -105,7 +107,33 @@ public class AdminController {
     return model;
   }
 
+  // Manage Companies Routes
 
+  @GetMapping("/admin/manage/companies")
+  public ModelAndView adminManageCompanies(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+
+    List<Company> companies = userDao.getAllCompanies();
+    ModelAndView model = new ModelAndView("manage_companies");
+    model.addObject("user", user);
+    model.addObject("companies", companies);
+    return model;
+  }
+
+  @GetMapping("/admin/create/company")
+  public ModelAndView adminCreateCompanyGet(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+    ModelAndView model = new ModelAndView("create_company");
+    model.addObject("user", user);
+    model.addObject("company", new Company());
+    return model;
+  }
 
 
 }

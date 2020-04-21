@@ -51,8 +51,6 @@ public class UserController {
   }
 
 
-
-
   // Post route for login, handle user authentication here
   @PostMapping("/login")
   public ModelAndView loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
@@ -97,7 +95,7 @@ public class UserController {
     }
 
     Admin admin = session.getAttribute("user") == null ? new Admin() : (Admin) session.getAttribute("user");
-    if(admin.getId()==0) {
+    if (admin.getId() == 0) {
       return new ModelAndView("redirect:/login");
     }
     return new ModelAndView("redirect:/admin/manage/users");
@@ -105,14 +103,19 @@ public class UserController {
 
   // Post route for login, handle user authentication here
   @PostMapping("/registerCompany")
-  public String registerCompanyPost(@ModelAttribute("company") Company company) {
+  public ModelAndView registerCompanyPost(HttpSession session, @ModelAttribute("company") Company company) {
     if (company == null || company.getUsername() == null || company.getPassword() == null || company.getEmail() == null) {
       throw new ResponseStatusException(HttpStatus.UNPROCESSABLE_ENTITY, "Missing Register Credentials");
     }
     if (userDao.registerUser(company) == null) {
       throw new ResponseStatusException(HttpStatus.CONFLICT);
     }
-    return "registered company";
+    Admin admin = session.getAttribute("user") == null ? new Admin() : (Admin) session.getAttribute("user");
+    if (admin.getId() == 0) {
+      return new ModelAndView("redirect:/login");
+    }
+    return new ModelAndView("redirect:/admin/manage/companies");
+
   }
 
   @PostMapping("/registerAdmin")
@@ -172,15 +175,14 @@ public class UserController {
       if (updateUser == null) {
         throw new ResponseStatusException(HttpStatus.NOT_FOUND);
       }
-    }
-    else {
+    } else {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
     return "updated admin";
   }
 
   @GetMapping("/deleteUser/{uid}")
-  public ModelAndView deleteUser(HttpSession session,@PathVariable("uid") Integer uid) {
+  public ModelAndView deleteUser(HttpSession session, @PathVariable("uid") Integer uid) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
     if (userDao.getRole(userId) != Role.ADMIN) {
@@ -387,6 +389,7 @@ public class UserController {
     return new ModelAndView("redirect:/admin/manage/users");
 
   }
+
   @PostMapping("/updateUserRole/company")
   public ModelAndView updateUserRole(HttpSession session, @ModelAttribute("company") Company company) {
     User currUser = (User) session.getAttribute("user");
