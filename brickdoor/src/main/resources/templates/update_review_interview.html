@@ -7,7 +7,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
-    <title>Brickdoor Admin | Update Student</title>
+    <title>Brickdoor Admin | Update Work Review</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"/>
     <meta content="" name="description"/>
@@ -83,7 +83,7 @@
         <!--			</ol>-->
         <!-- end breadcrumb -->
         <!-- begin page-header -->
-        <h1 class="page-header">Update Student <span></span></h1>
+        <h1 class="page-header">Update Work Review <span></span></h1>
         <!-- end page-header -->
 
         <!-- begin panel -->
@@ -91,47 +91,33 @@
 
             <!-- begin panel-body -->
             <div class="panel-body">
-                <form action="#" method="POST" th:action="@{/updateStudent}" th:object="${person}"
+                <form action="#" method="POST" th:action="@{/updateInterviewReview}"
+                      th:object="${review}"
                       class="margin-bottom-0">
                     <input type="hidden" class="form-control" th:field="*{id}"/>
-                    <label class="control-label">Name <span class="text-danger">*</span></label>
-                    <div class="row row-space-10">
-                        <div class="col-md-6 m-b-15">
-                            <input type="text" class="form-control" th:field="*{firstName}"
-                                    placeholder="First name" required/>
-                        </div>
-                        <div class="col-md-6 m-b-15">
-                            <input type="text" class="form-control" th:field="*{lastName}"
-                                   placeholder="Last name" required/>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">Review Title</label>
+                        <div class="col-md-9">
+                            <input th:field="*{title}" type="text" class="form-control m-b-5"
+                                   placeholder="Review Title"/>
                         </div>
                     </div>
-                    <label class="control-label">Username<span class="text-danger">*</span></label>
-                    <div class="row m-b-15">
-                        <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{username}"
-                                   placeholder="Username"
-                                   required/>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">Review Contents</label>
+                        <div class="col-md-9">
+                            <textarea th:field="*{content}" type="textarea"
+                                      class="form-control m-b-5"
+                                      placeholder="Review Contents"></textarea>
                         </div>
                     </div>
-                    <label class="control-label">Email <span class="text-danger">*</span></label>
-                    <div class="row m-b-15">
-                        <div class="col-md-12">
-                            <input type="text" class="form-control" th:field="*{email}" placeholder="Email address"
-                                   required/>
+                    <div class="form-group row m-b-15">
+                        <label class="col-form-label col-md-3">Interview Questions</label>
+                        <div class="col-md-9">
+                            <textarea rows="3" th:field="*{questions}" class="form-control m-b-5"
+                                      placeholder="Interview Questions"/></textarea>
                         </div>
                     </div>
-
-                    <label class="control-label">Password <span class="text-danger">*</span></label>
-                    <div class="row m-b-15">
-                        <div class="col-md-12">
-                            <input type="password" th:field="*{password}" class="form-control" placeholder="Password"
-                                   required/>
-                        </div>
-                    </div>
-                    <div class="register-buttons">
-                        <button type="submit" class="btn btn-primary btn-block btn-lg">Update
-                        </button>
-                    </div>
+                    <button type="submit" class="btn btn-sm btn-primary m-r-5">Add Review</button>
 
                 </form>
             </div>

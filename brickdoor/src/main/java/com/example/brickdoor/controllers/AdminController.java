@@ -1,11 +1,14 @@
 package com.example.brickdoor.controllers;
 
+import com.example.brickdoor.daos.ReviewDao;
 import com.example.brickdoor.daos.UserDao;
 import com.example.brickdoor.models.Admin;
 import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
+import com.example.brickdoor.models.WorkReview;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +27,9 @@ public class AdminController {
 
   @Autowired
   private UserDao userDao;
+
+  @Autowired
+  private ReviewDao reviewDao;
 
   @GetMapping("/admin/login")
   public ModelAndView adminLoginRouteGet(HttpSession session) {
@@ -78,7 +84,7 @@ public class AdminController {
   }
 
   @GetMapping("/admin/update/company/{cid}")
-  public ModelAndView adminUpdateCompanyGet(HttpSession session, @PathVariable("cid") Integer cid) {
+  public ModelAndView adminUpdateWorkGet(HttpSession session, @PathVariable("cid") Integer cid) {
     User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
     if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
       return new ModelAndView("redirect:/admin/login");
@@ -149,5 +155,74 @@ public class AdminController {
     return model;
   }
 
+  @GetMapping("/admin/manage/reviews/work")
+  public ModelAndView adminManageJobReviews(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+
+    List<WorkReview> workReviews = reviewDao.findAllWorkReview();
+    System.out.println(workReviews.size());
+    ModelAndView model = new ModelAndView("manage_reviews_job");
+    model.addObject("user", user);
+    model.addObject("reviews", workReviews);
+    return model;
+  }
+
+
+
+  @GetMapping("/admin/update/review/work/{wid}")
+  public ModelAndView adminUpdateCompanyGet(HttpSession session, @PathVariable("wid") Integer wid) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+    WorkReview review  = reviewDao.findWorkReviewById(wid);
+    work_review_form review2update = new work_review_form();
+    review2update.setId(review.getId());
+    review2update.setCompanyId(review.getCompany().getId());
+    review2update.setContent(review.getContent());
+    review2update.setJobTitle(review.getJobTitle());
+    review2update.setTitle(review.getTitle());
+    ModelAndView model = new ModelAndView("update_review_work");
+    model.addObject("user", user);
+    model.addObject("review", review2update);
+    return model;
+  }
+
+  @GetMapping("/admin/manage/reviews/interview")
+  public ModelAndView adminManageInterviewReviews(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+
+    List<InterviewReview> interviewReviews = reviewDao.findAllInterviewReview();
+    System.out.println(interviewReviews.size());
+    ModelAndView model = new ModelAndView("manage_reviews_interview");
+    model.addObject("user", user);
+    model.addObject("reviews", interviewReviews);
+    return model;
+  }
+
+  @GetMapping("/admin/update/review/interview/{wid}")
+  public ModelAndView adminUpdateInterviewGet(HttpSession session, @PathVariable("wid") Integer wid) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+    InterviewReview review  = reviewDao.findInterviewReviewById(wid);
+    interview_review_form review2update = new interview_review_form();
+    review2update.setId(review.getId());
+    review2update.setCompanyId(review.getCompany().getId());
+    review2update.setContent(review.getContent());
+    review2update.setQuestions(review.getInterviewQuestion());
+    review2update.setTitle(review.getTitle());
+    ModelAndView model = new ModelAndView("update_review_interview");
+    model.addObject("user", user);
+    model.addObject("review", review2update);
+    return model;
+  }
 
 }
