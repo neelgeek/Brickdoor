@@ -7,7 +7,7 @@
 <!--<![endif]-->
 <head>
     <meta charset="utf-8"/>
-    <title>Brickdoor Admin | Manage Work Reviews</title>
+    <title>Brickdoor Admin | Manage Interview Reviews</title>
     <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
           name="viewport"/>
     <meta content="" name="description"/>
@@ -84,7 +84,7 @@
         <!--			</ol>-->
         <!-- end breadcrumb -->
         <!-- begin page-header -->
-        <h1 class="page-header">Manage Work Reviews <span></span></h1>
+        <h1 class="page-header">Manage Interview Reviews <span></span></h1>
         <!-- end page-header -->
 
         <p></p>
@@ -95,7 +95,7 @@
                 <div class="panel panel-inverse" data-sortable-id="table-basic-7">
                     <!-- begin panel-heading -->
                     <div class="panel-heading">
-                        <h4 class="panel-title">Work Reviews</h4>
+                        <h4 class="panel-title">Iterview Reviews</h4>
                     </div>
                     <!-- end panel-heading -->
                     <!-- begin panel-body -->
@@ -110,8 +110,8 @@
                                     <th>Reviewed By</th>
                                     <th>Review For</th>
                                     <th>Review Title</th>
-                                    <th>Job Title</th>
                                     <th>Review Content</th>
+                                    <th>Interview Questions</th>
                                     <th width="5%"></th>
                                 </tr>
                                 </thead>
@@ -119,11 +119,11 @@
                                 <tr th:each="rev :${reviews}">
                                     <td th:text="${rev.student?.firstName +' '+ rev.student?.lastName}"></td>
                                     <td th:text="${rev.company?.companyName}"></td>
-                                    <td th:text="${rev?.jobTitle}"></td>
                                     <td th:text="${rev?.title}"></td>
                                     <td th:text="${rev?.content}"></td>
+                                    <td th:text="${rev?.interviewQuestion}"></td>
                                     <td>
-                                        <a th:href="@{/admin/update/review/work/}+${rev.id}" href="#"
+                                        <a th:href="@{/admin/update/review/interview/}+${rev.id}" href="#"
                                            class="btn btn-sm btn-primary width-60 m-r-2">Edit</a>
                                         <a th:href="@{/deleteReview/}+${rev.id}" href="#" class="btn btn-sm btn-white width-60">Delete</a>
 

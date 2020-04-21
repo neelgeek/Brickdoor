@@ -4,6 +4,7 @@ import com.example.brickdoor.daos.ReviewDao;
 import com.example.brickdoor.daos.UserDao;
 import com.example.brickdoor.models.Admin;
 import com.example.brickdoor.models.Company;
+import com.example.brickdoor.models.InterviewReview;
 import com.example.brickdoor.models.Role;
 import com.example.brickdoor.models.Student;
 import com.example.brickdoor.models.User;
@@ -189,4 +190,39 @@ public class AdminController {
     model.addObject("review", review2update);
     return model;
   }
+
+  @GetMapping("/admin/manage/reviews/interview")
+  public ModelAndView adminManageInterviewReviews(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+
+    List<InterviewReview> interviewReviews = reviewDao.findAllInterviewReview();
+    System.out.println(interviewReviews.size());
+    ModelAndView model = new ModelAndView("manage_reviews_interview");
+    model.addObject("user", user);
+    model.addObject("reviews", interviewReviews);
+    return model;
+  }
+
+  @GetMapping("/admin/update/review/interview/{wid}")
+  public ModelAndView adminUpdateInterviewGet(HttpSession session, @PathVariable("wid") Integer wid) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/login");
+    }
+    InterviewReview review  = reviewDao.findInterviewReviewById(wid);
+    interview_review_form review2update = new interview_review_form();
+    review2update.setId(review.getId());
+    review2update.setCompanyId(review.getCompany().getId());
+    review2update.setContent(review.getContent());
+    review2update.setQuestions(review.getInterviewQuestion());
+    review2update.setTitle(review.getTitle());
+    ModelAndView model = new ModelAndView("update_review_interview");
+    model.addObject("user", user);
+    model.addObject("review", review2update);
+    return model;
+  }
+
 }

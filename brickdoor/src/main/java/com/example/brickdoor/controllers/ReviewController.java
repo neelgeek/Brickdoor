@@ -115,7 +115,7 @@ public class ReviewController {
   public ModelAndView updateInterviewReview(HttpSession session, @ModelAttribute("review") InterviewReview review) {
     InterviewReview updated = reviewDao.updateInterviewReview(review);
     if (updated != null) {
-      return new ModelAndView("redirect:/admin/manage/reviews/job");
+      return new ModelAndView("redirect:/admin/manage/reviews/interview");
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -148,7 +148,7 @@ public class ReviewController {
     return reviewDao.findAllWorkReview();
   }
 
-  @GetMapping("/deleteReview/work/{wId}")
+  @GetMapping("/deleteReview/{wId}")
   public ModelAndView deleteWorkReview(HttpSession session, @PathVariable("wId") Integer wId){
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
@@ -158,7 +158,7 @@ public class ReviewController {
     if (!reviewDao.deleteReviewById(wId)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return new ModelAndView("redirect:/admin/manage/reviews/work");
+    return new ModelAndView("redirect:/admin/");
   }
 }
 
