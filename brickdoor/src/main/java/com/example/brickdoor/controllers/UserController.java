@@ -298,9 +298,9 @@ public class UserController {
   @GetMapping("/company/{companyId}")
   public ModelAndView companyProfileGET(HttpSession session, @PathVariable("companyId") Integer companyId) {
     User loggedInUser = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
-//    if(loggedInUser.getId()==0){
-//      return new ModelAndView("redirect:/login");
-//    }
+    if(loggedInUser.getId()==0){
+      return new ModelAndView("redirect:/login");
+    }
     Student user = new Student();
 
     if(loggedInUser.getRole()==Role.COMPANY){
