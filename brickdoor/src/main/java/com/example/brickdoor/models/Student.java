@@ -17,7 +17,7 @@ public class Student extends User {
   private String lastName;
 
   @JsonIgnore
-  @OneToMany(mappedBy = "student")
+  @OneToMany(mappedBy = "student", orphanRemoval=true)
   private List<Review> givenReviews;
 
   public Student() {
