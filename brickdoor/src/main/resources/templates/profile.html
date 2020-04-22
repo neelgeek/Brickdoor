@@ -91,7 +91,7 @@
 							  class="d-none d-md-inline"></span> <b class="caret"></b>
 					</a>
 					<div class="dropdown-menu dropdown-menu-right">
-<!--						<a href="javascript:;" class="dropdown-item">Edit Profile</a>-->
+
 						<div class="dropdown-divider"></div>
 						<a th:href="@{~/logout}" href="/logout" class="dropdown-item">Log Out</a>
 					</div>
@@ -122,7 +122,7 @@
                     <!-- BEGIN profile-header-info -->
                     <div class="profile-header-info">
                         <h4 class="m-t-10 m-b-5" th:text="${user.firstName+' '+user.lastName}" >Sean Ngu</h4>
-<!--                        <a href="#" class="btn btn-xs btn-yellow">Edit Profile</a>-->
+                        <a th:href="@{/updateprofile}" href="#" class="btn btn-xs btn-yellow">Edit Profile</a>
                     </div>
                     <!-- END profile-header-info -->
                 </div>

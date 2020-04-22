@@ -142,10 +142,14 @@ public class UserController {
 //    if (!permissionRoles) {
 //      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
 //    }
+
     System.out.println(student.getId());
     User updateUser = userDao.updateStudent(student.getId(), student);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    if(updateUser.getId()==user.getId()){
+      session.setAttribute("user", updateUser);
     }
     return new ModelAndView("redirect:/admin/manage/users");
 
@@ -161,6 +165,9 @@ public class UserController {
     User updateUser = userDao.updateCompany(company.getId(), company);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    if(updateUser.getId()==user.getId()){
+      session.setAttribute("user", updateUser);
     }
     return new ModelAndView("redirect:/admin/manage/companies");
 
@@ -322,17 +329,17 @@ public class UserController {
     return model;
   }
 
-  @PutMapping("/followUser/{userId}")
+  @GetMapping("/followUser/{userId}")
   public ModelAndView followUser(HttpSession session, @PathVariable("userId") Integer userId) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     User toFollow = userDao.findById(userId);
     if (toFollow == null) {
       return new ModelAndView("redirect:/");
     }
+
     userDao.follow(user, toFollow);
-    ModelAndView model = new ModelAndView("user");
+    ModelAndView model = new ModelAndView("redirect:/user/"+userId);
     model.addObject("user", user);
-    model.addObject("toFollow", toFollow);
     return model;
   }
 
@@ -452,6 +459,7 @@ public class UserController {
     ModelAndView model;
     if(user.getRole()==Role.STUDENT){
       model= new ModelAndView("update_student");
+      user = userDao.findStudentById(user.getId());
     }
     else{
       Company currentCompany = userDao.findCompanyById(user.getId());

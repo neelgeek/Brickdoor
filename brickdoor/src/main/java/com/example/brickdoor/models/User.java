@@ -56,7 +56,7 @@ public class User {
   @ManyToMany(mappedBy = "following", fetch = FetchType.EAGER)
   @JsonIgnore
   private Set<User> followers;
-
+  
 
   public User() {
   }

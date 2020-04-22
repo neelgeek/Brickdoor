@@ -124,7 +124,7 @@
                     <div class="profile-header-info">
                         <h4 class="m-t-10 m-b-5" th:text="${person.firstName+' '+person.lastName}">
                             Sean Ngu</h4>
-                        <a th:if="${user.id!=0}" href="#" class="btn btn-xs btn-yellow">Follow this
+                        <a th:if="${user.id!=0}" th:href="@{/followUser/}+${person.id}" href="#" class="btn btn-xs btn-yellow">Follow this
                             User</a>
                     </div>
                     <!-- END profile-header-info -->
