@@ -56,7 +56,7 @@ public class UserController {
     User authenticatedStudent = userDao.authenticate(username, password, Role.STUDENT);
     User authenticatedCompany = userDao.authenticate(username, password, Role.COMPANY);
     if (authenticatedStudent == null && authenticatedCompany == null) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+      return new ModelAndView("redirect:/login");
     }
     if (authenticatedStudent != null) {
       session.setAttribute("user", authenticatedStudent);
@@ -479,6 +479,52 @@ public class UserController {
     return model;
   }
 
+
+  @GetMapping("/update/review/work/{wid}")
+  public ModelAndView userUpdateCompanyGet(HttpSession session, @PathVariable("wid") Integer wid) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.STUDENT) {
+      return new ModelAndView("redirect:/login");
+    }
+    WorkReview review  = reviewDao.findWorkReviewById(wid);
+    if(review!=null && review.getStudent().getId()!=user.getId()){
+      return new ModelAndView("redirect:/");
+    }
+
+    work_review_form review2update = new work_review_form();
+    review2update.setId(review.getId());
+    review2update.setCompanyId(review.getCompany().getId());
+    review2update.setContent(review.getContent());
+    review2update.setJobTitle(review.getJobTitle());
+    review2update.setTitle(review.getTitle());
+    ModelAndView model = new ModelAndView("update_review_work");
+    model.addObject("user", user);
+    model.addObject("review", review2update);
+    return model;
+  }
+
+  @GetMapping("/update/review/interview/{wid}")
+  public ModelAndView userUpdateInterviewGet(HttpSession session, @PathVariable("wid") Integer wid) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() != Role.STUDENT) {
+      return new ModelAndView("redirect:/login");
+    }
+    InterviewReview review  = reviewDao.findInterviewReviewById(wid);
+    if(review!=null && review.getStudent().getId()!=user.getId()){
+      return new ModelAndView("redirect:/");
+    }
+
+    interview_review_form review2update = new interview_review_form();
+    review2update.setId(review.getId());
+    review2update.setCompanyId(review.getCompany().getId());
+    review2update.setContent(review.getContent());
+    review2update.setQuestions(review.getInterviewQuestion());
+    review2update.setTitle(review.getTitle());
+    ModelAndView model = new ModelAndView("update_review_interview");
+    model.addObject("user", user);
+    model.addObject("review", review2update);
+    return model;
+  }
 }
 
 // Used to store the search query from the search bar.

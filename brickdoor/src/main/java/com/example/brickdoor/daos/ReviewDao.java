@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ReviewDao {
@@ -37,6 +36,10 @@ public class ReviewDao {
         return reviewRepo.findAllReview();
     }
 
+    public Review findReviewById(Integer Id)
+    {
+        return reviewRepo.findById(Id).orElse(null);
+    }
 
     public Review createReview(Review review) {
 

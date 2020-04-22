@@ -175,7 +175,11 @@
                                     <p th:text="${inter.content}">
                                     </p>
                                 </div>
-
+                                <div class="timeline-content">
+                                    <a th:href="@{/update/review/work/}+${inter.id}" href="#"
+                                       class="btn btn-sm btn-primary width-60 m-r-2">Edit</a>
+                                    <a th:href="@{/deleteReview/}+${inter.id}" href="#" class="btn btn-sm btn-white width-60">Delete</a>
+                                </div>
 
                             </div>
                             <!-- end timeline-body -->
@@ -218,7 +222,11 @@
                                     <p th:text="${inter.interviewQuestion}">
                                     </p>
                                 </div>
-
+                                <div class="timeline-content">
+                                    <a th:href="@{/update/review/interview/}+${inter.id}" href="#"
+                                       class="btn btn-sm btn-primary width-60 m-r-2">Edit</a>
+                                    <a th:href="@{/deleteReview/}+${inter.id}" href="#" class="btn btn-sm btn-white width-60">Delete</a>
+                                </div>
                             </div>
                             <!-- end timeline-body -->
                         </li>
