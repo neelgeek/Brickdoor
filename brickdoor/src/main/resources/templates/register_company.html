@@ -49,7 +49,8 @@
         <!-- begin news-feed -->
         <div class="news-feed">
             <div class="news-image"
-                 style="background-image: url(../static/img/login-bg/employee.jpg)"></div>
+                 style="background-image: url(../static/img/login-bg/employee.jpg)"
+                 th:style="'background:url('+ @{/img/login-bg/employee.jpg} +');'"></div>
             <div class="news-caption">
                 <h4 class="caption-title"><b>Brickdoor</b></h4>
                 <p>
@@ -67,7 +68,7 @@
             <!-- begin register-header -->
             <h1 class="register-header">
                 Sign Up
-                <small>Create your Brickdoor Account. It’s free and always will be.</small>
+                <small>Create your Brickdoor Company Account. It’s free and always will be.</small>
             </h1>
             <!-- begin register-content -->
             <div class="register-content">
