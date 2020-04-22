@@ -23,9 +23,15 @@ public class AppController {
   @GetMapping("/")
   public ModelAndView indexRoute(HttpSession session) {
     User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
-    if (user.getId()!=0 && user.getRole()==Role.ADMIN){
-      return new ModelAndView("redirect:/admin/");
+    if (user.getId() != 0) {
+      if (user.getRole() == Role.ADMIN) {
+        return new ModelAndView("redirect:/admin/");
+      } else if (user.getRole() == Role.COMPANY) {
+        return new ModelAndView("redirect:/company/" + user.getId());
+      }
     }
+
+
     List<Review> reviewList = reviewDao.findAllReview();
     ModelAndView modelAndView = new ModelAndView("index");
     modelAndView.addObject("search", new SearchObject());
@@ -37,8 +43,7 @@ public class AppController {
   @GetMapping("/admin/")
   public ModelAndView adminIndexRoute(HttpSession session) {
     User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
-    if(user.getId()==0 || user.getRole()!= Role.ADMIN)
-    {
+    if (user.getId() == 0 || user.getRole() != Role.ADMIN) {
       return new ModelAndView("redirect:/admin/login");
     }
     ModelAndView modelAndView = new ModelAndView("admin_home");
@@ -46,6 +51,5 @@ public class AppController {
     return modelAndView;
   }
 
-  
 
 }
