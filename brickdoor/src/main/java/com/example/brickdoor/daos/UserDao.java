@@ -102,6 +102,7 @@ public class UserDao {
   }
 
   private void updateBasicUserCred(User outdatedUser, User updatedUser) {
+    outdatedUser.setUsername(updatedUser.getUsername());
     outdatedUser.setEmail(updatedUser.getEmail());
     outdatedUser.setPassword(updatedUser.getPassword());
     outdatedUser.setDob(updatedUser.getDob());
