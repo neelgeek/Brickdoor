@@ -44,7 +44,7 @@ public class ReviewController {
     ModelAndView modelAndView = new ModelAndView("interview_review");
     modelAndView.addObject("user", user);
     modelAndView.addObject("review", new interview_review_form());
-    modelAndView.addObject("companies",companies);
+    modelAndView.addObject("companies", companies);
     System.out.println("company" + companies.get(0).getCompanyName());
     return modelAndView;
 
@@ -82,7 +82,7 @@ public class ReviewController {
     }
     ModelAndView modelAndView = new ModelAndView("job_review");
     List<Company> companies = userDao.getAllCompanies();
-    modelAndView.addObject("companies",companies);
+    modelAndView.addObject("companies", companies);
     modelAndView.addObject("user", user);
     modelAndView.addObject("review", new work_review_form());
     return modelAndView;
@@ -114,8 +114,14 @@ public class ReviewController {
   @PostMapping("/updateInterviewReview")
   public ModelAndView updateInterviewReview(HttpSession session, @ModelAttribute("review") InterviewReview review) {
     InterviewReview updated = reviewDao.updateInterviewReview(review);
+
     if (updated != null) {
-      return new ModelAndView("redirect:/admin/manage/reviews/interview");
+      User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+      if (user.getRole() == Role.ADMIN) {
+        return new ModelAndView("redirect:/admin/manage/reviews/interview");
+      } else {
+        return new ModelAndView("redirect:/profile");
+      }
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -126,7 +132,12 @@ public class ReviewController {
   public ModelAndView updateWorkReview(HttpSession session, @ModelAttribute("review") WorkReview review) {
     WorkReview updated = reviewDao.updateWorkReview(review);
     if (updated != null) {
-      return new ModelAndView("redirect:/admin/manage/reviews/work");
+      User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+      if (user.getRole() == Role.ADMIN) {
+        return new ModelAndView("redirect:/admin/manage/reviews/interview");
+      } else {
+        return new ModelAndView("redirect:/profile");
+      }
     } else {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
@@ -149,16 +160,24 @@ public class ReviewController {
   }
 
   @GetMapping("/deleteReview/{wId}")
-  public ModelAndView deleteWorkReview(HttpSession session, @PathVariable("wId") Integer wId){
+  public ModelAndView deleteWorkReview(HttpSession session, @PathVariable("wId") Integer wId) {
     User user = (User) session.getAttribute("user");
     int userId = user.getId();
-    if (userDao.getRole(userId) != Role.ADMIN) {
+    Review toDelete = reviewDao.findReviewById(wId);
+    if (user.getRole() == Role.STUDENT && (toDelete.getStudent().getId() != user.getId())) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
+
+
     if (!reviewDao.deleteReviewById(wId)) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
     }
-    return new ModelAndView("redirect:/admin/");
+    if (user.getRole() == Role.ADMIN) {
+      return new ModelAndView("redirect:/admin/");
+    } else {
+      return new ModelAndView("redirect:/profile");
+    }
+
   }
 }
 
