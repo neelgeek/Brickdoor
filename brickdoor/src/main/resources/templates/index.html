@@ -70,7 +70,9 @@
                 <!--						</form>-->
                 <!--					</li>-->
                 <li th:if="${user.id==0}"><a th:href="@{~/register}" href="/register">Create
-                    Account</a></li>
+                Account</a></li>
+                <li th:if="${user.id==0}"><a th:href="@{~/registerCompany}" href="/registerCompany">Create
+                    Company Account</a></li>
                 <li th:if="${user.id==0}"><a th:href="@{~/login}" href="/login">Sign In</a></li>
                 <li th:if="${user.id==0}"><a th:href="@{~/admin/login}" href="/admin/login">Admin Sign In</a></li>
                 <li th:if="${user.id!=0}" class="dropdown navbar-user">

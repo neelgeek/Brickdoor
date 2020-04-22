@@ -85,6 +85,17 @@ public class UserController {
     return model;
   }
 
+  @GetMapping("/registerCompany")
+  public ModelAndView createCompanyGet(HttpSession session) {
+    Company user = session.getAttribute("user") == null ? new Company() : (Company) session.getAttribute("user");
+    if (user.getId() != 0) {
+      return new ModelAndView("redirect:/login");
+    }
+    ModelAndView model = new ModelAndView("register_company");
+    model.addObject("user", user);
+    return model;
+  }
+
   // Post route for login, handle user authentication here
   @PostMapping("/registerStudent")
   public ModelAndView registerStudentPost(HttpSession session, @ModelAttribute("student") Student student) {

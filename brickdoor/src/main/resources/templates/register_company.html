@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<!--[if IE 8]>
+<html lang="en" class="ie8"> <![endif]-->
+<!--[if !IE]><!-->
+<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<!--<![endif]-->
+<head>
+    <meta charset="utf-8"/>
+    <title>Brickdoor Admin | Create Company</title>
+    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+          name="viewport"/>
+    <meta content="" name="description"/>
+    <meta content="" name="author"/>
+
+    <!-- ================== BEGIN BASE CSS STYLE ================== -->
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700"
+          rel="stylesheet"/>
+    <link th:href="@{/plugins/jquery-ui/jquery-ui.min.css}"
+          href="../static/plugins/jquery-ui/jquery-ui.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/bootstrap/css/bootstrap.min.css}"
+          href="../static/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/font-awesome/css/all.min.css}"
+          href="../static/plugins/font-awesome/css/all.min.css" rel="stylesheet"/>
+    <link th:href="@{/plugins/animate/animate.min.css}"
+          href="../static/plugins/animate/animate.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/default/style.min.css}" href="../static/css/default/style.min.css"
+          rel="stylesheet"/>
+    <link th:href="@{/css/default/style-responsive.min.css}"
+          href="../static/css/default/style-responsive.min.css" rel="stylesheet"/>
+    <link th:href="@{/css/default/theme/default.css}" href="../static/css/default/theme/default.css"
+          rel="stylesheet" id="theme"/>
+    <link th:href="@{/plugins/select2/dist/css/select2.min.css}"
+          href="../static/plugins/select2/dist/css/select2.min.css" rel="stylesheet"/>
+    <!-- ================== END BASE CSS STYLE ================== -->
+
+    <!-- ================== BEGIN BASE JS ================== -->
+    <script th:src="@{/plugins/pace/pace.min.js}" src="../static/plugins/pace/pace.min.js"></script>
+    <!-- ================== END BASE JS ================== -->
+</head>
+<body>
+<!-- begin #page-loader -->
+<div id="page-loader" class="fade show"><span class="spinner"></span></div>
+<!-- end #page-loader -->
+<!-- begin #page-container -->
+<div id="page-container" class="fade">
+    <!-- begin register -->
+    <div class="register register-with-news-feed">
+        <!-- begin news-feed -->
+        <div class="news-feed">
+            <div class="news-image"
+                 style="background-image: url(../static/img/login-bg/employee.jpg)"></div>
+            <div class="news-caption">
+                <h4 class="caption-title"><b>Brickdoor</b></h4>
+                <p>
+                    Brickdoor is trusted by millions of people, working in a wide range of
+                    industries, to share their work and interview experiences with their employers.
+                    <Thousands></Thousands>
+                    of companies rely on Brickdoor to get feedback from their employees. Join
+                    Brickdoor today!
+                </p>
+            </div>
+        </div>
+        <!-- end news-feed -->
+        <!-- begin right-content -->
+        <div class="right-content">
+            <!-- begin register-header -->
+            <h1 class="register-header">
+                Sign Up
+                <small>Create your Brickdoor Account. It’s free and always will be.</small>
+            </h1>
+            <!-- begin register-content -->
+            <div class="register-content">
+                <form action="#" method="POST" th:action="@{/registerCompany}" th:object="${user}"
+                      class="margin-bottom-0">
+                    <input type="hidden" class="form-control" th:field="*{id}"/>
+                    <label class="control-label">Company Name <span
+                            class="text-danger">*</span></label>
+                    <div class="row row-space-10">
+                        <div class="col-md-6 m-b-15">
+                            <input type="text" class="form-control" th:field="*{companyName}"
+                                   placeholder="Company Name" required/>
+                        </div>
+                        <div class="col-md-6 m-b-15">
+                            <input type="text" class="form-control" th:field="*{companyAddress}"
+                                   placeholder="Company Address" required/>
+                        </div>
+                    </div>
+                    <label class="control-label">Username<span class="text-danger">*</span></label>
+                    <div class="row m-b-15">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" th:field="*{username}"
+                                   placeholder="Username"
+                                   required/>
+                        </div>
+                    </div>
+                    <label class="control-label">Email <span class="text-danger">*</span></label>
+                    <div class="row m-b-15">
+                        <div class="col-md-12">
+                            <input type="text" class="form-control" th:field="*{email}"
+                                   placeholder="Email address"
+                                   required/>
+                        </div>
+                    </div>
+                    <label class="control-label">Password <span class="text-danger">*</span></label>
+                    <div class="row m-b-15">
+                        <div class="col-md-12">
+                            <input type="password" th:field="*{password}" class="form-control"
+                                   placeholder="Password"
+                                   required/>
+                        </div>
+                    </div>
+                    <div class="register-buttons">
+                        <button type="submit" class="btn btn-primary btn-block btn-lg">Create
+                        </button>
+                    </div>
+
+                </form>
+                <!-- end register-header -->
+            </div>
+            <!-- end register-content -->
+
+        </div>
+        <!-- end right-content -->
+    </div>
+    <!-- end register -->
+</div>
+<!-- end page container -->
+
+<!-- ================== BEGIN BASE JS ================== -->
+<script th:src="@{/plugins/jquery/jquery-3.3.1.min.js}"
+        src="../static/plugins/jquery/jquery-3.3.1.min.js"></script>
+<script th:src="@{/plugins/jquery-ui/jquery-ui.min.js}"
+        src="../static/plugins/jquery-ui/jquery-ui.min.js"></script>
+<script th:src="@{/plugins/bootstrap/js/bootstrap.bundle.min.js}"
+        src="../static/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script th:src="@{/plugins/slimscroll/jquery.slimscroll.min.js}"
+        src="../static/plugins/slimscroll/jquery.slimscroll.min.js"></script>
+<script th:src="@{/plugins/js-cookie/js.cookie.js}"
+        src="../static/plugins/js-cookie/js.cookie.js"></script>
+<script th:src="@{/js/theme/default.min.js}" src="../static/js/theme/default.min.js"></script>
+<script th:src="@{/js/apps.min.js}" src="../static/js/apps.min.js"></script>
+<script th:src="@{/plugins/select2/dist/js/select2.min.js}"
+        src="../static/plugins/select2/dist/js/select2.min.js"></script>
+
+<!-- ================== END BASE JS ================== -->
+
+<script>
+		$(document).ready(function() {
+			App.init();
+			$(".default-select2").select2();
+			$(".multiple-select2").select2({ placeholder: "Select a state" });
+		});
+
+
+
+
+
+</script>
+</body>
+</html>
