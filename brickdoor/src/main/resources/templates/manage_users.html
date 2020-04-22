@@ -84,11 +84,11 @@
         <!--			</ol>-->
         <!-- end breadcrumb -->
         <!-- begin page-header -->
-        <h1 class="page-header">Manage Users <span></span></h1>
+        <h1 class="page-header">Manage Students <span></span></h1>
         <!-- end page-header -->
         <div class="row">
             <div class="col-lg-12">
-                <a th:href="@{/admin/create/user}" href="#" class="btn btn-primary">Create New User</a>
+                <a th:href="@{/admin/create/user}" href="#" class="btn btn-primary">Create New Student</a>
             </div>
         </div>
         <p></p>
@@ -115,6 +115,7 @@
                                     <th>Username</th>
                                     <th>Email Address</th>
                                     <th>Following</th>
+                                    <th>Followers</th>
                                     <th>Reviews posted</th>
                                     <th width="5%"></th>
                                 </tr>
@@ -131,6 +132,8 @@
                                     <td th:text="${stu.email}"></td>
                                     <td><span th:if="${stu.following} != null"
                                               th:text="${#lists.size(stu.following)}"></span></td>
+                                    <td><span th:if="${stu.followers} != null"
+                                              th:text="${#lists.size(stu.followers)}"></span></td>
                                     <td><span th:if="${stu.givenReviews} != null"
                                               th:text="${#lists.size(stu.givenReviews)}"></span>
                                     </td>

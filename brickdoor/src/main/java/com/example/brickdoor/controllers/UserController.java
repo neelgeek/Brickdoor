@@ -38,7 +38,7 @@ public class UserController {
   // This the get route, do not edit this.
   @GetMapping("/login")
   public ModelAndView loginRouteGet(HttpSession session) {
-    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
     if (user.getId() != 0) {
       return new ModelAndView("redirect:/");
     }
@@ -53,11 +53,17 @@ public class UserController {
   public ModelAndView loginRoutePost(HttpSession session, @ModelAttribute("user") User user) {
     String username = user.getUsername();
     String password = user.getPassword();
-    User authenticatedUser = userDao.authenticate(username, password, Role.STUDENT);
-    if (authenticatedUser == null) {
+    User authenticatedStudent = userDao.authenticate(username, password, Role.STUDENT);
+    User authenticatedCompany = userDao.authenticate(username, password, Role.COMPANY);
+    if (authenticatedStudent == null && authenticatedCompany == null) {
       throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
     }
-    session.setAttribute("user", authenticatedUser);
+    if (authenticatedStudent != null) {
+      session.setAttribute("user", authenticatedStudent);
+    } else if (authenticatedCompany != null) {
+      session.setAttribute("user", authenticatedCompany);
+    }
+
     return new ModelAndView("redirect:/");
   }
 
@@ -132,14 +138,18 @@ public class UserController {
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
 
-    boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
-    if (!permissionRoles) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-    }
+//    boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
+//    if (!permissionRoles) {
+//      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
+//    }
+
     System.out.println(student.getId());
     User updateUser = userDao.updateStudent(student.getId(), student);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    if(updateUser.getId()==user.getId()){
+      session.setAttribute("user", updateUser);
     }
     return new ModelAndView("redirect:/admin/manage/users");
 
@@ -151,14 +161,13 @@ public class UserController {
     int userId = user.getId();
     Role userRole = userDao.getRole(userId);
 
-    boolean permissionRoles = userRole == Role.STUDENT || userRole == Role.ADMIN;
-    if (!permissionRoles) {
-      throw new ResponseStatusException(HttpStatus.UNAUTHORIZED);
-    }
-    System.out.println("Company Id is " +company.getId());
+    System.out.println("Company Id is " + company.getId());
     User updateUser = userDao.updateCompany(company.getId(), company);
     if (updateUser == null) {
       throw new ResponseStatusException(HttpStatus.NOT_FOUND);
+    }
+    if(updateUser.getId()==user.getId()){
+      session.setAttribute("user", updateUser);
     }
     return new ModelAndView("redirect:/admin/manage/companies");
 
@@ -288,7 +297,23 @@ public class UserController {
 
   @GetMapping("/company/{companyId}")
   public ModelAndView companyProfileGET(HttpSession session, @PathVariable("companyId") Integer companyId) {
-    Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
+    User loggedInUser = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if(loggedInUser.getId()==0){
+      return new ModelAndView("redirect:/login");
+    }
+    Student user = new Student();
+
+    if(loggedInUser.getRole()==Role.COMPANY){
+      Company currentCompany = userDao.findCompanyById(loggedInUser.getId());
+      user.setId(loggedInUser.getId());
+      user.setFirstName(currentCompany.getCompanyName());
+      user.setLastName("");
+      user.setRole(loggedInUser.getRole());
+    }
+    else{
+      user = userDao.findStudentById(loggedInUser.getId());
+    }
+
     Company company = userDao.findCompanyById(companyId);
     if (company == null) {
       return new ModelAndView("redirect:/");
@@ -297,24 +322,24 @@ public class UserController {
     List<WorkReview> workReviews = reviewDao.findWorkReviewsByCompanyId(companyId);
 
     ModelAndView model = new ModelAndView("company");
-    model.addObject("company", company.getCompanyName());
+    model.addObject("company", company);
     model.addObject("user", user);
     model.addObject("interviews", interviews);
     model.addObject("works", workReviews);
     return model;
   }
 
-  @PutMapping("/followUser/{userId}")
+  @GetMapping("/followUser/{userId}")
   public ModelAndView followUser(HttpSession session, @PathVariable("userId") Integer userId) {
     Student user = session.getAttribute("user") == null ? new Student() : (Student) session.getAttribute("user");
     User toFollow = userDao.findById(userId);
     if (toFollow == null) {
       return new ModelAndView("redirect:/");
     }
+
     userDao.follow(user, toFollow);
-    ModelAndView model = new ModelAndView("user");
+    ModelAndView model = new ModelAndView("redirect:/user/"+userId);
     model.addObject("user", user);
-    model.addObject("toFollow", toFollow);
     return model;
   }
 
@@ -423,6 +448,35 @@ public class UserController {
     }
 
     return new ModelAndView("redirect:/admin/manage/users");
+  }
+
+  @GetMapping("/updateprofile")
+  public ModelAndView updateprofileGet(HttpSession session) {
+    User user = session.getAttribute("user") == null ? new User() : (User) session.getAttribute("user");
+    if (user.getId() == 0 || user.getRole() == Role.ADMIN) {
+      return new ModelAndView("redirect:/login");
+    }
+    ModelAndView model;
+    if(user.getRole()==Role.STUDENT){
+      model= new ModelAndView("update_student");
+      user = userDao.findStudentById(user.getId());
+    }
+    else{
+      Company currentCompany = userDao.findCompanyById(user.getId());
+      Student student = new Student();
+      student.setId(currentCompany.getId());
+      student.setFirstName(currentCompany.getCompanyName());
+      student.setLastName("");
+      user=student;
+      model= new ModelAndView("update_company");
+      model.addObject("company",currentCompany);
+
+    }
+
+
+    model.addObject("user", user);
+    model.addObject("person", user);
+    return model;
   }
 
 }
