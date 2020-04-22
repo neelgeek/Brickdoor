@@ -14,7 +14,7 @@ public class Company extends User {
   private String companyName;
   private String companyAddress;
 
-  @OneToMany(mappedBy = "company")
+  @OneToMany(mappedBy = "company", orphanRemoval = true)
   private List<Review> receivedReviews;
 
 
