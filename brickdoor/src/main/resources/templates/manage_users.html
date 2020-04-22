@@ -115,6 +115,7 @@
                                     <th>Username</th>
                                     <th>Email Address</th>
                                     <th>Following</th>
+                                    <th>Followers</th>
                                     <th>Reviews posted</th>
                                     <th width="5%"></th>
                                 </tr>
@@ -131,6 +132,8 @@
                                     <td th:text="${stu.email}"></td>
                                     <td><span th:if="${stu.following} != null"
                                               th:text="${#lists.size(stu.following)}"></span></td>
+                                    <td><span th:if="${stu.followers} != null"
+                                              th:text="${#lists.size(stu.followers)}"></span></td>
                                     <td><span th:if="${stu.givenReviews} != null"
                                               th:text="${#lists.size(stu.givenReviews)}"></span>
                                     </td>

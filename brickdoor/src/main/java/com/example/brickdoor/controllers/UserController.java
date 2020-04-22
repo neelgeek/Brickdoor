@@ -322,7 +322,7 @@ public class UserController {
     List<WorkReview> workReviews = reviewDao.findWorkReviewsByCompanyId(companyId);
 
     ModelAndView model = new ModelAndView("company");
-    model.addObject("company", company.getCompanyName());
+    model.addObject("company", company);
     model.addObject("user", user);
     model.addObject("interviews", interviews);
     model.addObject("works", workReviews);

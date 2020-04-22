@@ -115,6 +115,7 @@
                                     <th>Username</th>
                                     <th>Email Address</th>
                                     <th>Reviews Receieved</th>
+                                    <th>Followers</th>
                                     <th width="5%"></th>
                                 </tr>
                                 </thead>
@@ -130,7 +131,10 @@
                                     <td th:text="${stu.email}"></td>
                                     <td><span th:if="${stu.receivedReviews} != null"
                                               th:text="${#lists.size(stu.receivedReviews)}"></span></td>
+                                    <td><span th:if="${stu.followers} != null"
+                                              th:text="${#lists.size(stu.followers)}"></span></td>
                                     <td>
+
                                         <a th:href="@{/admin/update/company/}+${stu.id}" href="#"
                                            class="btn btn-sm btn-primary width-60 m-r-2">Edit</a>
                                         <a th:href="@{/admin/update/role/}+${stu.id}" href="#" class="btn btn-sm btn-white width-60">Switch
